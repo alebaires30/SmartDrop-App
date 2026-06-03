@@ -11,7 +11,7 @@
         android:padding="24dp"
         android:gravity="center">
 
-        <!-- Logo -->
+
         <ImageView
             android:layout_width="355dp"
             android:layout_height="227dp"
@@ -20,41 +20,44 @@
 
 
 
-        <!-- Usuario -->
+
         <EditText
             android:id="@+id/usuario"
-            android:layout_width="match_parent"
+            android:layout_width="236dp"
             android:layout_height="wrap_content"
-            android:hint="Usuario"
-            android:textColor="#333333"
-            android:textColorHint="#888888"
-            android:background="@drawable/input_style"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_label"
+            android:hint="Correo electrónico"
+            android:inputType="textEmailAddress"
             android:padding="15dp"
-            android:layout_marginBottom="12dp"/>
+            android:textColor="#333333"
+            android:textColorHint="#888888" />
 
-        <!-- Contraseña -->
+
         <EditText
             android:id="@+id/password"
-            android:layout_width="match_parent"
+            android:layout_width="237dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_label"
             android:hint="Contraseña"
             android:inputType="textPassword"
+            android:padding="15dp"
             android:textColor="#333333"
             android:textColorHint="#888888"
-            android:background="@drawable/input_style"
-            android:padding="15dp"
-            android:layout_marginBottom="20dp"/>
 
-        <!-- Botón -->
+            />
+
+
         <Button
             android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
+            android:layout_width="194dp"
             android:layout_height="55dp"
+            android:background="@drawable/btn_sesion"
             android:text="Iniciar sesión"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/btn_gradient"/>
+            android:textColor="#FFFFFF" />
 
-        <!-- Registro -->
+
         <TextView
             android:text="¿No tienes una cuenta en SmartDrop?"
             android:layout_marginTop="20dp"
@@ -67,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Regístrate"
-            android:backgroundTint="#D1C4E9"
+            android:background="@drawable/btn_registro"
             android:textColor="#333"
             android:layout_marginTop="8dp"/>
 

@@ -6,103 +6,97 @@
     android:background="@drawable/fondo">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="24dp"
+        android:gravity="center">
 
 
         <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_circle"
-            android:elevation="3dp"
-            android:padding="10dp"
-            android:src="@android:drawable/ic_media_previous"
-            app:tint="#6A1B9A" />
-
-
-        <ImageView
-            android:layout_width="216dp"
+            android:layout_width="wrap_content"
             android:layout_height="170dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="0dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="20dp"
             android:src="@drawable/logo_registrate" />
 
         <EditText
             android:id="@+id/nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_label"
             android:hint="Nombre"
+            android:padding="5dp"
             android:textColor="#333333"
-            android:textColorHint="#888888"
-            android:background="@drawable/input_style"
-            android:padding="16dp"
-            android:layout_marginBottom="12dp"/>
+            android:textColorHint="#888888" />
 
         <!-- Apellido -->
         <EditText
             android:id="@+id/apellido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_label"
             android:hint="Apellido"
+            android:padding="5dp"
             android:textColor="#333333"
-            android:textColorHint="#888888"
-            android:background="@drawable/input_style"
-            android:padding="16dp"
-            android:layout_marginBottom="12dp"/>
+            android:textColorHint="#888888" />
 
         <!-- Correo -->
         <EditText
             android:id="@+id/correo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_label"
             android:hint="Correo electrónico"
             android:inputType="textEmailAddress"
+            android:padding="5dp"
             android:textColor="#333333"
-            android:textColorHint="#888888"
-            android:background="@drawable/input_style"
-            android:padding="16dp"
-            android:layout_marginBottom="12dp"/>
+            android:textColorHint="#888888" />
 
         <!-- Contraseña -->
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_label"
             android:hint="Contraseña"
             android:inputType="textPassword"
+            android:padding="5dp"
             android:textColor="#333333"
-            android:textColorHint="#888888"
-            android:background="@drawable/input_style"
-            android:padding="16dp"
-            android:layout_marginBottom="12dp"/>
+            android:textColorHint="#888888" />
 
         <!-- Confirmar -->
         <EditText
             android:id="@+id/confirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_label"
             android:hint="Confirmar contraseña"
             android:inputType="textPassword"
+            android:padding="5dp"
             android:textColor="#333333"
-            android:textColorHint="#888888"
-            android:background="@drawable/input_style"
-            android:padding="16dp"
-            android:layout_marginBottom="20dp"/>
+            android:textColorHint="#888888" />
         <!-- Botón -->
         <Button
             android:id="@+id/btnCrear"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:text="Crear cuenta"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:background="@drawable/btn_gradient"/>
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/btn_sesion"
+            android:text="CREAR CUENTA"
+            />
+
 
     </LinearLayout>
 </ScrollView>
