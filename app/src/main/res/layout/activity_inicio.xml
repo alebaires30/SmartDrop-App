@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -113,7 +112,7 @@
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:text="ESTADO DE AGUA"
-                    android:textColor="#7B2FBE"
+                    android:textColor="#623398"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium"

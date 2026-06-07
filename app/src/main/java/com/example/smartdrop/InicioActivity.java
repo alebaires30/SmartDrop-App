@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.core.view.GravityCompat;
+import androidx.cardview.widget.CardView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -29,6 +30,9 @@ public class InicioActivity extends AppCompatActivity {
         drawerLayout   = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
         btnMenu        = findViewById(R.id.btnMenu);
+        CardView cardNivel = findViewById(R.id.cardNivel);
+        CardView cardPresion = findViewById(R.id.cardPresion);
+        CardView cardCalidad = findViewById(R.id.cardCalidad);
 
         // ── Mostrar nombre del usuario en el header del drawer ─
         SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
@@ -68,6 +72,25 @@ public class InicioActivity extends AppCompatActivity {
 
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
+        });
+
+        cardNivel.setOnClickListener(v -> {
+            Intent intent = new Intent(InicioActivity.this,
+                    NivelTanqueActivity.class);
+            startActivity(intent);
+        });
+
+
+        cardPresion.setOnClickListener(v -> {
+            Intent intent = new Intent(InicioActivity.this,
+                    PresionActivity.class);
+            startActivity(intent);
+        });
+
+        cardCalidad.setOnClickListener(v -> {
+            Intent intent = new Intent(InicioActivity.this,
+                    CalidadActivity.class);
+            startActivity(intent);
         });
     }
 

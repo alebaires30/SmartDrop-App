@@ -95,6 +95,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/btn_sesion"
             android:text="CREAR CUENTA"
+            android:backgroundTint="@null"
+            app:backgroundTint="@null"
             />
 
 
