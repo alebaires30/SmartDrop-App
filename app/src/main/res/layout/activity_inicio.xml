@@ -118,6 +118,28 @@
                     android:fontFamily="sans-serif-medium"
                     android:letterSpacing="0.05" />
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardResumenGeneral"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <TextView
+                        android:id="@+id/tvResumenGeneral"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:gravity="center"
+                        android:text="Cargando estado general..."
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="#3D3D3D" />
+
+                </androidx.cardview.widget.CardView>
+
 
 
                 <androidx.cardview.widget.CardView
@@ -170,7 +192,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="NORMAL"
+                                android:text="Cargando..."
                                 android:textColor="#3D3D3D"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -242,7 +264,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="PERFECTO"
+                                android:text="Cargando..."
                                 android:textColor="#3D3D3D"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -312,7 +334,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="90 %"
+                                android:text="Cargando..."
                                 android:textColor="#3D3D3D"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
@@ -322,7 +344,7 @@
                                 android:id="@+id/tvNivelLitros"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="540L disponibles"
+                                android:text=""
                                 android:textColor="#3D3D3D"
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
@@ -403,7 +425,7 @@
                                 android:id="@+id/tvConsumoLitros"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="50L"
+                                android:text="Cargando..."
                                 android:textColor="#3D3D3D"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
