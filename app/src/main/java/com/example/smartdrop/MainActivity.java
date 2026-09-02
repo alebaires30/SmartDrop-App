@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
                     LoginResponse body = response.body();
 
-                    // Guardar token y datos de sesión en SharedPreferences
+                    // Guardar token y datos de sesión
                     SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("access_token", body.getAccess());
@@ -73,17 +73,13 @@ public class MainActivity extends AppCompatActivity {
                             "¡Bienvenido " + body.getNombre() + "!",
                             Toast.LENGTH_SHORT).show();
 
-                    // Escenario 1: redirigir según rol
-                    // id_rol=1 usuario común, id_rol=2 administrador
-                    Intent intent;
                     if (body.getIdRol() == 2) {
-                        // redirige al dashboard de admin (por ahora va al mismo)
-                        intent = new Intent(MainActivity.this, InicioActivity.class);
+                        Intent intent = new Intent(MainActivity.this, AdminDashboardActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
-                        intent = new Intent(MainActivity.this, InicioActivity.class);
+                        verificarViviendaYRedirigir();
                     }
-                    startActivity(intent);
-                    finish();
 
                 } else if (response.code() == 400) {
                     // Escenario 2 y 3: credenciales incorrectas o usuario no encontrado
@@ -102,6 +98,32 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,
                         "No se pudo conectar al servidor: " + t.getMessage(),
                         Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    private void verificarViviendaYRedirigir() {
+        ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
+        api.obtenerMisViviendas().enqueue(new Callback<MisViviendasResponse>() {
+            @Override
+            public void onResponse(Call<MisViviendasResponse> call, Response<MisViviendasResponse> response) {
+                Intent intent;
+                if (response.isSuccessful() && response.body() != null
+                        && response.body().getViviendas() != null
+                        && !response.body().getViviendas().isEmpty()) {
+                    intent = new Intent(MainActivity.this, InicioActivity.class);
+                } else {
+                    intent = new Intent(MainActivity.this, VincularViviendaActivity.class);
+                }
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<MisViviendasResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this,
+                        "No se pudo verificar tu vivienda, intenta vincularla.", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, VincularViviendaActivity.class));
+                finish();
             }
         });
     }

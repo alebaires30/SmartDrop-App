@@ -22,10 +22,14 @@ public class LoginResponse {
     @SerializedName("nombre")
     private String nombre;
 
+    @SerializedName("nombre_rol")
+    private String nombreRol;
+
     public String getMensaje()  { return mensaje; }
     public String getAccess()   { return access; }
     public String getRefresh()  { return refresh; }
     public int getIdRol()       { return idRol; }
     public int getIdUsuario()   { return idUsuario; }
     public String getNombre()   { return nombre; }
+    public String getNombreRol() { return nombreRol; }
 }
