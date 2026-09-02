@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F3FB">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#623398">
+
+        <ImageButton
+            android:id="@+id/btnVolver"
+            android:layout_width="20dp" android:layout_height="20dp"
+            android:layout_centerVertical="true" android:layout_marginStart="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back" android:scaleType="centerInside"/>
+
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Consumo" android:textColor="#FFFFFF" android:textStyle="bold"
+            android:textSize="20sp" android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="16dp">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center" android:layout_marginTop="10dp">
+
+                <TextView android:id="@+id/tabDia" android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Día" android:gravity="center"
+                    android:textSize="16sp" android:padding="10dp" android:textColor="#623398" android:textStyle="bold" />
+
+                <TextView android:id="@+id/tabSemana" android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Semana" android:gravity="center"
+                    android:textSize="16sp" android:padding="10dp" android:textColor="#9A9A9A" />
+
+                <TextView android:id="@+id/tabMes" android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Mes" android:gravity="center"
+                    android:textSize="16sp" android:padding="10dp" android:textColor="#9A9A9A" />
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" app:cardCornerRadius="15dp" app:cardElevation="4dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+
+                    <TextView android:id="@+id/tvEstadoConsumo" android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center" android:textStyle="bold" android:textSize="16sp"
+                        android:text="CONSUMO NORMAL" android:layout_marginBottom="4dp"/>
+
+                    <TextView android:id="@+id/tvConsumoTotal" android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center" android:textStyle="bold" android:textSize="26sp"
+                        android:textColor="#3D3D3D" android:text="0L" android:layout_marginBottom="12dp"/>
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/lineChartConsumo"
+                        android:layout_width="match_parent" android:layout_height="220dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" app:cardCornerRadius="15dp" app:cardElevation="4dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Comparación" android:textStyle="bold" android:textSize="16sp"
+                        android:layout_marginEnd="12dp"/>
+                    <TextView android:id="@+id/tvComparacion" android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Cargando..." android:textSize="15sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavConsumo" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="@android:color/white" app:menu="@menu/menu_consumo"
+        app:itemIconTint="@color/bottom_nav_selector" app:itemTextColor="@color/bottom_nav_selector"
+        app:labelVisibilityMode="labeled"/>
+</LinearLayout>
