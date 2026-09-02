@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/drawer_admin_dashboard"
+        android:title="Dashboard" />
+
+    <item
+        android:id="@+id/drawer_admin_graficas"
+        android:title="Gráficas y Monitoreo" />
+
+    <item
+        android:id="@+id/drawer_admin_configuracion"
+        android:title="Configuración" />
+
+    <item
+        android:id="@+id/drawer_admin_cerrar_sesion"
+        android:title="Cerrar sesión" />
+
+</menu>
