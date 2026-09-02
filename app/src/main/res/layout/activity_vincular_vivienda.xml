@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp"
+            android:text="Vincula tu vivienda"
+            android:textColor="#7B2FBE"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="Ingresa los datos exactamente como aparecen en tu recibo de agua"
+            android:textColor="#555555"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/numeroCuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_label"
+            android:hint="Número de cuenta"
+            android:padding="15dp"
+            android:textColor="#333333"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/nombreTitular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_label"
+            android:hint="Nombre completo del titular"
+            android:padding="15dp"
+            android:textColor="#333333"
+            android:textColorHint="#888888" />
+
+        <Button
+            android:id="@+id/btnVincular"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:background="@drawable/btn_sesion"
+            android:text="VINCULAR VIVIENDA"
+            android:textColor="#FFFFFF"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp" />
+
+    </LinearLayout>
+</ScrollView>
