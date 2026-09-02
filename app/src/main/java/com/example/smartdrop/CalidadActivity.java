@@ -1,62 +1,101 @@
 package com.example.smartdrop;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import android.content.Intent;
-import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CalidadActivity extends AppCompatActivity {
+
+    private ImageButton btnVolver;
+    private TextView tvEstado, tvEstrellas, tvDescripcion, tvUltimoAn, tvAnomalias;
+
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private static final long INTERVALO_POLLING_MS = 10000;
+    private Runnable tareaPolling;
+
+    private boolean cargaEnProgreso = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calidad);
 
-        ImageButton btnVolver = findViewById(R.id.btnVolver);
+        btnVolver     = findViewById(R.id.btnVolver);
+        tvEstado      = findViewById(R.id.tvEstado);
+        tvEstrellas   = findViewById(R.id.tvEstrellas);
+        tvDescripcion = findViewById(R.id.tvDescripcion);
+        tvUltimoAn    = findViewById(R.id.tvUltimoAn);
+        tvAnomalias   = findViewById(R.id.tvAnomalias);
 
         btnVolver.setOnClickListener(v -> finish());
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        tareaPolling = () -> {
+            cargarCalidad();
+            handler.postDelayed(tareaPolling, INTERVALO_POLLING_MS);
+        };
+    }
 
-        bottomNav.setSelectedItemId(R.id.nav_calidad);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.post(tareaPolling);
+    }
 
-        bottomNav.setOnItemSelectedListener(item -> {
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(tareaPolling);
+    }
 
-            int id = item.getItemId();
+    private void cargarCalidad() {
+        if (cargaEnProgreso) return;
+        cargaEnProgreso = true;
 
-            if (id == R.id.nav_tanque) {
-                startActivity(new Intent(this,
-                        NivelTanqueActivity.class));
-                finish();
-                return true;
+
+        ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
+        api.obtenerEstadoAgua().enqueue(new Callback<EstadoAguaResponse>() {
+            @Override
+            public void onResponse(Call<EstadoAguaResponse> call, Response<EstadoAguaResponse> response) {
+                cargaEnProgreso = false;
+                if (!response.isSuccessful() || response.body() == null || response.body().getCalidad() == null) return;
+                CalidadData c = response.body().getCalidad();
+
+                tvEstado.setText(ColorSeveridad.iconoDe(c.getColor()) + " " + c.getEstado());
+                tvEstado.setTextColor(ColorSeveridad.colorDe(c.getColor()));
+                tvDescripcion.setText(c.getDescripcion());
+                tvAnomalias.setText(c.getTextoAnomalias());
+
+                StringBuilder estrellas = new StringBuilder();
+                for (int i = 0; i < 5; i++) estrellas.append(i < c.getEstrellas() ? "★" : "☆");
+                tvEstrellas.setText(estrellas.toString());
+
+                tvUltimoAn.setText("Último análisis: " + formatearHora(c.getFecha()));
             }
 
-            if (id == R.id.nav_calidad) {
-                return true;
+            @Override
+            public void onFailure(Call<EstadoAguaResponse> call, Throwable t) {
+                cargaEnProgreso = false;
             }
-
-            if (id == R.id.nav_presion) {
-                startActivity(new Intent(this, PresionActivity.class));
-                finish();
-                return true;
-            }
-
-            if (id == R.id.nav_consumo) {
-                return true;
-            }
-
-            return false;
         });
+    }
+
+    private String formatearHora(String fechaIso) {
+        try {
+            String limpio = fechaIso.length() > 19 ? fechaIso.substring(0, 19) : fechaIso;
+            java.text.SimpleDateFormat entrada = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.getDefault());
+            entrada.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+            java.text.SimpleDateFormat salida = new java.text.SimpleDateFormat("hh:mm a", java.util.Locale.getDefault());
+            return salida.format(entrada.parse(limpio));
+        } catch (Exception e) {
+            return "--:--";
+        }
     }
 }

@@ -1,62 +1,97 @@
 package com.example.smartdrop;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import android.content.Intent;
-import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ImageButton;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PresionActivity extends AppCompatActivity {
+
+    private ImageButton btnVolver;
+    private TextView tvValvula, tvPresionActual, tvEstadoPresion, tvUltimoAn, tvDescripcionPresion;
+
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private static final long INTERVALO_POLLING_MS = 10000;
+    private Runnable tareaPolling;
+
+    private boolean cargaEnProgreso = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_presion);
 
-        ImageButton btnVolver = findViewById(R.id.btnVolver);
+        btnVolver            = findViewById(R.id.btnVolver);
+        tvValvula            = findViewById(R.id.tvValvula);
+        tvPresionActual      = findViewById(R.id.tvPresionActual);
+        tvEstadoPresion      = findViewById(R.id.tvEstadoPresion);
+        tvUltimoAn           = findViewById(R.id.tvUltimoAn);
+        tvDescripcionPresion = findViewById(R.id.tvDescripcionPresion);
 
         btnVolver.setOnClickListener(v -> finish());
 
-        BottomNavigationView bottomNav =
-                findViewById(R.id.bottomNav);
+        tareaPolling = () -> {
+            cargarPresion();
+            handler.postDelayed(tareaPolling, INTERVALO_POLLING_MS);
+        };
+    }
 
-        bottomNav.setSelectedItemId(R.id.nav_presion);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.post(tareaPolling);
+    }
 
-        bottomNav.setOnItemSelectedListener(item -> {
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(tareaPolling);
+    }
 
-            int id = item.getItemId();
+    private void cargarPresion() {
+        if (cargaEnProgreso) return;
+        cargaEnProgreso = true;
 
-            if (id == R.id.nav_tanque) {
-                startActivity(new Intent(this,
-                        NivelTanqueActivity.class));
-                finish();
-                return true;
+
+        ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
+        api.obtenerEstadoAgua().enqueue(new Callback<EstadoAguaResponse>() {
+            @Override
+            public void onResponse(Call<EstadoAguaResponse> call, Response<EstadoAguaResponse> response) {
+                cargaEnProgreso = false;
+                if (!response.isSuccessful() || response.body() == null || response.body().getPresion() == null) return;
+                PresionData p = response.body().getPresion();
+
+                tvPresionActual.setText(String.format(java.util.Locale.getDefault(), "Presión actual: %.1f %s", p.getValor(), p.getUnidad()));
+                tvEstadoPresion.setText(ColorSeveridad.iconoDe(p.getColor()) + " Presión: " + p.getEstado());
+                tvEstadoPresion.setTextColor(ColorSeveridad.colorDe(p.getColor()));
+                tvDescripcionPresion.setText(p.getDescripcion());
+                tvUltimoAn.setText("Actualizado: " + formatearHora(p.getFecha()));
+
             }
 
-            if (id == R.id.nav_calidad) {
-                startActivity(new Intent(this,
-                        CalidadActivity.class));
-                finish();
-                return true;
+            @Override
+            public void onFailure(Call<EstadoAguaResponse> call, Throwable t) {
+                cargaEnProgreso = false;
             }
-
-            if (id == R.id.nav_presion) {
-                startActivity(new Intent(this, PresionActivity.class));
-                finish();
-                return true;
-            }
-
-            if (id == R.id.nav_consumo) {
-                return true;
-            }
-
-            return false;
         });
+    }
+
+    private String formatearHora(String fechaIso) {
+        try {
+            String limpio = fechaIso.length() > 19 ? fechaIso.substring(0, 19) : fechaIso;
+            java.text.SimpleDateFormat entrada = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.getDefault());
+            entrada.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+            java.text.SimpleDateFormat salida = new java.text.SimpleDateFormat("hh:mm:ss a", java.util.Locale.getDefault());
+            return salida.format(entrada.parse(limpio));
+        } catch (Exception e) {
+            return "--:--";
+        }
     }
 }

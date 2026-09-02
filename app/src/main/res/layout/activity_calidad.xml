@@ -115,6 +115,7 @@
                 app:cardElevation="4dp">
 
                 <TextView
+                    android:id="@+id/tvAnomalias"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="No se han detectado anomalías en los últimos 30 días"
