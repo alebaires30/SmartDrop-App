@@ -20,6 +20,8 @@ public class PresionActivity extends AppCompatActivity {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private static final long INTERVALO_POLLING_MS = 10000;
     private Runnable tareaPolling;
+    private static final int ID_VALVULA = 2;
+
 
     private boolean cargaEnProgreso = false;
 
@@ -29,16 +31,18 @@ public class PresionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_presion);
 
         btnVolver            = findViewById(R.id.btnVolver);
-        tvValvula            = findViewById(R.id.tvValvula);
         tvPresionActual      = findViewById(R.id.tvPresionActual);
         tvEstadoPresion      = findViewById(R.id.tvEstadoPresion);
         tvUltimoAn           = findViewById(R.id.tvUltimoAn);
         tvDescripcionPresion = findViewById(R.id.tvDescripcionPresion);
+        tvValvula = findViewById(R.id.tvValvula);
+
 
         btnVolver.setOnClickListener(v -> finish());
 
         tareaPolling = () -> {
             cargarPresion();
+            cargarEstadoValvula();
             handler.postDelayed(tareaPolling, INTERVALO_POLLING_MS);
         };
     }
@@ -80,6 +84,22 @@ public class PresionActivity extends AppCompatActivity {
             public void onFailure(Call<EstadoAguaResponse> call, Throwable t) {
                 cargaEnProgreso = false;
             }
+
+        });
+    }
+
+    private void cargarEstadoValvula() {
+        ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
+        api.obtenerEstadoValvula(ID_VALVULA).enqueue(new retrofit2.Callback<ValvulaEstadoResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<ValvulaEstadoResponse> call, retrofit2.Response<ValvulaEstadoResponse> response) {
+                if (!response.isSuccessful() || response.body() == null) return;
+                boolean abierta = "abierta".equalsIgnoreCase(response.body().getEstadoActual());
+                tvValvula.setText("Válvula: " + (abierta ? "ABIERTA" : "CERRADA"));
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ValvulaEstadoResponse> call, Throwable t) { }
         });
     }
 

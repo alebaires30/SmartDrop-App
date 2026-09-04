@@ -293,6 +293,8 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+
+
                 <!-- Card: Alertas activas -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardAlertasActivas"
@@ -352,6 +354,66 @@
                                 android:text="-- Ver detalle --"
                                 android:textColor="#9E9EBE"
                                 android:textSize="12sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardValvula"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="3dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Control de válvula"
+                            android:textColor="#3D3D3D"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvValvulaEstadoAdmin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Cargando..."
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/btnAbrirValvula"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="8dp"
+                                android:text="ABRIR"
+                                android:backgroundTint="#27AE60" />
+
+                            <Button
+                                android:id="@+id/btnCerrarValvula"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="8dp"
+                                android:text="CERRAR"
+                                android:backgroundTint="#E74C3C" />
 
                         </LinearLayout>
                     </LinearLayout>

@@ -3,8 +3,10 @@ package com.example.smartdrop;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -35,6 +37,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private boolean cargaEnProgreso = false;
     private boolean primeraCargaCompleta = false;
 
+    private TextView tvValvulaEstadoAdmin;
+    private Button btnAbrirValvula, btnCerrarValvula;
+    private static final int ID_VALVULA = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,15 @@ public class AdminDashboardActivity extends AppCompatActivity {
         tvPresionValorAdmin = findViewById(R.id.tvPresionValorAdmin);
         tvNivelValorAdmin   = findViewById(R.id.tvNivelValorAdmin);
         tvAlertasCount      = findViewById(R.id.tvAlertasCount);
+
+        tvValvulaEstadoAdmin = findViewById(R.id.tvValvulaEstadoAdmin);
+        btnAbrirValvula = findViewById(R.id.btnAbrirValvula);
+        btnCerrarValvula = findViewById(R.id.btnCerrarValvula);
+
+        btnAbrirValvula.setOnClickListener(v -> enviarComandoValvula(true));
+        btnCerrarValvula.setOnClickListener(v -> enviarComandoValvula(false));
+
+
 
         float alphaInicial = 0.5f;
         cardFlujo.setAlpha(alphaInicial);
@@ -101,6 +116,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         tareaPolling = () -> {
             cargarResumen();
+            cargarEstadoValvula();
             handler.postDelayed(tareaPolling, INTERVALO_POLLING_MS);
         };
     }
@@ -170,7 +186,48 @@ public class AdminDashboardActivity extends AppCompatActivity {
             }
 
         });
+    }
 
+    private void cargarEstadoValvula() {
+        ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
+        api.obtenerEstadoValvula(ID_VALVULA).enqueue(new retrofit2.Callback<ValvulaEstadoResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<ValvulaEstadoResponse> call, retrofit2.Response<ValvulaEstadoResponse> response) {
+                if (!response.isSuccessful() || response.body() == null) return;
+                String estado = response.body().getEstadoActual();
+                boolean abierta = "abierta".equalsIgnoreCase(estado);
+                tvValvulaEstadoAdmin.setText(abierta ? "🟢 ABIERTA" : "🔴 CERRADA");
+                tvValvulaEstadoAdmin.setTextColor(abierta ? android.graphics.Color.parseColor("#27AE60") : android.graphics.Color.parseColor("#E74C3C"));
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ValvulaEstadoResponse> call, Throwable t) { }
+        });
+    }
+
+    private void enviarComandoValvula(boolean abrir) {
+        java.util.Map<String, Object> body = new java.util.HashMap<>();
+        body.put("origen", "app");
+
+        ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
+        retrofit2.Call<okhttp3.ResponseBody> call = abrir
+                ? api.abrirValvulaRemoto(ID_VALVULA, body)
+                : api.cerrarValvulaRemoto(ID_VALVULA, body);
+
+        call.enqueue(new retrofit2.Callback<okhttp3.ResponseBody>() {
+            @Override
+            public void onResponse(retrofit2.Call<okhttp3.ResponseBody> call, retrofit2.Response<okhttp3.ResponseBody> response) {
+                Toast.makeText(AdminDashboardActivity.this,
+                        response.isSuccessful() ? "Comando enviado" : "Error al enviar comando",
+                        Toast.LENGTH_SHORT).show();
+                cargarEstadoValvula();
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<okhttp3.ResponseBody> call, Throwable t) {
+                Toast.makeText(AdminDashboardActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

@@ -4,6 +4,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 public interface ApiService {
 
@@ -40,6 +41,17 @@ public interface ApiService {
 
     @GET("auth/recomendaciones/")
     Call<RecomendacionesResponse> obtenerRecomendaciones();
+
+    @GET("api/valvula/{id}/estado/")
+    Call<ValvulaEstadoResponse> obtenerEstadoValvula(@Path("id") int idValvula);
+
+    @retrofit2.http.POST("api/valvula/{id}/abrir-remoto/")
+    Call<okhttp3.ResponseBody> abrirValvulaRemoto(@Path("id") int idValvula, @Body java.util.Map<String, Object> body);
+
+    @retrofit2.http.POST("api/valvula/{id}/cerrar-remoto/")
+    Call<okhttp3.ResponseBody> cerrarValvulaRemoto(@Path("id") int idValvula, @Body java.util.Map<String, Object> body);
+
+
 
 
 }
