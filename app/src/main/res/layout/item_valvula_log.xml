@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvLogAccion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ABRIR"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#27AE60" />
+
+            <TextView
+                android:id="@+id/tvLogTipo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manual • Admin Juan"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#7B2FBE"
+                android:background="#F3F0FF"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvLogFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2026-09-16 05:35:12"
+            android:textColor="#999999"
+            android:textSize="11sp"
+            android:gravity="end"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
