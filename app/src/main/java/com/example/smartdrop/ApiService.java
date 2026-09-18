@@ -1,5 +1,9 @@
 package com.example.smartdrop;
 
+import java.util.List;
+import java.util.Map;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -45,13 +49,15 @@ public interface ApiService {
     @GET("api/valvula/{id}/estado/")
     Call<ValvulaEstadoResponse> obtenerEstadoValvula(@Path("id") int idValvula);
 
-    @retrofit2.http.POST("api/valvula/{id}/abrir-remoto/")
-    Call<okhttp3.ResponseBody> abrirValvulaRemoto(@Path("id") int idValvula, @Body java.util.Map<String, Object> body);
+    @GET("api/valvula/estado/")
+    Call<ValvulaEstadoPublicoResponse> obtenerEstadoValvulaPublico();
 
-    @retrofit2.http.POST("api/valvula/{id}/cerrar-remoto/")
-    Call<okhttp3.ResponseBody> cerrarValvulaRemoto(@Path("id") int idValvula, @Body java.util.Map<String, Object> body);
+    @POST("api/valvula/{id}/control/")
+    Call<ResponseBody> controlarValvula(@Path("id") int idValvula, @Body ValvulaControlRequest request);
 
+    @GET("api/buscar/")
+    Call<BusquedaGlobalResponse> buscarGlobal(@Query("q") String termino);
 
-
-
+    @GET("api/valvula/{id}/logs/")
+    Call<ValvulaLogsResponse> obtenerLogsValvula(@Path("id") int idValvula);
 }
