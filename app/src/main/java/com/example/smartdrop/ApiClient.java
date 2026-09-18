@@ -11,7 +11,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static final String BASE_URL = "http://10.0.2.2:8000/";
+        private static final String BASE_URL = BuildConfig.DEBUG
+            ? "http://" + BuildConfig.API_HOST + ":8000/"
+            : "https://" + BuildConfig.API_HOST + "/";
+
+    public static String getRealtimeUrl() {
+        return BuildConfig.DEBUG
+            ? "ws://" + BuildConfig.API_HOST + ":8000/ws/sensors/"
+            : "wss://" + BuildConfig.API_HOST + "/ws/sensors/";
+    }
 
     private static Retrofit retrofit = null;
     private static Retrofit retrofitAutenticado = null;

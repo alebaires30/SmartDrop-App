@@ -1,6 +1,10 @@
 package com.example.smartdrop;
 
 import android.os.Bundle;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +35,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class GraficasMonitoreoActivity extends AppCompatActivity {
+
+    private final BroadcastReceiver realtimeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            cargarDatos();
+        }
+    };
 
     private TabLayout tabParametros;
     private ChipGroup chipGroupPeriodo;
@@ -82,6 +93,10 @@ public class GraficasMonitoreoActivity extends AppCompatActivity {
             cargarDatos();
             handler.postDelayed(tareaPolling, intervaloSegunPeriodo());
         };
+        registerReceiver(realtimeReceiver,
+            new IntentFilter(RealtimeClient.ACTION_SENSOR_READING),
+            Context.RECEIVER_NOT_EXPORTED);
+        RealtimeClient.connect(this);
         handler.post(tareaPolling);
     }
     @Override
@@ -94,6 +109,12 @@ public class GraficasMonitoreoActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         if (tareaPolling != null) handler.removeCallbacks(tareaPolling);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(realtimeReceiver);
+        super.onDestroy();
     }
 
     private long intervaloSegunPeriodo() {

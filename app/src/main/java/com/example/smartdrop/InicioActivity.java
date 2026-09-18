@@ -1,6 +1,9 @@
 package com.example.smartdrop;
 
 import android.content.Intent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +23,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InicioActivity extends AppCompatActivity {
+
+    private final BroadcastReceiver realtimeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            cargarEstadoAgua();
+        }
+    };
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -91,6 +101,10 @@ public class InicioActivity extends AppCompatActivity {
             cargarEstadoAgua();
             handler.postDelayed(tareaPolling, INTERVALO_POLLING_MS);
         };
+        registerReceiver(realtimeReceiver,
+            new IntentFilter(RealtimeClient.ACTION_SENSOR_READING),
+            Context.RECEIVER_NOT_EXPORTED);
+        RealtimeClient.connect(this);
     }
 
     @Override
@@ -103,6 +117,12 @@ public class InicioActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         handler.removeCallbacks(tareaPolling);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(realtimeReceiver);
+        super.onDestroy();
     }
 
     private void cargarEstadoAgua() {
