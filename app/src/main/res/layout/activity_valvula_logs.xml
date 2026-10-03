@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Card de Control Principal -->
+            <!-- Card 1: Estado Actual (Visible para Todos) -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,182 +44,208 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Estado Actual:"
+                        android:text="ESTADO DE LA VÁLVULA"
                         android:textColor="#3D3D3D"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvValvulaEstadoDetalle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginTop="6dp"
                         android:text="Cargando..."
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
-                    <!-- Mensaje para usuarios comunes (PB050 Escenario 3) -->
-                    <TextView
-                        android:id="@+id/tvMensajeSoloAdmin"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="ℹ️ Solo administradores pueden controlar la válvula"
-                        android:textColor="#C0392B"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:visibility="gone"
-                        android:textStyle="italic"
-                        android:layout_marginBottom="8dp"/>
-
-                    <!-- Contenedor de controles exclusivo para Admin -->
+                    <!-- Indicador / Contenedor de Temporizador en Estado -->
                     <LinearLayout
-                        android:id="@+id/layoutControlesAdmin"
+                        android:id="@+id/layoutTemporizadorActivo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="12dp"
+                        android:background="#F3F0FF"
+                        android:layout_marginTop="12dp"
+                        android:visibility="gone">
 
-                        <!-- Botones Principales -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <Button
-                                android:id="@+id/btnAbrirValvula"
+                            <TextView
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:layout_marginEnd="4dp"
-                                android:text="ABRIR"
-                                android:backgroundTint="#27AE60" />
-
-                            <Button
-                                android:id="@+id/btnCerrarValvula"
-                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginStart="4dp"
-                                android:text="CERRAR"
-                                android:backgroundTint="#E74C3C" />
-                        </LinearLayout>
+                                android:text="Tiempo restante:"
+                                android:textStyle="bold"
+                                android:textColor="#333333"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="TEMPORIZADOR DE APERTURA"
-                            android:textColor="#7B2FBE"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-
-                        <!-- Presets Rápidos -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="4"
-                            android:layout_marginTop="4dp">
-
-                            <Button
-                                android:id="@+id/btn10s"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="0dp"
+                            <TextView
+                                android:id="@+id/tvTiempoRestanteAdmin"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="10S"
-                                android:textSize="11sp" />
-
-                            <Button
-                                android:id="@+id/btn30s"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="30S"
-                                android:textSize="11sp" />
-
-                            <Button
-                                android:id="@+id/btn60s"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="60S"
-                                android:textSize="11sp" />
-
-                            <Button
-                                android:id="@+id/btn120s"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="120S"
-                                android:textSize="11sp" />
+                                android:text="0s"
+                                android:textStyle="bold"
+                                android:textColor="#7B2FBE"/>
                         </LinearLayout>
 
                         <Button
-                            android:id="@+id/btnPersonalizado"
-                            style="?attr/materialButtonOutlinedStyle"
+                            android:id="@+id/btnCancelarTemporizador"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:text="TIEMPO PERSONALIZADO"
-                            android:textSize="12sp" />
-
-                        <!-- Contenedor Temporizador -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="12dp"
-                            android:background="#F3F0FF"
-                            android:layout_marginTop="12dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:text="Tiempo restante:"
-                                    android:textStyle="bold"
-                                    android:textColor="#333333"/>
-
-                                <TextView
-                                    android:id="@+id/tvTiempoRestanteAdmin"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="0s"
-                                    android:textStyle="bold"
-                                    android:textColor="#7B2FBE"/>
-                            </LinearLayout>
-
-                            <Button
-                                android:id="@+id/btnCancelarTemporizador"
-                                style="@style/Widget.MaterialComponents.Button.TextButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="CANCELAR TEMPORIZADOR"
-                                android:textColor="#D32F2F"
-                                android:textSize="12sp"
-                                android:visibility="gone" />
-                        </LinearLayout>
+                            android:layout_marginTop="4dp"
+                            android:text="CANCELAR / CERRAR"
+                            android:textColor="#D32F2F"
+                            android:textSize="12sp"
+                            android:visibility="gone" />
                     </LinearLayout>
+
+                    <!-- Mensaje para usuarios no administradores -->
+                    <TextView
+                        android:id="@+id/tvMensajeSoloAdmin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ℹ️ El control manual y registro de la válvula están reservados para administradores."
+                        android:textColor="#C0392B"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:visibility="gone"
+                        android:textSize="13sp"
+                        android:layout_marginTop="8dp"/>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card de Historial / Logs -->
+            <!-- Card 2: Panel de Control (Solo Administradores) -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardControlesAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="3dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/layoutControlesAdmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PANEL DE CONTROL (ADMIN)"
+                        android:textColor="#3D3D3D"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Botones ABRIR / CERRAR -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnAbrirValvula"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            android:text="ABRIR"
+                            android:backgroundTint="#27AE60" />
+
+                        <Button
+                            android:id="@+id/btnCerrarValvula"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="CERRAR"
+                            android:backgroundTint="#E74C3C" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="TEMPORIZADOR DE APERTURA"
+                        android:textColor="#7B2FBE"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <!-- Presets Rápidos -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="4"
+                        android:layout_marginTop="6dp">
+
+                        <Button
+                            android:id="@+id/btn10s"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="10S"
+                            android:textSize="11sp" />
+
+                        <Button
+                            android:id="@+id/btn30s"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="30S"
+                            android:textSize="11sp" />
+
+                        <Button
+                            android:id="@+id/btn60s"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="60S"
+                            android:textSize="11sp" />
+
+                        <Button
+                            android:id="@+id/btn120s"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="120S"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnPersonalizado"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="TIEMPO PERSONALIZADO"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card 3: Historial de Movimientos / Logs (Solo Administradores) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardLogsAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="3dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="#FFFFFF"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -232,15 +258,37 @@
                         android:layout_height="wrap_content"
                         android:text="HISTORIAL DE MOVIMIENTOS"
                         android:textColor="#3D3D3D"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="12dp" />
 
-                    <!-- RecyclerView con tamaño fijo y nested scroll activo -->
+                    <!-- Banner de Advertencia opcional -->
+                    <TextView
+                        android:id="@+id/tvAdvertenciaLogs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FFF3CD"
+                        android:textColor="#856404"
+                        android:padding="8dp"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="8dp"
+                        android:visibility="gone" />
+
+                    <!-- Indicador de Historial Vacío -->
+                    <TextView
+                        android:id="@+id/tvLogsVacio"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:gravity="center"
+                        android:text="No hay movimientos registrados"
+                        android:textColor="#888888"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvLogsValvula"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"
+                        android:layout_height="320dp"
                         android:nestedScrollingEnabled="true"
                         tools:listitem="@layout/item_valvula_log" />
                 </LinearLayout>

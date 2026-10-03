@@ -35,6 +35,18 @@
                 android:scaleType="centerInside"
                 android:contentDescription="Abrir menú" />
 
+            <ImageButton
+                android:id="@+id/btnSearchAdmin"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_search"
+                android:scaleType="centerInside"
+                android:contentDescription="Buscar"
+                app:tint="#FFFFFF" />
+
         </androidx.appcompat.widget.Toolbar>
 
         <ScrollView

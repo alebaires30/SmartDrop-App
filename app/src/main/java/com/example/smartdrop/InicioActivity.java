@@ -5,18 +5,26 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +36,7 @@ public class InicioActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             cargarEstadoAgua();
+            cargarEstadoValvula();
         }
     };
 
@@ -36,8 +45,9 @@ public class InicioActivity extends AppCompatActivity {
     private ImageButton btnMenu;
     private TextView tvResumenGeneral;
 
-    private CardView cardPresion, cardCalidad, cardNivel, cardConsumo;
+    private CardView cardPresion, cardCalidad, cardNivel, cardConsumo, cardValvulaInicio;
     private TextView tvPresionValor, tvCalidadValor, tvNivelPorcentaje, tvNivelLitros;
+    private TextView tvValvulaEstadoInicio, tvValvulaActualizacionInicio;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private static final long INTERVALO_POLLING_MS = 10000;
@@ -61,6 +71,7 @@ public class InicioActivity extends AppCompatActivity {
         cardCalidad = findViewById(R.id.cardCalidad);
         cardNivel   = findViewById(R.id.cardNivel);
         cardConsumo = findViewById(R.id.cardConsumo);
+        cardValvulaInicio = findViewById(R.id.cardValvulaInicio);
 
         tvPresionValor    = findViewById(R.id.tvPresionValor);
         tvCalidadValor    = findViewById(R.id.tvCalidadValor);
@@ -68,20 +79,30 @@ public class InicioActivity extends AppCompatActivity {
         tvNivelLitros     = findViewById(R.id.tvNivelLitros);
         tvResumenGeneral = findViewById(R.id.tvResumenGeneral);
         tvConsumoLitros = findViewById(R.id.tvConsumoLitros);
+        tvValvulaEstadoInicio = findViewById(R.id.tvValvulaEstadoInicio);
+        tvValvulaActualizacionInicio = findViewById(R.id.tvValvulaActualizacionInicio);
 
         float alphaInicial = 0.5f;
         cardPresion.setAlpha(alphaInicial);
         cardCalidad.setAlpha(alphaInicial);
         cardNivel.setAlpha(alphaInicial);
         cardConsumo.setAlpha(alphaInicial);
+        if (cardValvulaInicio != null) {
+            cardValvulaInicio.setAlpha(alphaInicial);
+        }
 
         SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
         String nombre = prefs.getString("nombre", "Usuario");
-        android.view.View header = navigationView.getHeaderView(0);
+        View header = navigationView.getHeaderView(0);
         TextView tvUsuarioDrawer = header.findViewById(R.id.tvUsuarioDrawer);
         tvUsuarioDrawer.setText(nombre);
 
         btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+
+        ImageButton btnSearchInicio = findViewById(R.id.btnSearchInicio);
+        if (btnSearchInicio != null) {
+            btnSearchInicio.setOnClickListener(v -> startActivity(new Intent(InicioActivity.this, BusquedaActivity.class)));
+        }
 
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -96,14 +117,22 @@ public class InicioActivity extends AppCompatActivity {
         cardCalidad.setOnClickListener(v -> startActivity(new Intent(this, CalidadActivity.class)));
         cardNivel.setOnClickListener(v -> startActivity(new Intent(this, NivelTanqueActivity.class)));
         cardConsumo.setOnClickListener(v -> startActivity(new Intent(this, ConsumoActivity.class)));
+        if (cardValvulaInicio != null) {
+            cardValvulaInicio.setOnClickListener(v -> {
+                Intent intent = new Intent(InicioActivity.this, ValvulaActivity.class);
+                intent.putExtra("id_valvula", 1);
+                startActivity(intent);
+            });
+        }
 
         tareaPolling = () -> {
             cargarEstadoAgua();
+            cargarEstadoValvula();
             handler.postDelayed(tareaPolling, INTERVALO_POLLING_MS);
         };
-        registerReceiver(realtimeReceiver,
-            new IntentFilter(RealtimeClient.ACTION_SENSOR_READING),
-            Context.RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(this, realtimeReceiver,
+                new IntentFilter(RealtimeClient.ACTION_SENSOR_READING),
+                ContextCompat.RECEIVER_NOT_EXPORTED);
         RealtimeClient.connect(this);
     }
 
@@ -129,7 +158,6 @@ public class InicioActivity extends AppCompatActivity {
         if (cargaEnProgreso) return;
         cargaEnProgreso = true;
 
-
         ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
         api.obtenerEstadoAgua().enqueue(new Callback<EstadoAguaResponse>() {
             @Override
@@ -152,14 +180,13 @@ public class InicioActivity extends AppCompatActivity {
                     tvCalidadValor.setTextColor(ColorSeveridad.colorDe(r.getCalidad().getColor()));
                 }
                 if (r.getNivel() != null) {
-                    tvNivelPorcentaje.setText(String.format(java.util.Locale.getDefault(), "%.0f %%", r.getNivel().getPorcentaje()));
+                    tvNivelPorcentaje.setText(String.format(Locale.getDefault(), "%.0f %%", r.getNivel().getPorcentaje()));
                     tvNivelPorcentaje.setTextColor(ColorSeveridad.colorDe(r.getNivel().getColor()));
-                    tvNivelLitros.setText(String.format(java.util.Locale.getDefault(), "%.0fL disponibles", r.getNivel().getLitrosDisponibles()));
+                    tvNivelLitros.setText(String.format(Locale.getDefault(), "%.0fL disponibles", r.getNivel().getLitrosDisponibles()));
                 }
                 if (r.getConsumo() != null) {
-                    tvConsumoLitros.setText(String.format(java.util.Locale.getDefault(), "%.1fL", r.getConsumo().getLitrosHoy()));
+                    tvConsumoLitros.setText(String.format(Locale.getDefault(), "%.1fL", r.getConsumo().getLitrosHoy()));
                 }
-
 
                 if (!primeraCargaCompleta) {
                     primeraCargaCompleta = true;
@@ -168,12 +195,43 @@ public class InicioActivity extends AppCompatActivity {
                     cardCalidad.animate().alpha(1f).setDuration(duracion).start();
                     cardNivel.animate().alpha(1f).setDuration(duracion).start();
                     cardConsumo.animate().alpha(1f).setDuration(duracion).start();
+                    if (cardValvulaInicio != null) {
+                        cardValvulaInicio.animate().alpha(1f).setDuration(duracion).start();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<EstadoAguaResponse> call, Throwable t) {
                 cargaEnProgreso = false;
+            }
+        });
+    }
+
+    private void cargarEstadoValvula() {
+        ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
+        api.obtenerEstadoValvula(1).enqueue(new Callback<ValvulaEstadoResponse>() {
+            @Override
+            public void onResponse(Call<ValvulaEstadoResponse> call, Response<ValvulaEstadoResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String estado = response.body().getEstadoActual();
+                    boolean abierta = "abierta".equalsIgnoreCase(estado);
+                    if (tvValvulaEstadoInicio != null) {
+                        tvValvulaEstadoInicio.setText(abierta ? "🟢 Con Suministro / ABIERTA" : "🔴 Sin Suministro / CERRADA");
+                        tvValvulaEstadoInicio.setTextColor(abierta ? Color.parseColor("#27AE60") : Color.parseColor("#E74C3C"));
+                    }
+                    if (tvValvulaActualizacionInicio != null) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                        tvValvulaActualizacionInicio.setText("Actualizado: " + sdf.format(new Date()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ValvulaEstadoResponse> call, Throwable t) {
+                if (tvValvulaEstadoInicio != null) {
+                    tvValvulaEstadoInicio.setText("⚠️ Estado no disponible");
+                }
             }
         });
     }
