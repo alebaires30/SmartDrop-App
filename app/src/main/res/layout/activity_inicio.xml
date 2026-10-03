@@ -87,6 +87,17 @@
         android:paddingTop="56dp"
         android:paddingBottom="64dp">
 
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchViewGlobal"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_search_bar"
+            app:iconifiedByDefault="false"
+            app:queryHint="Buscar en SmartDrop..."
+            app:queryBackground="@android:color/transparent" />
 
         <ScrollView
             android:layout_width="match_parent"

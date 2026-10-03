@@ -10,8 +10,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -97,6 +99,8 @@ public class InicioActivity extends AppCompatActivity {
         cardNivel.setOnClickListener(v -> startActivity(new Intent(this, NivelTanqueActivity.class)));
         cardConsumo.setOnClickListener(v -> startActivity(new Intent(this, ConsumoActivity.class)));
 
+        configurarBusquedaGlobal();
+
         tareaPolling = () -> {
             cargarEstadoAgua();
             handler.postDelayed(tareaPolling, INTERVALO_POLLING_MS);
@@ -176,6 +180,56 @@ public class InicioActivity extends AppCompatActivity {
                 cargaEnProgreso = false;
             }
         });
+    }
+
+    private void configurarBusquedaGlobal() {
+        SearchView searchView = findViewById(R.id.searchViewGlobal);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                realizarBusquedaGlobal(query);
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+
+    private void realizarBusquedaGlobal(String query) {
+        // Sin tildes para que "presión" y "presion" coincidan.
+        String q = java.text.Normalizer.normalize(query.toLowerCase().trim(), java.text.Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        if (q.isEmpty()) return;
+
+        Class<?> destino = null;
+        if (q.contains("presion") || q.contains("red") || q.contains("fuerza")) {
+            destino = PresionActivity.class;
+        } else if (q.contains("calidad") || q.contains("ph") || q.contains("cloro")
+                || q.contains("sucio") || q.contains("limpia") || q.contains("turbidez")) {
+            destino = CalidadActivity.class;
+        } else if (q.contains("nivel") || q.contains("agua") || q.contains("tanque") || q.contains("lleno")) {
+            destino = NivelTanqueActivity.class;
+        } else if (q.contains("consumo") || q.contains("gasto") || q.contains("pago") || q.contains("litro")) {
+            destino = ConsumoActivity.class;
+        } else if (q.contains("recomend") || q.contains("consejo") || q.contains("ahorro") || q.contains("tip")) {
+            destino = RecomendacionesActivity.class;
+        } else if (q.contains("retro") || q.contains("reporte") || q.contains("problema") || q.contains("queja")) {
+            destino = RetroalimentacionActivity.class;
+        } else if (q.contains("vivienda") || q.contains("vincular") || q.contains("casa")) {
+            destino = VincularViviendaActivity.class;
+        }
+
+        if (destino != null) {
+            Toast.makeText(this, "Navegando a: " + query, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, destino));
+        } else {
+            Toast.makeText(this, "No se encontró '" + query
+                    + "'. Prueba con 'presión', 'calidad', 'nivel' o 'consumo'.", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void cerrarSesion() {
