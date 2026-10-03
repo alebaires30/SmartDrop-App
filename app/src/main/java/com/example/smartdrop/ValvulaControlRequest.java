@@ -22,7 +22,6 @@ public class ValvulaControlRequest {
         this.origen = origen;
     }
 
-    // Getters and Setters
     public String getAccion() { return accion; }
     public void setAccion(String accion) { this.accion = accion; }
 

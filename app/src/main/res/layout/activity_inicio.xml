@@ -56,6 +56,18 @@
 
 
         <ImageButton
+            android:id="@+id/btnSearchInicio"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_search"
+            android:scaleType="centerInside"
+            android:contentDescription="Buscar"
+            app:tint="#FFFFFF" />
+
+        <ImageButton
             android:id="@+id/btnPerfil"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -86,18 +98,6 @@
         android:orientation="vertical"
         android:paddingTop="56dp"
         android:paddingBottom="64dp">
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchViewGlobal"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/bg_search_bar"
-            app:iconifiedByDefault="false"
-            app:queryHint="Buscar en SmartDrop..."
-            app:queryBackground="@android:color/transparent" />
 
         <ScrollView
             android:layout_width="match_parent"

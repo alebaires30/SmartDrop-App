@@ -7,7 +7,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,14 +18,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -35,38 +32,48 @@ import retrofit2.Response;
 
 public class ValvulaActivity extends AppCompatActivity {
 
-    private TextView tvEstadoDetalle, tvTiempoRestante, tvMensajeSoloAdmin;
-    private LinearLayout layoutControlesAdmin;
+    private TextView tvEstadoDetalle, tvTiempoRestante, tvMensajeSoloAdmin, tvAdvertenciaLogs, tvLogsVacio;
+    private LinearLayout layoutTemporizadorActivo;
+    private CardView cardControlesAdmin, cardLogsAdmin;
     private Button btnAbrir, btnCerrar, btn10s, btn30s, btn60s, btn120s, btnPersonalizado, btnCancelar;
     private RecyclerView rvLogs;
     private ValvulaLogsAdapter adapter;
     private CountDownTimer countDownTimer;
-    private static int ID_VALVULA = 1; // Por defecto 1, se intentará detectar
+
+    private static int idValvula = 1;
+    private int idRol = 1;
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private Runnable autoRefresh;
-    private long ultimoUpdateMillis = 0;
+    private Runnable autoRefreshRunnable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valvula_logs);
 
-        // Intentar obtener ID de válvula dinámico si se pasa por intent
-        ID_VALVULA = getIntent().getIntExtra("id_valvula", 1);
+        // ID de válvula pasado por Intent
+        idValvula = getIntent().getIntExtra("id_valvula", 1);
 
-        // Toolbar
+        // Verificación de Rol (2 = Admin, 1 = Usuario Común)
+        SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
+        idRol = prefs.getInt("id_rol", 1);
+
+        // Configuración de Toolbar
         Toolbar toolbar = findViewById(R.id.toolbarValvula);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Válvula Principal");
+            getSupportActionBar().setTitle("Control de Electroválvula");
         }
 
-        // Inicializar Vistas
+        // Vistas
         tvEstadoDetalle = findViewById(R.id.tvValvulaEstadoDetalle);
         tvTiempoRestante = findViewById(R.id.tvTiempoRestanteAdmin);
         tvMensajeSoloAdmin = findViewById(R.id.tvMensajeSoloAdmin);
-        layoutControlesAdmin = findViewById(R.id.layoutControlesAdmin);
+        tvAdvertenciaLogs = findViewById(R.id.tvAdvertenciaLogs);
+        tvLogsVacio = findViewById(R.id.tvLogsVacio);
+        layoutTemporizadorActivo = findViewById(R.id.layoutTemporizadorActivo);
+        cardControlesAdmin = findViewById(R.id.cardControlesAdmin);
+        cardLogsAdmin = findViewById(R.id.cardLogsAdmin);
 
         btnAbrir = findViewById(R.id.btnAbrirValvula);
         btnCerrar = findViewById(R.id.btnCerrarValvula);
@@ -78,88 +85,71 @@ public class ValvulaActivity extends AppCompatActivity {
         btnCancelar = findViewById(R.id.btnCancelarTemporizador);
         rvLogs = findViewById(R.id.rvLogsValvula);
 
-        // ESCENARIO 3 (PB050): Restricción de Usuario Normal
-        SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
-        int idRol = prefs.getInt("id_rol", 1); // 2 = Admin según MainActivity.java
-        
-        if (idRol != 2) {
-            if (layoutControlesAdmin != null) layoutControlesAdmin.setVisibility(View.GONE);
+        // Configurar visibilidad según el Rol
+        if (idRol == 2) {
+            if (cardControlesAdmin != null) cardControlesAdmin.setVisibility(View.VISIBLE);
+            if (cardLogsAdmin != null) cardLogsAdmin.setVisibility(View.VISIBLE);
+            if (tvMensajeSoloAdmin != null) tvMensajeSoloAdmin.setVisibility(View.GONE);
+
+            // Action Listeners de Administrador
+            btnAbrir.setOnClickListener(v -> enviarComandoControl("ABRIR", 0));
+            btnCerrar.setOnClickListener(v -> enviarComandoControl("CERRAR", 0));
+            btn10s.setOnClickListener(v -> enviarComandoControl("ABRIR", 10));
+            btn30s.setOnClickListener(v -> enviarComandoControl("ABRIR", 30));
+            btn60s.setOnClickListener(v -> enviarComandoControl("ABRIR", 60));
+            btn120s.setOnClickListener(v -> enviarComandoControl("ABRIR", 120));
+            btnPersonalizado.setOnClickListener(v -> mostrarDialogoPersonalizado());
+
+            // Configuración del RecyclerView
+            adapter = new ValvulaLogsAdapter();
+            rvLogs.setLayoutManager(new LinearLayoutManager(this));
+            rvLogs.setAdapter(adapter);
+        } else {
+            if (cardControlesAdmin != null) cardControlesAdmin.setVisibility(View.GONE);
+            if (cardLogsAdmin != null) cardLogsAdmin.setVisibility(View.GONE);
             if (tvMensajeSoloAdmin != null) tvMensajeSoloAdmin.setVisibility(View.VISIBLE);
         }
 
-        // Configurar RecyclerView
-        adapter = new ValvulaLogsAdapter();
-        rvLogs.setLayoutManager(new LinearLayoutManager(this));
-        rvLogs.setAdapter(adapter);
+        // Listener común para cancelar temporizador
+        btnCancelar.setOnClickListener(v -> enviarComandoControl("CERRAR", 0));
 
-        // Listeners Admin
-        btnAbrir.setOnClickListener(v -> enviarComandoControl("ABRIR", 0));
-        btnCerrar.setOnClickListener(v -> enviarComandoControl("CERRAR", 0));
-        btn10s.setOnClickListener(v -> enviarComandoControl("ABRIR", 10));
-        btn30s.setOnClickListener(v -> enviarComandoControl("ABRIR", 30));
-        btn60s.setOnClickListener(v -> enviarComandoControl("ABRIR", 60));
-        btn120s.setOnClickListener(v -> enviarComandoControl("ABRIR", 120));
-        btnPersonalizado.setOnClickListener(v -> mostrarDialogoPersonalizado());
-        btnCancelar.setOnClickListener(v -> cancelarTemporizador());
-
-        // Carga Inicial
-        Toast.makeText(this, "Conectado a Válvula ID: " + ID_VALVULA, Toast.LENGTH_SHORT).show();
+        // Carga inicial
         cargarEstado();
-        cargarHistorialValvula();
+        if (idRol == 2) {
+            cargarHistorialValvula();
+        }
 
-        // Refresco automático cada 10s (PB050 Escenario 1)
-        autoRefresh = new Runnable() {
+        // Refresco automático cada 10 segundos
+        autoRefreshRunnable = new Runnable() {
             @Override
             public void run() {
                 cargarEstado();
-                cargarHistorialValvula();
-                actualizarTextoUpdate();
+                if (idRol == 2) {
+                    cargarHistorialValvula();
+                }
                 handler.postDelayed(this, 10000);
             }
         };
     }
 
-    private void actualizarTextoUpdate() {
-        if (ultimoUpdateMillis == 0) return;
-        long diff = (System.currentTimeMillis() - ultimoUpdateMillis) / 1000;
-        TextView tvUpdate = findViewById(R.id.tvValvulaActualizacionInicio); // Reutilizando id o buscando uno adecuado
-        if (tvUpdate != null) {
-            tvUpdate.setText("Última actualización: hace " + diff + " segundos");
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        handler.post(autoRefresh);
+        handler.post(autoRefreshRunnable);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        handler.removeCallbacks(autoRefresh);
+        handler.removeCallbacks(autoRefreshRunnable);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        
-        searchView.setQueryHint("Ctrl+F: Buscar en todo...");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                adapter.filter(query);
-                return true;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.filter(newText);
-                return true;
-            }
-        });
-        return true;
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
     }
 
     @Override
@@ -173,31 +163,88 @@ public class ValvulaActivity extends AppCompatActivity {
 
     private void cargarEstado() {
         ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
-        api.obtenerEstadoValvula(ID_VALVULA).enqueue(new Callback<ValvulaEstadoResponse>() {
+        api.obtenerEstadoValvula(idValvula).enqueue(new Callback<ValvulaEstadoResponse>() {
             @Override
             public void onResponse(Call<ValvulaEstadoResponse> call, Response<ValvulaEstadoResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    ultimoUpdateMillis = System.currentTimeMillis();
-                    String estado = response.body().getEstadoActual();
+                    ValvulaEstadoResponse estadoData = response.body();
+                    String estado = estadoData.getEstadoActual();
                     boolean abierta = "abierta".equalsIgnoreCase(estado);
+
                     tvEstadoDetalle.setText(abierta ? "🟢 Válvula: ABIERTA" : "🔴 Válvula: CERRADA");
                     tvEstadoDetalle.setTextColor(abierta ? Color.parseColor("#27AE60") : Color.parseColor("#E74C3C"));
+
+                    TemporizadorActivo temp = estadoData.getTemporizadorActivo();
+                    if (abierta && temp != null && temp.getSegundosRestantes() > 0) {
+                        actualizarTemporizadorUI(temp.getSegundosRestantes());
+                    } else {
+                        ocultarTemporizadorUI();
+                    }
                 }
             }
+
             @Override
-            public void onFailure(Call<ValvulaEstadoResponse> call, Throwable t) {}
+            public void onFailure(Call<ValvulaEstadoResponse> call, Throwable t) {
+                // Silencioso en polling
+            }
         });
     }
 
+    private void actualizarTemporizadorUI(int segundosRestantes) {
+        if (layoutTemporizadorActivo != null) {
+            layoutTemporizadorActivo.setVisibility(View.VISIBLE);
+        }
+        if (btnCancelar != null) {
+            btnCancelar.setVisibility(View.VISIBLE);
+        }
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        countDownTimer = new CountDownTimer(segundosRestantes * 1000L, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long segs = millisUntilFinished / 1000;
+                if (tvTiempoRestante != null) {
+                    tvTiempoRestante.setText(segs + "s");
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                if (tvTiempoRestante != null) {
+                    tvTiempoRestante.setText("0s");
+                }
+                ocultarTemporizadorUI();
+                cargarEstado();
+            }
+        }.start();
+    }
+
+    private void ocultarTemporizadorUI() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        if (tvTiempoRestante != null) {
+            tvTiempoRestante.setText("0s");
+        }
+        if (btnCancelar != null) {
+            btnCancelar.setVisibility(View.GONE);
+        }
+        if (layoutTemporizadorActivo != null) {
+            layoutTemporizadorActivo.setVisibility(View.GONE);
+        }
+    }
+
     private void enviarComandoControl(String accion, int duracion) {
-        // Escenario 4 PB053: Seguridad
         if (duracion > 120) {
             new AlertDialog.Builder(this)
-                .setTitle("⚠️ Límite de Seguridad")
-                .setMessage("El tiempo máximo permitido es 120 seg. ¿Deseas ajustar a 2 minutos?")
-                .setPositiveButton("Sí, ajustar", (d, w) -> ejecutarPeticion("ABRIR", 120))
-                .setNegativeButton("Cancelar", null)
-                .show();
+                    .setTitle("⚠️ Límite de Seguridad")
+                    .setMessage("El tiempo máximo permitido es 120 segundos. ¿Deseas ajustar a 2 minutos?")
+                    .setPositiveButton("Sí, ajustar", (dialog, which) -> ejecutarPeticion(accion, 120))
+                    .setNegativeButton("Cancelar", null)
+                    .show();
             return;
         }
         ejecutarPeticion(accion, duracion);
@@ -211,19 +258,20 @@ public class ValvulaActivity extends AppCompatActivity {
         ValvulaControlRequest request = new ValvulaControlRequest(accion, duracion, nombreUsuario, origenStr);
 
         ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
-        api.controlarValvula(ID_VALVULA, request).enqueue(new Callback<ResponseBody>() {
+        api.controlarValvula(idValvula, request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ValvulaActivity.this, "Comando " + accion + " ejecutado con éxito", Toast.LENGTH_SHORT).show();
-                    if (accion.equals("ABRIR") && duracion > 0) {
-                        iniciarContador(duracion);
-                    } else if (accion.equals("CERRAR")) {
-                        if (countDownTimer != null) countDownTimer.cancel();
-                        tvTiempoRestante.setText("0s");
+                    if ("ABRIR".equalsIgnoreCase(accion) && duracion > 0) {
+                        actualizarTemporizadorUI(duracion);
+                    } else if ("CERRAR".equalsIgnoreCase(accion)) {
+                        ocultarTemporizadorUI();
                     }
                     cargarEstado();
-                    cargarHistorialValvula();
+                    if (idRol == 2) {
+                        cargarHistorialValvula();
+                    }
                 } else {
                     try {
                         String errorBody = response.errorBody() != null ? response.errorBody().string() : "Error desconocido";
@@ -233,6 +281,7 @@ public class ValvulaActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(ValvulaActivity.this, "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
@@ -242,53 +291,70 @@ public class ValvulaActivity extends AppCompatActivity {
 
     private void cargarHistorialValvula() {
         ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
-        api.obtenerLogsValvula(ID_VALVULA).enqueue(new Callback<ValvulaLogsResponse>() {
+        api.obtenerLogsValvula(idValvula).enqueue(new Callback<ValvulaLogsResponse>() {
             @Override
             public void onResponse(Call<ValvulaLogsResponse> call, Response<ValvulaLogsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    adapter.setLogs(response.body().getLogs());
+                    ValvulaLogsResponse body = response.body();
+
+                    // Advertencia opcional
+                    if (tvAdvertenciaLogs != null) {
+                        if (body.getAdvertencia() != null && !body.getAdvertencia().trim().isEmpty()) {
+                            tvAdvertenciaLogs.setText(body.getAdvertencia());
+                            tvAdvertenciaLogs.setVisibility(View.VISIBLE);
+                        } else {
+                            tvAdvertenciaLogs.setVisibility(View.GONE);
+                        }
+                    }
+
+                    // Manejo de lista vacía o nula
+                    List<ValvulaLogs> logs = body.getLogs();
+                    if (logs == null || logs.isEmpty()) {
+                        if (tvLogsVacio != null) tvLogsVacio.setVisibility(View.VISIBLE);
+                        if (rvLogs != null) rvLogs.setVisibility(View.GONE);
+                        if (adapter != null) adapter.setLogs(null);
+                    } else {
+                        if (tvLogsVacio != null) tvLogsVacio.setVisibility(View.GONE);
+                        if (rvLogs != null) rvLogs.setVisibility(View.VISIBLE);
+                        if (adapter != null) adapter.setLogs(logs);
+                    }
+                } else {
+                    try {
+                        String err = response.errorBody() != null ? response.errorBody().string() : "Error " + response.code();
+                        Toast.makeText(ValvulaActivity.this, "Error al obtener historial: " + err, Toast.LENGTH_SHORT).show();
+                    } catch (Exception ignored) {}
                 }
             }
+
             @Override
-            public void onFailure(Call<ValvulaLogsResponse> call, Throwable t) {}
+            public void onFailure(Call<ValvulaLogsResponse> call, Throwable t) {
+                // Silencioso en polling
+            }
         });
-    }
-
-    private void iniciarContador(int segundos) {
-        if (countDownTimer != null) countDownTimer.cancel();
-        btnCancelar.setVisibility(View.VISIBLE);
-        countDownTimer = new CountDownTimer(segundos * 1000L, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                tvTiempoRestante.setText((millisUntilFinished / 1000) + "s");
-            }
-            @Override
-            public void onFinish() {
-                tvTiempoRestante.setText("0s");
-                btnCancelar.setVisibility(View.GONE);
-                enviarComandoControl("CERRAR", 0);
-            }
-        }.start();
-    }
-
-    private void cancelarTemporizador() {
-        enviarComandoControl("CERRAR", 0);
     }
 
     private void mostrarDialogoPersonalizado() {
         EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         input.setHint("Ej: 45");
+
         new AlertDialog.Builder(this)
                 .setTitle("Tiempo Personalizado")
-                .setMessage("Ingresa duración (5-120 seg):")
+                .setMessage("Ingresa la duración en segundos (5-120 seg):")
                 .setView(input)
                 .setPositiveButton("Ejecutar", (dialog, which) -> {
                     String val = input.getText().toString().trim();
                     if (!val.isEmpty()) {
-                        int seg = Integer.parseInt(val);
-                        if (seg >= 5) enviarComandoControl("ABRIR", seg);
-                        else Toast.makeText(this, "Mínimo 5s", Toast.LENGTH_SHORT).show();
+                        try {
+                            int seg = Integer.parseInt(val);
+                            if (seg >= 5) {
+                                enviarComandoControl("ABRIR", seg);
+                            } else {
+                                Toast.makeText(this, "El tiempo mínimo es 5s", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(this, "Valor no válido", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .setNegativeButton("Cancelar", null)

@@ -7,40 +7,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
-
 public class ValvulaLogsAdapter extends RecyclerView.Adapter<ValvulaLogsAdapter.ViewHolder> {
 
-    private List<ValvulaLogs> listaOriginal = new ArrayList<>();
-    private List<ValvulaLogs> listaFiltrada = new ArrayList<>();
-    private String queryActual = "";
+    private List<ValvulaLogs> logsList = new ArrayList<>();
 
     public void setLogs(List<ValvulaLogs> logs) {
-        this.listaOriginal = new ArrayList<>(logs);
-        this.listaFiltrada = new ArrayList<>(logs);
-        notifyDataSetChanged();
-    }
-
-    public void filter(String query) {
-        this.queryActual = query;
-        if (query.isEmpty()) {
-            listaFiltrada = new ArrayList<>(listaOriginal);
+        if (logs != null) {
+            this.logsList = new ArrayList<>(logs);
         } else {
-            String lowerCaseQuery = query.toLowerCase().trim();
-            List<ValvulaLogs> filtered = new ArrayList<>();
-            for (ValvulaLogs log : listaOriginal) {
-                if ((log.getAccion() != null && log.getAccion().toLowerCase().contains(lowerCaseQuery)) ||
-                    (log.getUsuario() != null && log.getUsuario().toLowerCase().contains(lowerCaseQuery)) ||
-                    (log.getOrigen() != null && log.getOrigen().toLowerCase().contains(lowerCaseQuery))) {
-                    filtered.add(log);
-                }
-            }
-            listaFiltrada = filtered;
+            this.logsList = new ArrayList<>();
         }
         notifyDataSetChanged();
     }
@@ -54,50 +33,44 @@ public class ValvulaLogsAdapter extends RecyclerView.Adapter<ValvulaLogsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ValvulaLogs log = listaFiltrada.get(position);
-        
-        // Acción
+        ValvulaLogs log = logsList.get(position);
+
+        // Acción (ABRIR -> Verde #27AE60, CERRAR -> Rojo #E74C3C)
         String accion = log.getAccion() != null ? log.getAccion().toUpperCase() : "ACCIÓN";
-        setHighlightedText(holder.tvAccion, accion, queryActual);
-        holder.tvAccion.setTextColor(accion.contains("ABRIR") ? 
-                Color.parseColor("#27AE60") : Color.parseColor("#E74C3C"));
+        holder.tvAccion.setText(accion);
+        boolean esAbrir = accion.contains("ABRIR") || accion.contains("OPEN");
+        holder.tvAccion.setTextColor(esAbrir ? Color.parseColor("#27AE60") : Color.parseColor("#E74C3C"));
 
-        // Tipo / Origen y Usuario
+        // Etiqueta/Badge: {usuario} • {tipo_activacion}
+        String usuario = (log.getUsuario() != null && !log.getUsuario().isEmpty()) ? log.getUsuario() : "Sistema";
         String origen = log.getOrigen() != null ? log.getOrigen() : "Manual";
-        String usuario = (log.getUsuario() != null && !log.getUsuario().isEmpty()) ? log.getUsuario() : "Sistema/Auto";
-        
-        String tipoUsuarioText;
-        if (origen.toLowerCase().contains("temporizado") && log.getDetalle() != null && !log.getDetalle().isEmpty()) {
-            tipoUsuarioText = usuario + " • Temporizado (" + log.getDetalle() + "s)";
+        String detalle = log.getDetalle();
+
+        String badgeText;
+        if (origen.toLowerCase().contains("temporizado") || (detalle != null && !detalle.trim().isEmpty() && !detalle.equals("0"))) {
+            String duracionTexto = (detalle != null && !detalle.trim().isEmpty()) ? detalle.trim() : "";
+            if (!duracionTexto.endsWith("s") && !duracionTexto.isEmpty()) {
+                duracionTexto += "s";
+            }
+            badgeText = usuario + " • Temporizado (" + duracionTexto + ")";
         } else {
-            tipoUsuarioText = usuario + " • " + (origen.equals("App (Manual)") ? "Manual" : origen);
+            String origenLimpio = origen.replace("App (", "").replace(")", "");
+            badgeText = usuario + " • " + origenLimpio;
         }
-        setHighlightedText(holder.tvTipo, tipoUsuarioText, queryActual);
 
-        // Fecha
-        holder.tvFecha.setText(log.getFechaHora() != null ? log.getFechaHora().replace("T", " ") : "---");
-    }
+        holder.tvTipo.setText(badgeText);
 
-    private void setHighlightedText(TextView tv, String fullText, String query) {
-        if (query == null || query.isEmpty()) {
-            tv.setText(fullText);
-            return;
+        // Fecha/Hora legible
+        String fecha = log.getFechaHora() != null ? log.getFechaHora().replace("T", " ") : "---";
+        if (fecha.contains(".")) {
+            fecha = fecha.substring(0, fecha.indexOf("."));
         }
-        SpannableString spannable = new SpannableString(fullText);
-        String lowerFull = fullText.toLowerCase();
-        String lowerQuery = query.toLowerCase();
-        int start = lowerFull.indexOf(lowerQuery);
-        while (start >= 0) {
-            int end = start + lowerQuery.length();
-            spannable.setSpan(new BackgroundColorSpan(Color.YELLOW), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            start = lowerFull.indexOf(lowerQuery, end);
-        }
-        tv.setText(spannable);
+        holder.tvFecha.setText(fecha);
     }
 
     @Override
     public int getItemCount() {
-        return listaFiltrada.size();
+        return logsList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

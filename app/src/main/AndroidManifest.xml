@@ -25,9 +25,6 @@
             android:name=".ConsumoActivity"
             android:exported="false" />
         <activity
-            android:name=".ConsumoFragment"
-            android:exported="false" />
-        <activity
             android:name=".VincularViviendaActivity"
             android:exported="false" />
         <activity
@@ -60,6 +57,9 @@
         </activity>
         <activity
             android:name=".ValvulaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BusquedaActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

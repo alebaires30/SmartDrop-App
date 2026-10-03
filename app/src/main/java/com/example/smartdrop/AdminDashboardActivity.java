@@ -9,17 +9,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -75,6 +73,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationViewAdmin);
         btnMenu        = findViewById(R.id.btnMenu);
         
+        ImageButton btnSearchAdmin = findViewById(R.id.btnSearchAdmin);
+        if (btnSearchAdmin != null) {
+            btnSearchAdmin.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, BusquedaActivity.class)));
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -146,9 +149,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
             cargarEstadoValvula();
             handler.postDelayed(tareaPolling, INTERVALO_POLLING_MS);
         };
-        registerReceiver(realtimeReceiver,
+        ContextCompat.registerReceiver(this, realtimeReceiver,
             new IntentFilter(RealtimeClient.ACTION_SENSOR_READING),
-            Context.RECEIVER_NOT_EXPORTED);
+            ContextCompat.RECEIVER_NOT_EXPORTED);
         RealtimeClient.connect(this);
     }
 
@@ -244,14 +247,23 @@ public class AdminDashboardActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ValvulaLogsResponse> call, Response<ValvulaLogsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    if (response.body().getLogs() != null) {
-                        adapterLogs.setLogs(response.body().getLogs());
+                    List<ValvulaLogs> logs = response.body().getLogs();
+                    if (logs != null && !logs.isEmpty()) {
+                        adapterLogs.setLogs(logs);
+                    } else {
+                        adapterLogs.setLogs(null);
                     }
+                } else {
+                    try {
+                        String err = response.errorBody() != null ? response.errorBody().string() : "Error " + response.code();
+                        Toast.makeText(AdminDashboardActivity.this, "Error al obtener historial: " + err, Toast.LENGTH_SHORT).show();
+                    } catch (Exception ignored) {}
                 }
             }
+
             @Override
             public void onFailure(Call<ValvulaLogsResponse> call, Throwable t) {
-                Toast.makeText(AdminDashboardActivity.this, "Error al obtener historial", Toast.LENGTH_SHORT).show();
+                // Silencioso en polling
             }
         });
     }
@@ -269,69 +281,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                realizarBusquedaGlobal(query);
-                return true;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        return true;
-    }
-
-    private void realizarBusquedaGlobal(String query) {
-        String q = query.toLowerCase().trim();
-        Intent intent = null;
-
-        // Búsqueda proactiva por palabras clave
-        if (q.contains("valv") || q.contains("abrir") || q.contains("cerrar") || q.contains("log") || q.contains("historial")) {
-            intent = new Intent(this, ValvulaActivity.class);
-        } else if (q.contains("presion") || q.contains("red") || q.contains("fuerza")) {
-            intent = new Intent(this, PresionActivity.class);
-        } else if (q.contains("nivel") || q.contains("agua") || q.contains("tanque") || q.contains("lleno")) {
-            intent = new Intent(this, NivelTanqueActivity.class);
-        } else if (q.contains("calidad") || q.contains("ph") || q.contains("cloro") || q.contains("sucio") || q.contains("limpia")) {
-            intent = new Intent(this, CalidadActivity.class);
-        } else if (q.contains("consumo") || q.contains("gasto") || q.contains("pago") || q.contains("litro")) {
-            intent = new Intent(this, ConsumoActivity.class);
-        } else if (q.contains("grafic") || q.contains("monitoreo") || q.contains("analis")) {
-            intent = new Intent(this, GraficasMonitoreoActivity.class);
-        }
-
-        if (intent != null) {
-            Toast.makeText(this, "Navegando a: " + query, Toast.LENGTH_SHORT).show();
-            startActivity(intent);
-        } else {
-            // Si no es palabra clave, intentar búsqueda en API
-            ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
-            api.buscarGlobal(query).enqueue(new Callback<BusquedaGlobalResponse>() {
-                @Override
-                public void onResponse(Call<BusquedaGlobalResponse> call, Response<BusquedaGlobalResponse> response) {
-                    if (response.isSuccessful() && response.body() != null && !response.body().getSecciones().isEmpty()) {
-                        // Por simplicidad, tomamos el primer resultado
-                        Toast.makeText(AdminDashboardActivity.this, "Resultado encontrado: " + response.body().getSecciones().get(0).getTitulo(), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(AdminDashboardActivity.this, "No se encontró '" + query + "'. Prueba con 'válvula', 'presión' o 'calidad'.", Toast.LENGTH_LONG).show();
-                    }
-                }
-                @Override
-                public void onFailure(Call<BusquedaGlobalResponse> call, Throwable t) {
-                    Toast.makeText(AdminDashboardActivity.this, "Error de búsqueda", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
     }
 
     @Override
