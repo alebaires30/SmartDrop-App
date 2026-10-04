@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="#F4F3FB">
+
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="56dp" android:background="#623398">
+        <ImageButton android:id="@+id/btnVolver" android:layout_width="20dp" android:layout_height="20dp"
+            android:layout_centerVertical="true" android:layout_marginStart="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless" android:src="@drawable/ic_back"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Comunidad" android:textColor="#FFFFFF" android:textStyle="bold"
+            android:textSize="20sp" android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <Button android:id="@+id/btnReportarComunidad" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="📷 Reportar con evidencia" android:textColor="#FFFFFF"
+        android:background="@drawable/btn_gradient" android:layout_margin="12dp"/>
+
+    <TextView android:id="@+id/tvComunidadVacia" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Todavía no hay reportes de la comunidad." android:gravity="center" android:textColor="#9A9A9A"
+        android:padding="24dp" android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerComunidad"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:padding="12dp"/>
+</LinearLayout>

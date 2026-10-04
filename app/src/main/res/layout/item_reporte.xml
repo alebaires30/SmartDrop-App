@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp" app:cardCornerRadius="12dp" app:cardElevation="3dp">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="14dp">
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:id="@+id/tvReporteTipo" android:layout_width="0dp" android:layout_weight="1"
+                android:layout_height="wrap_content" android:textStyle="bold" android:textSize="15sp"
+                android:textColor="#3D3D3D"/>
+            <TextView android:id="@+id/tvReporteEstado" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textStyle="bold" android:textSize="12sp"/>
+        </LinearLayout>
+
+        <TextView android:id="@+id/tvReporteDescripcion" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="4dp" android:textSize="13sp" android:textColor="#6b6b6b"
+            android:maxLines="2" android:ellipsize="end"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="6dp">
+            <TextView android:id="@+id/tvReporteAutor" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textSize="12sp" android:textColor="#623398" android:layout_marginEnd="10dp"/>
+            <TextView android:id="@+id/tvReporteFecha" android:layout_width="0dp" android:layout_weight="1"
+                android:layout_height="wrap_content" android:textSize="12sp" android:textColor="#9A9A9A"/>
+            <TextView android:id="@+id/tvReporteAdjuntos" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textSize="12sp" android:textColor="#9A9A9A"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
