@@ -30,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ValvulaActivity extends AppCompatActivity {
+public class ValvulaActivity extends BaseActivity {
 
     private TextView tvEstadoDetalle, tvTiempoRestante, tvMensajeSoloAdmin, tvAdvertenciaLogs, tvLogsVacio;
     private LinearLayout layoutTemporizadorActivo;

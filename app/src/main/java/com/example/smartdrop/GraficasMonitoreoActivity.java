@@ -34,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GraficasMonitoreoActivity extends AppCompatActivity {
+public class GraficasMonitoreoActivity extends BaseActivity {
 
     private final BroadcastReceiver realtimeReceiver = new BroadcastReceiver() {
         @Override

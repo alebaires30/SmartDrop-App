@@ -34,7 +34,7 @@ import retrofit2.Response;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class AdminDashboardActivity extends AppCompatActivity {
+public class AdminDashboardActivity extends BaseActivity {
 
     private final BroadcastReceiver realtimeReceiver = new BroadcastReceiver() {
         @Override

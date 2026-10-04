@@ -22,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ConsumoActivity extends AppCompatActivity {
+public class ConsumoActivity extends BaseActivity {
 
     private ImageButton btnVolver;
     private TextView tabDia, tabSemana, tabMes, tvEstadoConsumo, tvConsumoTotal, tvComparacion;

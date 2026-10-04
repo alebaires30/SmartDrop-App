@@ -12,7 +12,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PresionActivity extends AppCompatActivity {
+public class PresionActivity extends BaseActivity {
 
     private ImageButton btnVolver;
     private TextView tvValvula, tvPresionActual, tvEstadoPresion, tvUltimoAn, tvDescripcionPresion;

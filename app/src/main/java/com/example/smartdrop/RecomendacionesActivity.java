@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecomendacionesActivity extends AppCompatActivity {
+public class RecomendacionesActivity extends BaseActivity {
 
     private ImageButton btnVolver;
     private TextView tvSaludo;

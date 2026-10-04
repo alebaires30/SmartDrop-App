@@ -3,11 +3,16 @@ package com.example.smartdrop;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 public interface ApiService {
@@ -60,4 +65,37 @@ public interface ApiService {
 
     @GET("api/valvula/{id}/logs/")
     Call<ValvulaLogsResponse> obtenerLogsValvula(@Path("id") int idValvula);
+
+    // ── Sistema de reportes ──
+    @GET("api/reportes/catalogo/")
+    Call<ReporteCatalogoResponse> obtenerCatalogoReportes();
+
+    @GET("api/reportes/")
+    Call<ReporteListResponse> obtenerMisReportes();
+
+    @GET("api/reportes/comunidad/")
+    Call<ReporteListResponse> obtenerReportesComunidad();
+
+    @Multipart
+    @POST("api/reportes/")
+    Call<ReporteCrearResponse> crearReporte(
+            @PartMap Map<String, RequestBody> campos,
+            @Part List<MultipartBody.Part> adjuntos
+    );
+
+    @GET("api/reportes/{id}/")
+    Call<ReporteDetalleResponse> obtenerReporteDetalle(@Path("id") int idReporte);
+
+    @POST("api/reportes/{id}/")
+    Call<ReporteMensajeResponse> enviarMensajeReporte(
+            @Path("id") int idReporte,
+            @Body Map<String, String> mensaje
+    );
+
+    @Multipart
+    @POST("api/reportes/{id}/adjuntar/")
+    Call<ReporteCrearResponse> adjuntarEvidencia(
+            @Path("id") int idReporte,
+            @Part List<MultipartBody.Part> adjuntos
+    );
 }

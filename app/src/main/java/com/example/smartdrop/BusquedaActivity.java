@@ -23,7 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BusquedaActivity extends AppCompatActivity {
+public class BusquedaActivity extends BaseActivity {
 
     private EditText etSearchQuery;
     private ImageButton btnSearchSubmit, btnSearchBack;

@@ -30,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class InicioActivity extends AppCompatActivity {
+public class InicioActivity extends BaseActivity {
 
     private final BroadcastReceiver realtimeReceiver = new BroadcastReceiver() {
         @Override
@@ -108,6 +108,12 @@ public class InicioActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.drawer_cerrar_sesion) {
                 cerrarSesion();
+            } else if (id == R.id.drawer_reportar) {
+                startActivity(new Intent(this, ReportarProblemaActivity.class));
+            } else if (id == R.id.drawer_historial) {
+                startActivity(new Intent(this, HistorialReportesActivity.class));
+            } else if (id == R.id.drawer_consumo) {
+                startActivity(new Intent(this, ConsumoActivity.class));
             }
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;

@@ -12,7 +12,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RetroalimentacionActivity extends AppCompatActivity {
+public class RetroalimentacionActivity extends BaseActivity {
 
     private ImageButton btnVolver;
     private TextView tvMensaje, tvValorGota, tvComparacionMes, tvRacha;

@@ -12,7 +12,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NivelTanqueActivity extends AppCompatActivity {
+public class NivelTanqueActivity extends BaseActivity {
 
     private ImageButton btnVolver;
     private TextView tvConversion, tvCapacidad, tvDisponible, tvBomba, tvUltima, tvAutonomia;
