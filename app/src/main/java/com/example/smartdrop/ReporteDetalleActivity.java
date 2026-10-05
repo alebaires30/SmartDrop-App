@@ -39,7 +39,8 @@ import retrofit2.Response;
 
 public class ReporteDetalleActivity extends BaseActivity {
 
-    private static final long INTERVALO_CHAT_MS = 8000;
+    private static final long INTERVALO_CHAT_MS = 3000;
+    private boolean errorMostrado = false;
 
     private int idReporte;
     private ChatAdapter chatAdapter;
@@ -94,8 +95,6 @@ public class ReporteDetalleActivity extends BaseActivity {
             etMensaje.setText("");
             enviarMensaje(texto);
         });
-
-        cargarDetalle();
     }
 
     @Override
@@ -108,7 +107,7 @@ public class ReporteDetalleActivity extends BaseActivity {
                 handler.postDelayed(this, INTERVALO_CHAT_MS);
             }
         };
-        handler.postDelayed(tareaChat, INTERVALO_CHAT_MS);
+        handler.post(tareaChat);
     }
 
     @Override
@@ -122,16 +121,31 @@ public class ReporteDetalleActivity extends BaseActivity {
         api.obtenerReporteDetalle(idReporte).enqueue(new Callback<ReporteDetalleResponse>() {
             @Override
             public void onResponse(Call<ReporteDetalleResponse> call, Response<ReporteDetalleResponse> response) {
-                if (!response.isSuccessful() || response.body() == null || !response.body().isOk()) return;
+                if (!response.isSuccessful() || response.body() == null || !response.body().isOk()) {
+                    avisarErrorUnaVez("No se pudo cargar el reporte (" + response.code() + ")");
+                    return;
+                }
+                errorMostrado = false;
                 Reporte reporte = response.body().getReporte();
                 if (reporte != null) pintarReporte(reporte);
+                int antes = chatAdapter.getItemCount();
                 chatAdapter.setMensajes(response.body().getMensajes());
-                recyclerChat.scrollToPosition(Math.max(0, chatAdapter.getItemCount() - 1));
+                if (chatAdapter.getItemCount() != antes) {
+                    recyclerChat.scrollToPosition(Math.max(0, chatAdapter.getItemCount() - 1));
+                }
             }
 
             @Override
-            public void onFailure(Call<ReporteDetalleResponse> call, Throwable t) { }
+            public void onFailure(Call<ReporteDetalleResponse> call, Throwable t) {
+                avisarErrorUnaVez("Error al cargar el reporte: " + t.getMessage());
+            }
         });
+    }
+
+    private void avisarErrorUnaVez(String mensaje) {
+        if (errorMostrado) return;
+        errorMostrado = true;
+        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
 
     private void pintarReporte(Reporte reporte) {

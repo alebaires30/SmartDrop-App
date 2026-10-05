@@ -187,9 +187,9 @@ public class GraficasMonitoreoActivity extends BaseActivity {
             case "semana": desde.add(Calendar.DAY_OF_YEAR, -7); break;
             case "mes":    desde.add(Calendar.DAY_OF_YEAR, -30); break;
             default:
-                desde.set(Calendar.HOUR_OF_DAY, 0);
-                desde.set(Calendar.MINUTE, 0);
-                desde.set(Calendar.SECOND, 0);
+                // "Hoy" = últimas 24 horas (no desde medianoche), así siempre
+                // se incluyen las lecturas más recientes aunque sean de ayer.
+                desde.add(Calendar.DAY_OF_YEAR, -1);
         }
         return new String[]{ FORMATO_API.format(desde.getTime()), FORMATO_API.format(hasta.getTime()) };
     }
