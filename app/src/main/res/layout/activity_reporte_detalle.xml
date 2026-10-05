@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:background="#F4F3FB">
+    android:orientation="vertical" android:background="@color/bg_app">
 
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="56dp" android:background="#623398">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="56dp" android:background="@color/brand_primary">
         <ImageButton android:id="@+id/btnVolver" android:layout_width="20dp" android:layout_height="20dp"
             android:layout_centerVertical="true" android:layout_marginStart="20dp"
             android:background="?attr/selectableItemBackgroundBorderless" android:src="@drawable/ic_back"/>
         <TextView android:id="@+id/tvTituloDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="Detalle del reporte" android:textColor="#FFFFFF" android:textStyle="bold"
+            android:text="Detalle del reporte" android:textColor="@color/on_brand" android:textStyle="bold"
             android:textSize="20sp" android:layout_centerInParent="true"/>
     </RelativeLayout>
 
@@ -21,17 +21,17 @@
                 android:orientation="horizontal" android:gravity="center_vertical">
                 <TextView android:id="@+id/tvDetalleTipo" android:layout_width="0dp" android:layout_weight="1"
                     android:layout_height="wrap_content" android:textStyle="bold" android:textSize="17sp"
-                    android:textColor="#3D3D3D"/>
+                    android:textColor="@color/text_primary"/>
                 <TextView android:id="@+id/tvDetalleEstado" android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:background="@drawable/bg_label" android:padding="6dp" android:textSize="12sp"
-                    android:textColor="#623398" android:textStyle="bold"/>
+                    android:textColor="@color/brand_on_card" android:textStyle="bold"/>
             </LinearLayout>
 
             <TextView android:id="@+id/tvDetalleUbicacion" android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:textSize="13sp" android:textColor="#9A9A9A" android:layout_marginTop="4dp"/>
+                android:textSize="13sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp"/>
 
             <TextView android:id="@+id/tvDetalleDescripcion" android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" android:textSize="14sp" android:textColor="#3D3D3D"
+                android:layout_marginTop="8dp" android:textSize="14sp" android:textColor="@color/text_primary"
                 android:background="@drawable/fondo_redondeado" android:padding="12dp"/>
 
             <LinearLayout android:id="@+id/layoutAdjuntos" android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             </LinearLayout>
 
             <Button android:id="@+id/btnAdjuntarEvidencia" android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="📎 Agregar evidencia" android:textColor="#623398"
+                android:text="📎 Agregar evidencia" android:textColor="@color/brand_on_card"
                 android:background="@drawable/fondo_redondeado" android:layout_marginTop="8dp"/>
 
             <androidx.cardview.widget.CardView android:id="@+id/cardRespuesta" android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:orientation="vertical" android:padding="14dp">
                     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:text="🛡 Respuesta del equipo" android:textStyle="bold" android:textColor="#0F6E56"/>
+                        android:text="🛡 Respuesta del equipo" android:textStyle="bold" android:textColor="@color/success_dark"/>
                     <TextView android:id="@+id/tvRespuestaAdmin" android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:layout_marginTop="6dp" android:textSize="14sp"/>
                 </LinearLayout>
@@ -56,7 +56,7 @@
 
             <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:text="Conversación con el equipo" android:textStyle="bold" android:textSize="15sp"
-                android:layout_marginTop="16dp" android:textColor="#3D3D3D"/>
+                android:layout_marginTop="16dp" android:textColor="@color/text_primary"/>
 
             <androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerChat"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -65,13 +65,13 @@
     </ScrollView>
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:padding="10dp" android:background="#FFFFFF"
+        android:orientation="horizontal" android:padding="10dp" android:background="@color/bg_card"
         android:gravity="center_vertical">
         <EditText android:id="@+id/etMensaje" android:layout_width="0dp" android:layout_weight="1"
             android:layout_height="wrap_content" android:hint="Escribe un mensaje…"
             android:background="@drawable/input_style" android:padding="12dp" android:textSize="14sp"/>
         <ImageButton android:id="@+id/btnEnviarMensaje" android:layout_width="44dp" android:layout_height="44dp"
             android:layout_marginStart="8dp" android:background="@drawable/btn_gradient"
-            android:src="@android:drawable/ic_menu_send" app:tint="#FFFFFF"/>
+            android:src="@android:drawable/ic_menu_send" app:tint="@color/on_brand"/>
     </LinearLayout>
 </LinearLayout>

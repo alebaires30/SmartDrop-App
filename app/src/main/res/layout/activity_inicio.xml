@@ -17,7 +17,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="#F4F3FB"
+    android:background="@color/bg_app"
     tools:context=".InicioActivity">
 
 
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Inicio"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/on_brand"
             android:textSize="20sp"
             android:textStyle="bold"
             android:fontFamily="sans-serif-medium" />
@@ -65,7 +65,7 @@
             android:src="@android:drawable/ic_menu_search"
             android:scaleType="centerInside"
             android:contentDescription="Buscar"
-            app:tint="#FFFFFF" />
+            app:tint="@color/on_brand" />
 
         <ImageButton
             android:id="@+id/btnPerfil"
@@ -79,18 +79,6 @@
             />
 
     </androidx.appcompat.widget.Toolbar>
-
-
-    <ImageButton
-        android:id="@+id/btnMenu2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="start|center_vertical"
-        android:layout_marginStart="4dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Abrir menú"
-        android:scaleType="centerInside"
-        app:srcCompat="@drawable/menu" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,7 +111,7 @@
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:text="ESTADO DE AGUA"
-                    android:textColor="#623398"
+                    android:textColor="@color/brand_on_card"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium"
@@ -136,7 +124,7 @@
                     android:layout_marginBottom="16dp"
                     app:cardCornerRadius="14dp"
                     app:cardElevation="2dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="@color/bg_card">
 
                     <TextView
                         android:id="@+id/tvResumenGeneral"
@@ -147,7 +135,7 @@
                         android:text="Cargando estado general..."
                         android:textStyle="bold"
                         android:textSize="15sp"
-                        android:textColor="#3D3D3D" />
+                        android:textColor="@color/text_primary" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -163,7 +151,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="3dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="@color/bg_card">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -173,11 +161,12 @@
                         android:padding="16dp">
 
 
-                        <View
+                        <ImageView
                             android:id="@+id/espacioIconPresion"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:background="@drawable/iconos" />
+                            android:src="@drawable/presionn"
+                            android:scaleType="fitCenter" />
 
                         <!-- Información textual de Presión -->
                         <LinearLayout
@@ -193,7 +182,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Presión de agua actual"
-                                android:textColor="#3D3D3D"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
@@ -204,7 +193,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:text="Cargando..."
-                                android:textColor="#3D3D3D"
+                                android:textColor="@color/text_primary"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
@@ -214,7 +203,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:text="-- Click para ver más --"
-                                android:textColor="#9E9EBE"
+                                android:textColor="@color/text_muted"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -234,7 +223,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="3dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="@color/bg_card">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -245,11 +234,12 @@
 
 
                         -->
-                        <View
+                        <ImageView
                             android:id="@+id/espacioIconCalidad"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:background="@drawable/iconos" />
+                            android:src="@drawable/gota"
+                            android:scaleType="fitCenter" />
 
 
                         <LinearLayout
@@ -265,7 +255,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Calidad del agua actual"
-                                android:textColor="#3D3D3D"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
@@ -276,7 +266,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:text="Cargando..."
-                                android:textColor="#3D3D3D"
+                                android:textColor="@color/text_primary"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
@@ -286,7 +276,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:text="-- Click para ver más --"
-                                android:textColor="#9E9EBE"
+                                android:textColor="@color/text_muted"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -305,7 +295,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="3dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="@color/bg_card">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -315,11 +305,12 @@
                         android:padding="16dp">
 
 
-                        <View
+                        <ImageView
                             android:id="@+id/espacioIconNivel"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:background="@drawable/iconos" />
+                            android:src="@drawable/tanquee"
+                            android:scaleType="fitCenter" />
 
                         <!-- Información textual del Nivel -->
                         <LinearLayout
@@ -335,7 +326,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Nivel de tanque actual"
-                                android:textColor="#3D3D3D"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
@@ -346,7 +337,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:text="Cargando..."
-                                android:textColor="#3D3D3D"
+                                android:textColor="@color/text_primary"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -356,7 +347,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text=""
-                                android:textColor="#3D3D3D"
+                                android:textColor="@color/text_primary"
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
 
@@ -366,7 +357,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:text="-- Click para ver más --"
-                                android:textColor="#9E9EBE"
+                                android:textColor="@color/text_muted"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -386,7 +377,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="3dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="@color/bg_card">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -397,11 +388,12 @@
 
 
 
-                        <View
+                        <ImageView
                             android:id="@+id/espacioIconConsumo"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:background="@drawable/iconos" />
+                            android:src="@drawable/cosumoo"
+                            android:scaleType="fitCenter" />
 
                         <!-- Información textual de Consumo -->
                         <LinearLayout
@@ -417,7 +409,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Consumo de agua actual"
-                                android:textColor="#3D3D3D"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
@@ -428,7 +420,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:text="Hoy"
-                                android:textColor="#3D3D3D"
+                                android:textColor="@color/text_primary"
                                 android:textSize="13sp" />
 
 
@@ -437,7 +429,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Cargando..."
-                                android:textColor="#3D3D3D"
+                                android:textColor="@color/text_primary"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -447,7 +439,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:text="-- Click para ver más --"
-                                android:textColor="#9E9EBE"
+                                android:textColor="@color/text_muted"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -466,7 +458,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="3dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="@color/bg_card">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -475,11 +467,12 @@
                         android:gravity="center_vertical"
                         android:padding="16dp">
 
-                        <View
+                        <ImageView
                             android:id="@+id/espacioIconValvulaInicio"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:background="@drawable/iconos" />
+                            android:src="@drawable/electrovavula"
+                            android:scaleType="fitCenter" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -493,7 +486,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Estado de Suministro"
-                                android:textColor="#3D3D3D"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
@@ -512,7 +505,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:text="Actualizando..."
-                                android:textColor="#9E9EBE"
+                                android:textColor="@color/text_muted"
                                 android:textSize="11sp" />
 
                         </LinearLayout>
@@ -530,7 +523,7 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_gravity="bottom"
-        android:background="#FFFFFF"
+        android:background="@color/bg_card"
         android:elevation="8dp"
         android:gravity="center"
         android:orientation="vertical">
@@ -541,7 +534,7 @@
             android:layout_height="48dp"
             android:background="@drawable/bg_btn_inicio"
             android:src="@drawable/home"
-            android:tint="#7B2FBE"
+            android:tint="@color/brand_accent"
             android:contentDescription="Inicio"
             android:scaleType="centerInside"
             android:padding="10dp"
@@ -551,7 +544,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Inicio"
-            android:textColor="#7B2FBE"
+            android:textColor="@color/brand_accent"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -562,12 +555,16 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
-        android:layout_width="272dp"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#BEA9DF"
+        android:background="#623398"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/menu_btn_nav"
+        app:itemTextAppearance="@style/DrawerItemTextStyle"
+        app:itemIconSize="24dp"
+        app:itemHorizontalPadding="20dp"
+        app:itemVerticalPadding="12dp"
         app:itemTextColor="#FFFFFF"
         app:itemIconTint="#FFFFFF"
         app:itemRippleColor="#33FFFFFF"

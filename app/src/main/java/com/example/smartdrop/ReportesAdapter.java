@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -58,9 +59,9 @@ public class ReportesAdapter extends RecyclerView.Adapter<ReportesAdapter.ViewHo
 
         int colorEstado;
         switch (reporte.getEstado() != null ? reporte.getEstado() : "") {
-            case "resuelto": colorEstado = 0xFF0F6E56; break;
-            case "en_proceso": colorEstado = 0xFF1D4ED8; break;
-            default: colorEstado = 0xFFB45309; break;
+            case "resuelto": colorEstado = ContextCompat.getColor(holder.itemView.getContext(), R.color.success_dark); break;
+            case "en_proceso": colorEstado = ContextCompat.getColor(holder.itemView.getContext(), R.color.status_blue); break;
+            default: colorEstado = ContextCompat.getColor(holder.itemView.getContext(), R.color.status_amber); break;
         }
         holder.tvEstado.setTextColor(colorEstado);
 

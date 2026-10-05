@@ -3,6 +3,7 @@ package com.example.smartdrop;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.content.Intent;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -41,6 +42,8 @@ public class NivelTanqueActivity extends BaseActivity {
 
         btnVolver.setOnClickListener(v -> finish());
 
+        configurarBottomNav(R.id.nav_tanque);
+
         // Escenario: tocar el texto de conversión alterna Litros <-> Barriles
         tvConversion.setOnClickListener(v -> {
             mostrandoLitros = !mostrandoLitros;
@@ -51,6 +54,27 @@ public class NivelTanqueActivity extends BaseActivity {
             cargarNivel();
             handler.postDelayed(tareaPolling, INTERVALO_POLLING_MS);
         };
+    }
+
+    private void configurarBottomNav(int itemActual) {
+        com.google.android.material.bottomnavigation.BottomNavigationView nav = findViewById(R.id.bottomNav);
+        if (nav == null) return;
+        nav.setSelectedItemId(itemActual);
+        nav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == itemActual) return true;
+            if (id == R.id.nav_tanque) {
+                startActivity(new Intent(this, NivelTanqueActivity.class));
+            } else if (id == R.id.nav_calidad) {
+                startActivity(new Intent(this, CalidadActivity.class));
+            } else if (id == R.id.nav_presion) {
+                startActivity(new Intent(this, PresionActivity.class));
+            } else if (id == R.id.nav_consumo) {
+                startActivity(new Intent(this, ConsumoActivity.class));
+            }
+            finish();
+            return true;
+        });
     }
 
     @Override
@@ -108,7 +132,7 @@ public class NivelTanqueActivity extends BaseActivity {
         }
 
         tvDisponible.setText(icono + " " + textoPrincipal);
-        tvDisponible.setTextColor(ColorSeveridad.colorDe(ultimoNivel.getColor()));
+        tvDisponible.setTextColor(ColorSeveridad.colorDe(this, ultimoNivel.getColor()));
 
         tvUltima.setText("Última lectura: " + formatearHora(ultimoNivel.getFecha()));
     }

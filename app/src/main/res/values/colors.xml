@@ -2,4 +2,58 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- ============ Paleta semántica SmartDrop (modo claro) ============ -->
+    <!-- Los mismos nombres existen en values-night/colors.xml con valores oscuros -->
+
+    <!-- Fondos -->
+    <color name="bg_app">#F4F3FB</color>
+    <color name="bg_card">#FFFFFF</color>
+    <color name="bg_card_alt">#F3F0FF</color>
+    <color name="bg_purple_soft">#E9D5FF</color>
+    <color name="bg_alert">#FDECEA</color>
+    <color name="bg_warning">#FFF3CD</color>
+    <color name="bg_input">#F8F5F2</color>
+    <color name="bg_search">#F8F9FA</color>
+    <color name="bg_info_soft">#E7EFF9</color>
+    <color name="bg_lavender">#EDE7F6</color>
+    <color name="bg_lavender_end">#D1C4E9</color>
+    <color name="bg_lavender_alt">#EDE8F7</color>
+    <color name="bg_chip">#E8E5FF</color>
+    <color name="bg_circle_soft">#EAE8F5</color>
+    <color name="btn_secondary_bg">#D5BAE9</color>
+
+    <!-- Textos -->
+    <color name="text_primary">#3D3D3D</color>
+    <color name="text_secondary">#9A9A9A</color>
+    <color name="text_muted">#9E9EBE</color>
+    <color name="text_hint">#999999</color>
+
+    <!-- Marca -->
+    <color name="brand_primary">#623398</color>
+    <color name="brand_accent">#7B2FBE</color>
+    <color name="brand_on_card">#623398</color>
+    <color name="brand_soft">#BEA9DF</color>
+    <color name="brand_blue">#4FACFE</color>
+    <color name="on_brand">#FFFFFF</color>
+    <color name="nav_bar">#FFFFFF</color>
+
+    <!-- Bordes / strokes -->
+    <color name="stroke_soft">#E0DFF0</color>
+    <color name="stroke_input">#E0D7E7</color>
+    <color name="stroke_search">#E0E0E0</color>
+    <color name="stroke_lavender">#C0A8E8</color>
+
+    <!-- Colores de estado -->
+    <color name="success">#27AE60</color>
+    <color name="success_dark">#0F6E56</color>
+    <color name="danger">#E74C3C</color>
+    <color name="text_alert">#C0392B</color>
+    <color name="warning_text">#856404</color>
+    <color name="status_orange">#E67E22</color>
+    <color name="status_yellow">#B7950B</color>
+    <color name="status_green">#1E8449</color>
+    <color name="status_blue">#1D4ED8</color>
+    <color name="status_amber">#B45309</color>
+    <color name="star_yellow">#F0D64B</color>
 </resources>

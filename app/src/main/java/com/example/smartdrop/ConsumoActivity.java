@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -70,14 +71,22 @@ public class ConsumoActivity extends BaseActivity {
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.getXAxis().setGranularity(1f);
 
+        int colorTextoChart = ContextCompat.getColor(this, R.color.text_secondary);
+        lineChart.getXAxis().setTextColor(colorTextoChart);
+        lineChart.getAxisLeft().setTextColor(colorTextoChart);
+        lineChart.getAxisRight().setTextColor(colorTextoChart);
+        lineChart.getLegend().setTextColor(colorTextoChart);
+
         cargarConsumo();
     }
 
     private void seleccionarTab(String periodo) {
         periodoActual = periodo;
-        tabDia.setTextColor(Color.parseColor(periodo.equals("dia") ? "#623398" : "#9A9A9A"));
-        tabSemana.setTextColor(Color.parseColor(periodo.equals("semana") ? "#623398" : "#9A9A9A"));
-        tabMes.setTextColor(Color.parseColor(periodo.equals("mes") ? "#623398" : "#9A9A9A"));
+        int colorActivo = ContextCompat.getColor(this, R.color.brand_on_card);
+        int colorInactivo = ContextCompat.getColor(this, R.color.text_secondary);
+        tabDia.setTextColor(periodo.equals("dia") ? colorActivo : colorInactivo);
+        tabSemana.setTextColor(periodo.equals("semana") ? colorActivo : colorInactivo);
+        tabMes.setTextColor(periodo.equals("mes") ? colorActivo : colorInactivo);
         cargarConsumo();
     }
 
@@ -90,7 +99,7 @@ public class ConsumoActivity extends BaseActivity {
                 ConsumoResponse r = response.body();
 
                 tvEstadoConsumo.setText(ColorSeveridad.iconoDe(r.getColor()) + " " + r.getEstadoTexto());
-                tvEstadoConsumo.setTextColor(ColorSeveridad.colorDe(r.getColor()));
+                tvEstadoConsumo.setTextColor(ColorSeveridad.colorDe(ConsumoActivity.this, r.getColor()));
                 tvConsumoTotal.setText(String.format(java.util.Locale.getDefault(), "%.1f%s", r.getConsumoTotal(), r.getUnidad()));
                 tvComparacion.setText(r.getComparacion() != null ? r.getComparacion().getTexto() : "");
 
@@ -117,8 +126,9 @@ public class ConsumoActivity extends BaseActivity {
         }
 
         LineDataSet set = new LineDataSet(entradas, "Consumo (L)");
-        set.setColor(Color.parseColor("#623398"));
-        set.setCircleColor(Color.parseColor("#623398"));
+        int colorLinea = ContextCompat.getColor(this, R.color.brand_accent);
+        set.setColor(colorLinea);
+        set.setCircleColor(colorLinea);
         set.setLineWidth(2f);
         set.setDrawValues(false);
 

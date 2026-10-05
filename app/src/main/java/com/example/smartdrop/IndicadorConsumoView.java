@@ -5,19 +5,22 @@ import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
+
 /** Gota que se "llena" según el consumo — dibujada con Path, no es una imagen estática. */
 public class IndicadorConsumoView extends View {
 
     private double porcentajeLlenado = 0;
-    private int colorRelleno = Color.parseColor("#7B2FBE");
+    private int colorRelleno;
 
     public IndicadorConsumoView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.colorRelleno = ContextCompat.getColor(context, R.color.brand_accent);
     }
 
     public void actualizar(double porcentajeLlenado, String severidad) {
         this.porcentajeLlenado = Math.max(0, Math.min(100, porcentajeLlenado));
-        this.colorRelleno = ColorSeveridad.colorDe(severidad);
+        this.colorRelleno = ColorSeveridad.colorDe(getContext(), severidad);
         invalidate();
     }
 
@@ -45,7 +48,7 @@ public class IndicadorConsumoView extends View {
         Path gota = construirRutaGota(w, h);
 
         Paint fondo = new Paint(Paint.ANTI_ALIAS_FLAG);
-        fondo.setColor(Color.parseColor("#EDE7F6"));
+        fondo.setColor(ContextCompat.getColor(getContext(), R.color.bg_lavender));
         canvas.drawPath(gota, fondo);
 
         float alturaLlenado = h * (float) (porcentajeLlenado / 100.0);
@@ -62,7 +65,7 @@ public class IndicadorConsumoView extends View {
         Paint contorno = new Paint(Paint.ANTI_ALIAS_FLAG);
         contorno.setStyle(Paint.Style.STROKE);
         contorno.setStrokeWidth(6f);
-        contorno.setColor(Color.parseColor("#7B2FBE"));
+        contorno.setColor(ContextCompat.getColor(getContext(), R.color.brand_accent));
         canvas.drawPath(gota, contorno);
     }
 }

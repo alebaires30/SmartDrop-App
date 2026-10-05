@@ -19,6 +19,12 @@
             android:name=".RecomendacionesActivity"
             android:exported="false" />
         <activity
+            android:name=".PrediccionSuministroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ZonaPrediccionDetalleActivity"
+            android:exported="false" />
+        <activity
             android:name=".RetroalimentacionActivity"
             android:exported="false" />
         <activity
@@ -75,6 +81,12 @@
             android:exported="false" />
         <activity
             android:name=".ReporteDetalleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PerfilActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ConfiguracionActivity"
             android:exported="false" />
     </application>
 

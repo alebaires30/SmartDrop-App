@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -108,12 +109,12 @@ public class RecomendacionesActivity extends BaseActivity {
         titulo.setText("TIP: " + tip.getTitulo());
         titulo.setTextSize(14);
         titulo.setTypeface(null, Typeface.BOLD);
-        titulo.setTextColor(Color.parseColor("#3D3D3D"));
+        titulo.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
 
         TextView impacto = new TextView(this);
         impacto.setText("IMPACTO: " + tip.getImpacto());
         impacto.setTextSize(12);
-        impacto.setTextColor(Color.parseColor("#623398"));
+        impacto.setTextColor(ContextCompat.getColor(this, R.color.brand_on_card));
 
         columnaTexto.addView(titulo);
         columnaTexto.addView(impacto);

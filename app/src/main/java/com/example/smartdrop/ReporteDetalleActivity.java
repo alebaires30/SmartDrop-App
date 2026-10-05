@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -155,7 +156,7 @@ public class ReporteDetalleActivity extends BaseActivity {
                 if (adjunto.esVideo()) {
                     TextView enlace = new TextView(this);
                     enlace.setText("🎬 " + (adjunto.getNombre() != null ? adjunto.getNombre() : "Video"));
-                    enlace.setTextColor(0xFF623398);
+                    enlace.setTextColor(ContextCompat.getColor(this, R.color.brand_on_card));
                     enlace.setPadding(0, 12, 0, 12);
                     String url = urlAbsoluta(adjunto.getUrl());
                     enlace.setOnClickListener(v ->

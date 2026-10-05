@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -172,7 +173,7 @@ public class ValvulaActivity extends BaseActivity {
                     boolean abierta = "abierta".equalsIgnoreCase(estado);
 
                     tvEstadoDetalle.setText(abierta ? "🟢 Válvula: ABIERTA" : "🔴 Válvula: CERRADA");
-                    tvEstadoDetalle.setTextColor(abierta ? Color.parseColor("#27AE60") : Color.parseColor("#E74C3C"));
+                    tvEstadoDetalle.setTextColor(ContextCompat.getColor(ValvulaActivity.this, abierta ? R.color.success : R.color.danger));
 
                     TemporizadorActivo temp = estadoData.getTemporizadorActivo();
                     if (abierta && temp != null && temp.getSegundosRestantes() > 0) {

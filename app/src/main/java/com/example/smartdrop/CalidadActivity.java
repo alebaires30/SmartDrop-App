@@ -3,6 +3,7 @@ package com.example.smartdrop;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.content.Intent;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -37,10 +38,33 @@ public class CalidadActivity extends BaseActivity {
 
         btnVolver.setOnClickListener(v -> finish());
 
+        configurarBottomNav(R.id.nav_calidad);
+
         tareaPolling = () -> {
             cargarCalidad();
             handler.postDelayed(tareaPolling, INTERVALO_POLLING_MS);
         };
+    }
+
+    private void configurarBottomNav(int itemActual) {
+        com.google.android.material.bottomnavigation.BottomNavigationView nav = findViewById(R.id.bottomNav);
+        if (nav == null) return;
+        nav.setSelectedItemId(itemActual);
+        nav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == itemActual) return true;
+            if (id == R.id.nav_tanque) {
+                startActivity(new Intent(this, NivelTanqueActivity.class));
+            } else if (id == R.id.nav_calidad) {
+                startActivity(new Intent(this, CalidadActivity.class));
+            } else if (id == R.id.nav_presion) {
+                startActivity(new Intent(this, PresionActivity.class));
+            } else if (id == R.id.nav_consumo) {
+                startActivity(new Intent(this, ConsumoActivity.class));
+            }
+            finish();
+            return true;
+        });
     }
 
     @Override
@@ -69,7 +93,7 @@ public class CalidadActivity extends BaseActivity {
                 CalidadData c = response.body().getCalidad();
 
                 tvEstado.setText(ColorSeveridad.iconoDe(c.getColor()) + " " + c.getEstado());
-                tvEstado.setTextColor(ColorSeveridad.colorDe(c.getColor()));
+                tvEstado.setTextColor(ColorSeveridad.colorDe(CalidadActivity.this, c.getColor()));
                 tvDescripcion.setText(c.getDescripcion());
                 tvAnomalias.setText(c.getTextoAnomalias());
 

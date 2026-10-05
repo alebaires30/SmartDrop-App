@@ -30,8 +30,8 @@
             android:background="@drawable/bg_label"
             android:hint="Nombre"
             android:padding="5dp"
-            android:textColor="#333333"
-            android:textColorHint="#888888" />
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary" />
 
         <!-- Apellido -->
         <EditText
@@ -43,8 +43,8 @@
             android:background="@drawable/bg_label"
             android:hint="Apellido"
             android:padding="5dp"
-            android:textColor="#333333"
-            android:textColorHint="#888888" />
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary" />
 
         <!-- Correo -->
         <EditText
@@ -57,8 +57,8 @@
             android:hint="Correo electrónico"
             android:inputType="textEmailAddress"
             android:padding="5dp"
-            android:textColor="#333333"
-            android:textColorHint="#888888" />
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary" />
 
         <!-- Contraseña -->
         <EditText
@@ -71,8 +71,8 @@
             android:hint="Contraseña"
             android:inputType="textPassword"
             android:padding="5dp"
-            android:textColor="#333333"
-            android:textColorHint="#888888" />
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary" />
 
         <!-- Confirmar -->
         <EditText
@@ -85,8 +85,8 @@
             android:hint="Confirmar contraseña"
             android:inputType="textPassword"
             android:padding="5dp"
-            android:textColor="#333333"
-            android:textColorHint="#888888" />
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary" />
         <!-- Botón -->
         <Button
             android:id="@+id/btnCrear"

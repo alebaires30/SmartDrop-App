@@ -11,23 +11,23 @@
             android:orientation="horizontal" android:gravity="center_vertical">
             <TextView android:id="@+id/tvReporteTipo" android:layout_width="0dp" android:layout_weight="1"
                 android:layout_height="wrap_content" android:textStyle="bold" android:textSize="15sp"
-                android:textColor="#3D3D3D"/>
+                android:textColor="@color/text_primary"/>
             <TextView android:id="@+id/tvReporteEstado" android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:textStyle="bold" android:textSize="12sp"/>
         </LinearLayout>
 
         <TextView android:id="@+id/tvReporteDescripcion" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_marginTop="4dp" android:textSize="13sp" android:textColor="#6b6b6b"
+            android:layout_marginTop="4dp" android:textSize="13sp" android:textColor="@color/text_secondary"
             android:maxLines="2" android:ellipsize="end"/>
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="horizontal" android:layout_marginTop="6dp">
             <TextView android:id="@+id/tvReporteAutor" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:textSize="12sp" android:textColor="#623398" android:layout_marginEnd="10dp"/>
+                android:textSize="12sp" android:textColor="@color/brand_on_card" android:layout_marginEnd="10dp"/>
             <TextView android:id="@+id/tvReporteFecha" android:layout_width="0dp" android:layout_weight="1"
-                android:layout_height="wrap_content" android:textSize="12sp" android:textColor="#9A9A9A"/>
+                android:layout_height="wrap_content" android:textSize="12sp" android:textColor="@color/text_secondary"/>
             <TextView android:id="@+id/tvReporteAdjuntos" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:textSize="12sp" android:textColor="#9A9A9A"/>
+                android:textSize="12sp" android:textColor="@color/text_secondary"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

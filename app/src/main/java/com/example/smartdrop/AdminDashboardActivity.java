@@ -107,6 +107,15 @@ public class AdminDashboardActivity extends BaseActivity {
             });
         }
 
+        CardView cardReportesAdmin = findViewById(R.id.cardReportesAdmin);
+        if (cardReportesAdmin != null) {
+            cardReportesAdmin.setOnClickListener(v -> {
+                Intent intent = new Intent(AdminDashboardActivity.this, ComunidadActivity.class);
+                intent.putExtra("es_admin", true);
+                startActivity(intent);
+            });
+        }
+
         float alphaInicial = 0.5f;
         cardFlujo.setAlpha(alphaInicial);
         cardPresion.setAlpha(alphaInicial);
@@ -126,10 +135,16 @@ public class AdminDashboardActivity extends BaseActivity {
             int id = item.getItemId();
             if (id == R.id.drawer_admin_dashboard) {
                 drawerLayout.closeDrawer(GravityCompat.START);
+            } else if (id == R.id.drawer_admin_reportes) {
+                Intent intent = new Intent(AdminDashboardActivity.this, ComunidadActivity.class);
+                intent.putExtra("es_admin", true);
+                startActivity(intent);
             } else if (id == R.id.drawer_admin_graficas) {
                 startActivity(new Intent(AdminDashboardActivity.this, GraficasMonitoreoActivity.class));
+            } else if (id == R.id.drawer_admin_prediccion) {
+                startActivity(new Intent(AdminDashboardActivity.this, PrediccionSuministroActivity.class));
             } else if (id == R.id.drawer_admin_configuracion) {
-                Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(AdminDashboardActivity.this, ConfiguracionActivity.class));
             } else if (id == R.id.drawer_admin_cerrar_sesion) {
                 cerrarSesion();
             }
@@ -226,7 +241,7 @@ public class AdminDashboardActivity extends BaseActivity {
                 String estado = response.body().getEstadoActual();
                 boolean abierta = "abierta".equalsIgnoreCase(estado);
                 tvValvulaEstadoAdmin.setText(abierta ? "🟢 ABIERTA" : "🔴 CERRADA");
-                tvValvulaEstadoAdmin.setTextColor(abierta ? Color.parseColor("#27AE60") : Color.parseColor("#E74C3C"));
+                tvValvulaEstadoAdmin.setTextColor(ContextCompat.getColor(AdminDashboardActivity.this, abierta ? R.color.success : R.color.danger));
             }
             @Override
             public void onFailure(Call<ValvulaEstadoResponse> call, Throwable t) { }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -39,7 +40,8 @@ public class ValvulaLogsAdapter extends RecyclerView.Adapter<ValvulaLogsAdapter.
         String accion = log.getAccion() != null ? log.getAccion().toUpperCase() : "ACCIÓN";
         holder.tvAccion.setText(accion);
         boolean esAbrir = accion.contains("ABRIR") || accion.contains("OPEN");
-        holder.tvAccion.setTextColor(esAbrir ? Color.parseColor("#27AE60") : Color.parseColor("#E74C3C"));
+        holder.tvAccion.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),
+                esAbrir ? R.color.success : R.color.danger));
 
         // Etiqueta/Badge: {usuario} • {tipo_activacion}
         String usuario = (log.getUsuario() != null && !log.getUsuario().isEmpty()) ? log.getUsuario() : "Sistema";

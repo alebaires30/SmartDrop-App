@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -170,6 +171,12 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         lineChart.setPinchZoom(true);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.getXAxis().setGranularity(1f);
+
+        int colorTextoChart = ContextCompat.getColor(this, R.color.text_secondary);
+        lineChart.getXAxis().setTextColor(colorTextoChart);
+        lineChart.getAxisLeft().setTextColor(colorTextoChart);
+        lineChart.getAxisRight().setTextColor(colorTextoChart);
+        lineChart.getLegend().setTextColor(colorTextoChart);
     }
 
     private String[] calcularRangoFechas() {
@@ -244,8 +251,9 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         }
 
         LineDataSet setNormal = new LineDataSet(entradasNormales, tituloParametro(parametroActual));
-        setNormal.setColor(android.graphics.Color.parseColor("#7B2FBE"));
-        setNormal.setCircleColor(android.graphics.Color.parseColor("#7B2FBE"));
+        int colorNormal = ContextCompat.getColor(this, R.color.brand_accent);
+        setNormal.setColor(colorNormal);
+        setNormal.setCircleColor(colorNormal);
         setNormal.setLineWidth(2f);
         setNormal.setCircleRadius(3f);
         setNormal.setDrawValues(false);
@@ -253,8 +261,9 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         LineData lineData;
         if (!entradasAlerta.isEmpty()) {
             LineDataSet setAlerta = new LineDataSet(entradasAlerta, "Fuera de rango");
-            setAlerta.setColor(android.graphics.Color.parseColor("#C0392B"));
-            setAlerta.setCircleColor(android.graphics.Color.parseColor("#C0392B"));
+            int colorAlerta = ContextCompat.getColor(this, R.color.text_alert);
+            setAlerta.setColor(colorAlerta);
+            setAlerta.setCircleColor(colorAlerta);
             setAlerta.setLineWidth(0f);
             setAlerta.setCircleRadius(5f);
             setAlerta.setDrawValues(false);
@@ -283,9 +292,9 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         List<LineDataSet> conjuntos = new ArrayList<>();
         boolean hayAlerta = false;
 
-        hayAlerta |= agregarSerieComparativa(body.getFlujo(), "Flujo", "#3498DB", conjuntos);
-        hayAlerta |= agregarSerieComparativa(body.getPresion(), "Presión", "#E67E22", conjuntos);
-        hayAlerta |= agregarSerieComparativa(body.getNivel(), "Nivel", "#27AE60", conjuntos);
+        hayAlerta |= agregarSerieComparativa(body.getFlujo(), "Flujo", R.color.brand_blue, conjuntos);
+        hayAlerta |= agregarSerieComparativa(body.getPresion(), "Presión", R.color.status_orange, conjuntos);
+        hayAlerta |= agregarSerieComparativa(body.getNivel(), "Nivel", R.color.success, conjuntos);
 
         if (conjuntos.isEmpty()) {
             lineChart.clear();
@@ -311,7 +320,7 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         if (hayAlerta) tvAlertaRango.setText("⚠ Uno o más parámetros están fuera de rango");
     }
 
-    private boolean agregarSerieComparativa(ParametroData datoParametro, String nombre, String colorHex, List<LineDataSet> destino) {
+    private boolean agregarSerieComparativa(ParametroData datoParametro, String nombre, int colorRes, List<LineDataSet> destino) {
         if (datoParametro == null || datoParametro.getDatos() == null || datoParametro.getDatos().isEmpty()) return false;
 
         List<Entry> entradas = new ArrayList<>();
@@ -324,8 +333,9 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         }
 
         LineDataSet set = new LineDataSet(entradas, nombre);
-        set.setColor(android.graphics.Color.parseColor(colorHex));
-        set.setCircleColor(android.graphics.Color.parseColor(colorHex));
+        int colorLinea = ContextCompat.getColor(this, colorRes);
+        set.setColor(colorLinea);
+        set.setCircleColor(colorLinea);
         set.setLineWidth(2f);
         set.setCircleRadius(2.5f);
         set.setDrawValues(false);

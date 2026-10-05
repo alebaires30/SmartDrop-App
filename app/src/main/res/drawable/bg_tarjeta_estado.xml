@@ -4,22 +4,22 @@
 
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="#EDE8F7" />
+            <solid android:color="@color/bg_lavender_alt" />
             <corners android:radius="16dp" />
             <stroke
                 android:width="1dp"
-                android:color="#C0A8E8" />
+                android:color="@color/stroke_lavender" />
         </shape>
     </item>
 
 
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#FFFFFF" />
+            <solid android:color="@color/on_brand" />
             <corners android:radius="16dp" />
             <stroke
                 android:width="0.5dp"
-                android:color="#E0DFF0" />
+                android:color="@color/stroke_soft" />
         </shape>
     </item>
 

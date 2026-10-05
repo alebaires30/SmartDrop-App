@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F4F3FB">
+    android:background="@color/bg_app">
 
     <!-- Toolbar superior -->
     <androidx.appcompat.widget.Toolbar
@@ -14,7 +14,7 @@
         android:layout_height="56dp"
         android:background="@drawable/bg_toolbar"
         app:title="Control de Electroválvula"
-        app:titleTextColor="#FFFFFF" />
+        app:titleTextColor="@color/on_brand" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="3dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="@color/bg_card">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ESTADO DE LA VÁLVULA"
-                        android:textColor="#3D3D3D"
+                        android:textColor="@color/text_primary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="12dp"
-                        android:background="#F3F0FF"
+                        android:background="@color/bg_card_alt"
                         android:layout_marginTop="12dp"
                         android:visibility="gone">
 
@@ -80,7 +80,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Tiempo restante:"
                                 android:textStyle="bold"
-                                android:textColor="#333333"/>
+                                android:textColor="@color/text_primary"/>
 
                             <TextView
                                 android:id="@+id/tvTiempoRestanteAdmin"
@@ -88,7 +88,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="0s"
                                 android:textStyle="bold"
-                                android:textColor="#7B2FBE"/>
+                                android:textColor="@color/brand_accent"/>
                         </LinearLayout>
 
                         <Button
@@ -98,7 +98,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="CANCELAR / CERRAR"
-                            android:textColor="#D32F2F"
+                            android:textColor="@color/danger"
                             android:textSize="12sp"
                             android:visibility="gone" />
                     </LinearLayout>
@@ -109,7 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="ℹ️ El control manual y registro de la válvula están reservados para administradores."
-                        android:textColor="#C0392B"
+                        android:textColor="@color/text_alert"
                         android:gravity="center"
                         android:padding="12dp"
                         android:visibility="gone"
@@ -127,7 +127,7 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="3dp"
-                app:cardBackgroundColor="#FFFFFF"
+                app:cardBackgroundColor="@color/bg_card"
                 android:visibility="gone">
 
                 <LinearLayout
@@ -141,7 +141,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="PANEL DE CONTROL (ADMIN)"
-                        android:textColor="#3D3D3D"
+                        android:textColor="@color/text_primary"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="12dp" />
@@ -159,7 +159,7 @@
                             android:layout_weight="1"
                             android:layout_marginEnd="4dp"
                             android:text="ABRIR"
-                            android:backgroundTint="#27AE60" />
+                            android:backgroundTint="@color/success" />
 
                         <Button
                             android:id="@+id/btnCerrarValvula"
@@ -168,7 +168,7 @@
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
                             android:text="CERRAR"
-                            android:backgroundTint="#E74C3C" />
+                            android:backgroundTint="@color/danger" />
                     </LinearLayout>
 
                     <TextView
@@ -176,7 +176,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="TEMPORIZADOR DE APERTURA"
-                        android:textColor="#7B2FBE"
+                        android:textColor="@color/brand_accent"
                         android:textSize="11sp"
                         android:textStyle="bold" />
 
@@ -244,7 +244,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="3dp"
-                app:cardBackgroundColor="#FFFFFF"
+                app:cardBackgroundColor="@color/bg_card"
                 android:visibility="gone">
 
                 <LinearLayout
@@ -257,7 +257,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="HISTORIAL DE MOVIMIENTOS"
-                        android:textColor="#3D3D3D"
+                        android:textColor="@color/text_primary"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="12dp" />
@@ -267,8 +267,8 @@
                         android:id="@+id/tvAdvertenciaLogs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#FFF3CD"
-                        android:textColor="#856404"
+                        android:background="@color/bg_warning"
+                        android:textColor="@color/warning_text"
                         android:padding="8dp"
                         android:textSize="12sp"
                         android:layout_marginBottom="8dp"
@@ -281,7 +281,7 @@
                         android:layout_height="120dp"
                         android:gravity="center"
                         android:text="No hay movimientos registrados"
-                        android:textColor="#888888"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp"
                         android:visibility="gone" />
 

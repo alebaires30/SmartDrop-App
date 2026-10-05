@@ -8,10 +8,10 @@
         android:orientation="vertical" android:background="@drawable/fondo_redondeado"
         android:padding="10dp" android:maxWidth="300dp">
         <TextView android:id="@+id/tvChatAutor" android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textSize="11sp" android:textColor="#623398" android:textStyle="bold"/>
+            android:textSize="11sp" android:textColor="@color/brand_on_card" android:textStyle="bold"/>
         <TextView android:id="@+id/tvChatTexto" android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textSize="14sp" android:textColor="#3D3D3D"/>
+            android:textSize="14sp" android:textColor="@color/text_primary"/>
         <TextView android:id="@+id/tvChatFecha" android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textSize="10sp" android:textColor="#9A9A9A"/>
+            android:textSize="10sp" android:textColor="@color/text_secondary"/>
     </LinearLayout>
 </LinearLayout>

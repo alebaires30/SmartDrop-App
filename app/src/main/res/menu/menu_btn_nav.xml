@@ -19,6 +19,10 @@
             android:title="Historial de reportes" />
 
         <item
+            android:id="@+id/drawer_perfil"
+            android:title="Mi Perfil" />
+
+        <item
             android:id="@+id/drawer_cerrar_sesion"
             android:title="Cerrar sesión" />
 

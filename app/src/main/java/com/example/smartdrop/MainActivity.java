@@ -65,6 +65,8 @@ public class MainActivity extends BaseActivity {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("access_token", body.getAccess());
                     editor.putString("nombre", body.getNombre());
+                    editor.putString("email", correoVal);
+                    editor.putString("nombre_rol", body.getNombreRol() != null ? body.getNombreRol() : (body.getIdRol() == 2 ? "Administrador" : "Usuario Estándar"));
                     editor.putInt("id_rol", body.getIdRol());
                     editor.putInt("id_usuario", body.getIdUsuario());
                     editor.apply();

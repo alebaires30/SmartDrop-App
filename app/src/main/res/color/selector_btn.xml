@@ -3,9 +3,9 @@
 
         <item
             android:state_checked="true"
-            android:color="#7B2FBE" />
+            android:color="@color/brand_accent" />
 
         <item
-            android:color="#9E9EBE" />
+            android:color="@color/text_muted" />
 
 </selector>

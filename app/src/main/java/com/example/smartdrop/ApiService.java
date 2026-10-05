@@ -66,6 +66,13 @@ public interface ApiService {
     @GET("api/valvula/{id}/logs/")
     Call<ValvulaLogsResponse> obtenerLogsValvula(@Path("id") int idValvula);
 
+    // ── Predicción de suministro (admin) ──
+    @GET("v1/ml/zones/summary/")
+    Call<ZonasSummaryResponse> obtenerResumenZonas();
+
+    @GET("v1/ml/zones/{id}/current-status/")
+    Call<ZonaEstadoResponse> obtenerEstadoZona(@Path("id") int zoneId);
+
     // ── Sistema de reportes ──
     @GET("api/reportes/catalogo/")
     Call<ReporteCatalogoResponse> obtenerCatalogoReportes();

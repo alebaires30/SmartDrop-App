@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F4F3FB">
+    android:background="@color/bg_app">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#623398">
+        android:background="@color/brand_primary">
 
         <ImageButton
             android:id="@+id/btnVolver"
@@ -20,7 +20,7 @@
 
         <TextView
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="Consumo" android:textColor="#FFFFFF" android:textStyle="bold"
+            android:text="Consumo" android:textColor="@color/on_brand" android:textStyle="bold"
             android:textSize="20sp" android:layout_centerInParent="true"/>
     </RelativeLayout>
 
@@ -33,15 +33,15 @@
 
                 <TextView android:id="@+id/tabDia" android:layout_width="0dp" android:layout_height="wrap_content"
                     android:layout_weight="1" android:text="Día" android:gravity="center"
-                    android:textSize="16sp" android:padding="10dp" android:textColor="#623398" android:textStyle="bold" />
+                    android:textSize="16sp" android:padding="10dp" android:textColor="@color/brand_on_card" android:textStyle="bold" />
 
                 <TextView android:id="@+id/tabSemana" android:layout_width="0dp" android:layout_height="wrap_content"
                     android:layout_weight="1" android:text="Semana" android:gravity="center"
-                    android:textSize="16sp" android:padding="10dp" android:textColor="#9A9A9A" />
+                    android:textSize="16sp" android:padding="10dp" android:textColor="@color/text_secondary" />
 
                 <TextView android:id="@+id/tabMes" android:layout_width="0dp" android:layout_height="wrap_content"
                     android:layout_weight="1" android:text="Mes" android:gravity="center"
-                    android:textSize="16sp" android:padding="10dp" android:textColor="#9A9A9A" />
+                    android:textSize="16sp" android:padding="10dp" android:textColor="@color/text_secondary" />
             </LinearLayout>
 
             <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
 
                     <TextView android:id="@+id/tvConsumoTotal" android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:gravity="center" android:textStyle="bold" android:textSize="26sp"
-                        android:textColor="#3D3D3D" android:text="0L" android:layout_marginBottom="12dp"/>
+                        android:textColor="@color/text_primary" android:text="0L" android:layout_marginBottom="12dp"/>
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/lineChartConsumo"
@@ -81,7 +81,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavConsumo" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:background="@android:color/white" app:menu="@menu/menu_consumo"
+        android:background="@color/nav_bar" app:menu="@menu/menu_consumo"
         app:itemIconTint="@color/bottom_nav_selector" app:itemTextColor="@color/bottom_nav_selector"
         app:labelVisibilityMode="labeled"/>
 </LinearLayout>

@@ -7,12 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".CalidadActivity"
     android:orientation="vertical"
-    android:background="#F4F3FB">
+    android:background="@color/bg_app">
     
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#623398">
+        android:background="@color/brand_primary">
 
         <ImageButton
             android:id="@+id/btnVolver"
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Calidad del agua"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/on_brand"
             android:textStyle="bold"
             android:textSize="20sp"
             android:layout_centerInParent="true"/>
@@ -90,7 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="★★★★★"
-                        android:textColor="#F0D64B"
+                        android:textColor="@color/star_yellow"
                         android:textSize="42sp"
                         android:layout_marginTop="10dp"/>
 
@@ -144,7 +144,7 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="@color/nav_bar"
         app:itemIconTint="@color/bottom_nav_selector"
         app:itemTextColor="@color/bottom_nav_selector"
         app:labelVisibilityMode="labeled"

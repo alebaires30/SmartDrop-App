@@ -6,8 +6,16 @@
         android:title="Dashboard" />
 
     <item
+        android:id="@+id/drawer_admin_reportes"
+        android:title="Problemas reportados" />
+
+    <item
         android:id="@+id/drawer_admin_graficas"
         android:title="Gráficas y Monitoreo" />
+
+    <item
+        android:id="@+id/drawer_admin_prediccion"
+        android:title="Predicción de suministro" />
 
     <item
         android:id="@+id/drawer_admin_configuracion"

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -105,7 +106,7 @@ public class ReportarProblemaActivity extends BaseActivity {
             TextView chip = new TextView(this);
             chip.setText(tipo.getLabel());
             chip.setPadding(28, 16, 28, 16);
-            chip.setTextColor(0xFF3D3D3D);
+            chip.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
             chip.setBackgroundResource(R.drawable.fondo_redondeado);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);

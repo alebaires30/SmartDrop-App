@@ -99,6 +99,11 @@ public class InicioActivity extends BaseActivity {
 
         btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
+        ImageButton btnPerfil = findViewById(R.id.btnPerfil);
+        if (btnPerfil != null) {
+            btnPerfil.setOnClickListener(v -> startActivity(new Intent(InicioActivity.this, PerfilActivity.class)));
+        }
+
         ImageButton btnSearchInicio = findViewById(R.id.btnSearchInicio);
         if (btnSearchInicio != null) {
             btnSearchInicio.setOnClickListener(v -> startActivity(new Intent(InicioActivity.this, BusquedaActivity.class)));
@@ -108,6 +113,8 @@ public class InicioActivity extends BaseActivity {
             int id = item.getItemId();
             if (id == R.id.drawer_cerrar_sesion) {
                 cerrarSesion();
+            } else if (id == R.id.drawer_perfil) {
+                startActivity(new Intent(this, PerfilActivity.class));
             } else if (id == R.id.drawer_reportar) {
                 startActivity(new Intent(this, ReportarProblemaActivity.class));
             } else if (id == R.id.drawer_historial) {
@@ -174,20 +181,20 @@ public class InicioActivity extends BaseActivity {
 
                 if (r.getResumenGeneral() != null) {
                     tvResumenGeneral.setText(ColorSeveridad.iconoDe(r.getResumenGeneral().getColor()) + " " + r.getResumenGeneral().getMensaje());
-                    tvResumenGeneral.setTextColor(ColorSeveridad.colorDe(r.getResumenGeneral().getColor()));
+                    tvResumenGeneral.setTextColor(ColorSeveridad.colorDe(InicioActivity.this, r.getResumenGeneral().getColor()));
                 }
 
                 if (r.getPresion() != null) {
                     tvPresionValor.setText(ColorSeveridad.iconoDe(r.getPresion().getColor()) + " " + r.getPresion().getEstado());
-                    tvPresionValor.setTextColor(ColorSeveridad.colorDe(r.getPresion().getColor()));
+                    tvPresionValor.setTextColor(ColorSeveridad.colorDe(InicioActivity.this, r.getPresion().getColor()));
                 }
                 if (r.getCalidad() != null) {
                     tvCalidadValor.setText(ColorSeveridad.iconoDe(r.getCalidad().getColor()) + " " + r.getCalidad().getEstado());
-                    tvCalidadValor.setTextColor(ColorSeveridad.colorDe(r.getCalidad().getColor()));
+                    tvCalidadValor.setTextColor(ColorSeveridad.colorDe(InicioActivity.this, r.getCalidad().getColor()));
                 }
                 if (r.getNivel() != null) {
                     tvNivelPorcentaje.setText(String.format(Locale.getDefault(), "%.0f %%", r.getNivel().getPorcentaje()));
-                    tvNivelPorcentaje.setTextColor(ColorSeveridad.colorDe(r.getNivel().getColor()));
+                    tvNivelPorcentaje.setTextColor(ColorSeveridad.colorDe(InicioActivity.this, r.getNivel().getColor()));
                     tvNivelLitros.setText(String.format(Locale.getDefault(), "%.0fL disponibles", r.getNivel().getLitrosDisponibles()));
                 }
                 if (r.getConsumo() != null) {
@@ -224,7 +231,7 @@ public class InicioActivity extends BaseActivity {
                     boolean abierta = "abierta".equalsIgnoreCase(estado);
                     if (tvValvulaEstadoInicio != null) {
                         tvValvulaEstadoInicio.setText(abierta ? "🟢 Con Suministro / ABIERTA" : "🔴 Sin Suministro / CERRADA");
-                        tvValvulaEstadoInicio.setTextColor(abierta ? Color.parseColor("#27AE60") : Color.parseColor("#E74C3C"));
+                        tvValvulaEstadoInicio.setTextColor(ContextCompat.getColor(InicioActivity.this, abierta ? R.color.success : R.color.danger));
                     }
                     if (tvValvulaActualizacionInicio != null) {
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
