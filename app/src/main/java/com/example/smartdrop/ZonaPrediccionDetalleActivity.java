@@ -11,6 +11,15 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -19,7 +28,8 @@ import retrofit2.Response;
 
 /**
  * Detalle de predicción de suministro de una zona (solo admin).
- * Muestra el estado actual y la última predicción de desabasto.
+ * Muestra el estado actual, la última predicción de desabasto y las gráficas del nivel proyectado
+ * del tanque y del consumo por hora (igual que la web).
  */
 public class ZonaPrediccionDetalleActivity extends BaseActivity {
 
@@ -28,6 +38,10 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
     private TextView tvHoras, tvProbabilidad, tvRiesgo, tvRango, tvGenerada;
     private ProgressBar progresoNivel;
     private View cardPrediccion, tvSinPrediccion;
+    private LineChart chartTrayectoria, chartConsumo;
+    private ProgressBar progresoTrayectoria, progresoConsumo;
+    private TextView tvSubConsumo;
+    private ApiService api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +72,118 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
         tvRango = findViewById(R.id.tvRangoHoras);
         tvGenerada = findViewById(R.id.tvGenerada);
 
+        chartTrayectoria = findViewById(R.id.chartTrayectoria);
+        chartConsumo = findViewById(R.id.chartConsumo);
+        progresoTrayectoria = findViewById(R.id.progresoTrayectoria);
+        progresoConsumo = findViewById(R.id.progresoConsumo);
+        tvSubConsumo = findViewById(R.id.tvSubConsumo);
+        GraficaUtil.estilo(chartTrayectoria, this);
+        GraficaUtil.estilo(chartConsumo, this);
+        chartConsumo.getLegend().setEnabled(false);
+
         if (zoneName != null) tvTitulo.setText(zoneName);
 
+        api = ApiClient.getClientAutenticado(this).create(ApiService.class);
         cargarEstado();
+        cargarTrayectoria();
+        cargarConsumo();
+    }
+
+    private void cargarTrayectoria() {
+        api.obtenerTrayectoriaTanque(zoneId).enqueue(new Callback<TrayectoriaTanqueResponse>() {
+            @Override
+            public void onResponse(Call<TrayectoriaTanqueResponse> call, Response<TrayectoriaTanqueResponse> response) {
+                progresoTrayectoria.setVisibility(View.GONE);
+                List<TrayectoriaTanqueResponse.Punto> puntos = response.isSuccessful() && response.body() != null
+                        ? response.body().getTrayectoria() : null;
+                if (puntos == null || puntos.isEmpty()) {
+                    chartTrayectoria.setNoDataText("Aún no hay proyección. Realiza las predicciones.");
+                    chartTrayectoria.clear();
+                    return;
+                }
+                List<Entry> esperado = new ArrayList<>(), minimo = new ArrayList<>(), maximo = new ArrayList<>();
+                List<String> etiquetas = new ArrayList<>();
+                for (int i = 0; i < puntos.size(); i++) {
+                    TrayectoriaTanqueResponse.Punto p = puntos.get(i);
+                    esperado.add(new Entry(i, (float) p.getEsperado()));
+                    minimo.add(new Entry(i, (float) p.getMinimo()));
+                    maximo.add(new Entry(i, (float) p.getMaximo()));
+                    etiquetas.add(hora(p.getFecha()));
+                }
+                int morado = ContextCompat.getColor(ZonaPrediccionDetalleActivity.this, R.color.brand_accent);
+                int suave = ContextCompat.getColor(ZonaPrediccionDetalleActivity.this, R.color.brand_soft);
+                LineDataSet setEsperado = GraficaUtil.linea(esperado, "Nivel esperado", morado, true);
+                LineDataSet setMaximo = GraficaUtil.lineaPunteada(maximo, "Máximo", suave);
+                LineDataSet setMinimo = GraficaUtil.lineaPunteada(minimo, "Mínimo", suave);
+                GraficaUtil.etiquetas(chartTrayectoria, etiquetas);
+                chartTrayectoria.getAxisLeft().setAxisMinimum(0f);
+                chartTrayectoria.setData(new LineData(setMaximo, setEsperado, setMinimo));
+                chartTrayectoria.invalidate();
+            }
+
+            @Override
+            public void onFailure(Call<TrayectoriaTanqueResponse> call, Throwable t) {
+                progresoTrayectoria.setVisibility(View.GONE);
+                chartTrayectoria.setNoDataText("Sin conexión con el servidor");
+                chartTrayectoria.invalidate();
+            }
+        });
+    }
+
+    private void cargarConsumo() {
+        api.obtenerHistorialConsumo(zoneId).enqueue(new Callback<HistorialConsumoResponse>() {
+            @Override
+            public void onResponse(Call<HistorialConsumoResponse> call, Response<HistorialConsumoResponse> response) {
+                progresoConsumo.setVisibility(View.GONE);
+                HistorialConsumoResponse datos = response.isSuccessful() ? response.body() : null;
+                List<HistorialConsumoResponse.Hora> horas = datos == null ? null : datos.getHistorial();
+                if (horas == null || horas.isEmpty()) {
+                    chartConsumo.setNoDataText("Sin consumo registrado todavía");
+                    chartConsumo.clear();
+                    return;
+                }
+                List<Entry> entradas = new ArrayList<>();
+                List<String> etiquetas = new ArrayList<>();
+                double total = 0;
+                for (int i = 0; i < horas.size(); i++) {
+                    entradas.add(new Entry(i, (float) horas.get(i).getLitros()));
+                    etiquetas.add(hora(horas.get(i).getFecha()));
+                    total += horas.get(i).getLitros();
+                }
+                int azul = ContextCompat.getColor(ZonaPrediccionDetalleActivity.this, R.color.brand_blue);
+                GraficaUtil.etiquetas(chartConsumo, etiquetas);
+                chartConsumo.getAxisLeft().setAxisMinimum(0f);
+                chartConsumo.setData(new LineData(GraficaUtil.linea(entradas, "Consumo (L)", azul, true)));
+                chartConsumo.invalidate();
+
+                String texto = String.format(Locale.getDefault(), "Total: %.1f L en las últimas %d h", total, horas.size());
+                HistorialConsumoResponse.Pronostico p = datos.getPronostico();
+                if (p != null) {
+                    texto += String.format(Locale.getDefault(),
+                            " · próxima hora ≈ %.2f L (entre %.2f y %.2f)", p.getEsperado(), p.getMinimo(), p.getMaximo());
+                }
+                tvSubConsumo.setText(texto);
+            }
+
+            @Override
+            public void onFailure(Call<HistorialConsumoResponse> call, Throwable t) {
+                progresoConsumo.setVisibility(View.GONE);
+                chartConsumo.setNoDataText("Sin conexión con el servidor");
+                chartConsumo.invalidate();
+            }
+        });
+    }
+
+    /** Hora local corta para el eje X ("14:00"; con día si no es hoy: "07/10 14:00"). */
+    private static String hora(String iso) {
+        Date fecha = PrediccionFugasActivity.parseFecha(iso);
+        if (fecha == null) return "";
+        SimpleDateFormat dia = new SimpleDateFormat("yyyyMMdd", Locale.US);
+        boolean hoy = dia.format(fecha).equals(dia.format(new Date()));
+        return new SimpleDateFormat(hoy ? "HH:mm" : "dd/MM HH:mm", Locale.getDefault()).format(fecha);
     }
 
     private void cargarEstado() {
-        ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
         api.obtenerEstadoZona(zoneId).enqueue(new Callback<ZonaEstadoResponse>() {
             @Override
             public void onResponse(Call<ZonaEstadoResponse> call, Response<ZonaEstadoResponse> response) {
@@ -102,7 +221,7 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
         }
 
         ShortagePrediction p = e.getUltimaPrediccionDesabasto();
-        if (p == null || p.getMedianHoursToShortage() == null) {
+        if (p == null) {
             cardPrediccion.setVisibility(View.GONE);
             tvSinPrediccion.setVisibility(View.VISIBLE);
             return;
@@ -110,6 +229,22 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
 
         cardPrediccion.setVisibility(View.VISIBLE);
         tvSinPrediccion.setVisibility(View.GONE);
+        pintarRiesgo(p);
+        if (p.getGeneratedAt() != null) {
+            String generada = PrediccionFugasActivity.fechaCorta(p.getGeneratedAt());
+            tvGenerada.setText(generada.isEmpty() ? "" : "Actualizada: " + generada);
+        }
+
+        int horizonte = p.getHorizonteHoras() != null ? p.getHorizonteHoras() : 72;
+        if (p.getMedianHoursToShortage() == null) {
+            // Riesgo bajo: el tanque no llega al nivel crítico dentro del horizonte.
+            tvHoras.setText("Sin desabasto previsto");
+            tvRango.setText(String.format(Locale.getDefault(),
+                    "El tanque se mantiene sobre el nivel crítico en las próximas %d h.", horizonte));
+            tvProbabilidad.setText(p.getProbabilidadDesabastoHorizonte() == null ? "" : String.format(Locale.getDefault(),
+                    "Probabilidad de quedarse sin agua: %.0f%%", p.getProbabilidadDesabastoHorizonte() * 100));
+            return;
+        }
 
         double horas = p.getMedianHoursToShortage();
         int dias = (int) (horas / 24);
@@ -131,6 +266,9 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
                     p.getProbabilidadDesabastoHorizonte() * 100));
         }
 
+    }
+
+    private void pintarRiesgo(ShortagePrediction p) {
         String riesgo = p.getNivelRiesgo() == null ? "sin_datos" : p.getNivelRiesgo();
         switch (riesgo) {
             case "critico":
@@ -141,6 +279,7 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
                 tvRiesgo.setText("Nivel de riesgo: ALTO");
                 tvRiesgo.setTextColor(ContextCompat.getColor(this, R.color.status_orange));
                 break;
+            case "medio":
             case "moderado":
                 tvRiesgo.setText("Nivel de riesgo: MODERADO");
                 tvRiesgo.setTextColor(ContextCompat.getColor(this, R.color.status_yellow));
@@ -151,9 +290,5 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
                 break;
         }
 
-        if (p.getGeneratedAt() != null) {
-            tvGenerada.setText("Actualizada: " + p.getGeneratedAt().replace('T', ' ').substring(0,
-                    Math.min(16, p.getGeneratedAt().length())));
-        }
     }
 }

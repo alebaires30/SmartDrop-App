@@ -40,14 +40,15 @@ public class GraficasMonitoreoActivity extends BaseActivity {
     private final BroadcastReceiver realtimeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            cargarDatos();
+            cargarDatos(false);
         }
     };
 
     private TabLayout tabParametros;
     private ChipGroup chipGroupPeriodo;
     private CardView cardAlertaRango;
-    private TextView tvAlertaRango, tvTituloGrafica, tvUltimaActualizacion;
+    private TextView tvAlertaRango, tvTituloGrafica, tvUltimaActualizacion, tvResumenGrafica;
+    private android.view.View layoutCargando;
     private LineChart lineChart;
     private SwitchMaterial switchComparar;
     private ImageButton btnBack;
@@ -57,13 +58,19 @@ public class GraficasMonitoreoActivity extends BaseActivity {
     private final android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
     private Runnable tareaPolling;
     private boolean cargaEnProgreso = false;
+    private boolean recargaPendiente = false;
+    /** Muestra "Recopilando datos…" si la consulta tarda más de este tiempo (rangos con muchas lecturas). */
+    private static final long RETRASO_CARGANDO_MS = 300;
+    private final Runnable mostrarCargando = () -> layoutCargando.setVisibility(android.view.View.VISIBLE);
 
     private static final SimpleDateFormat FORMATO_API;
     private static final SimpleDateFormat FORMATO_HORA;
+    private static final SimpleDateFormat FORMATO_DIA;
     static {
         FORMATO_API = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         FORMATO_API.setTimeZone(TimeZone.getTimeZone("UTC"));
         FORMATO_HORA = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        FORMATO_DIA = new SimpleDateFormat("dd/MM", Locale.getDefault());
     }
 
     @Override
@@ -80,6 +87,8 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         tvUltimaActualizacion = findViewById(R.id.tvUltimaActualizacion);
         lineChart             = findViewById(R.id.lineChart);
         switchComparar        = findViewById(R.id.switchComparar);
+        tvResumenGrafica      = findViewById(R.id.tvResumenGrafica);
+        layoutCargando        = findViewById(R.id.layoutCargando);
 
         btnBack.setOnClickListener(v -> finish());
 
@@ -91,7 +100,7 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         configurarChart();
 
         tareaPolling = () -> {
-            cargarDatos();
+            cargarDatos(false);
             handler.postDelayed(tareaPolling, intervaloSegunPeriodo());
         };
         registerReceiver(realtimeReceiver,
@@ -143,7 +152,7 @@ public class GraficasMonitoreoActivity extends BaseActivity {
                     case 1: parametroActual = "presion"; break;
                     case 2: parametroActual = "nivel"; break;
                 }
-                if (!switchComparar.isChecked()) cargarDatos();
+                if (!switchComparar.isChecked()) cargarDatos(true);
             }
             @Override public void onTabUnselected(TabLayout.Tab tab) {}
             @Override public void onTabReselected(TabLayout.Tab tab) {}
@@ -154,29 +163,19 @@ public class GraficasMonitoreoActivity extends BaseActivity {
             if (checkedId == R.id.chipHoy) periodoActual = "hoy";
             else if (checkedId == R.id.chipSemana) periodoActual = "semana";
             else if (checkedId == R.id.chipMes) periodoActual = "mes";
-            cargarDatos();
+            cargarDatos(true);
         });
 
         // Escenario 4: modo comparativo
         switchComparar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             tabParametros.setVisibility(isChecked ? android.view.View.GONE : android.view.View.VISIBLE);
-            cargarDatos();
+            cargarDatos(true);
         });
     }
 
     private void configurarChart() {
-        lineChart.getDescription().setEnabled(false);
-        lineChart.setDrawGridBackground(false);
-        lineChart.setTouchEnabled(true);
-        lineChart.setPinchZoom(true);
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        lineChart.getXAxis().setGranularity(1f);
-
-        int colorTextoChart = ContextCompat.getColor(this, R.color.text_secondary);
-        lineChart.getXAxis().setTextColor(colorTextoChart);
-        lineChart.getAxisLeft().setTextColor(colorTextoChart);
-        lineChart.getAxisRight().setTextColor(colorTextoChart);
-        lineChart.getLegend().setTextColor(colorTextoChart);
+        GraficaUtil.estilo(lineChart, this);
+        lineChart.setNoDataText("Cargando…");
     }
 
     private String[] calcularRangoFechas() {
@@ -194,9 +193,18 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         return new String[]{ FORMATO_API.format(desde.getTime()), FORMATO_API.format(hasta.getTime()) };
     }
 
-    private void cargarDatos() {
-        if (cargaEnProgreso) return;
+    /** @param visible true cuando el usuario cambió algo (muestra la pantalla de carga si tarda). */
+    private void cargarDatos(boolean visible) {
+        if (cargaEnProgreso) {
+            // Un cambio del usuario durante una consulta en curso se aplica al terminar ésta.
+            if (visible) recargaPendiente = true;
+            return;
+        }
         cargaEnProgreso = true;
+        if (visible || lineChart.getData() == null) {
+            handler.removeCallbacks(mostrarCargando);
+            handler.postDelayed(mostrarCargando, RETRASO_CARGANDO_MS);
+        }
 
         String[] rango = calcularRangoFechas();
         String parametros = switchComparar.isChecked() ? "flujo,presion,nivel" : parametroActual;
@@ -205,7 +213,12 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         api.obtenerGraficas(parametros, rango[0], rango[1]).enqueue(new Callback<GraficasResponse>() {
             @Override
             public void onResponse(@NonNull Call<GraficasResponse> call, @NonNull Response<GraficasResponse> response) {
-                cargaEnProgreso = false;
+                terminarCarga();
+                if (recargaPendiente) {
+                    recargaPendiente = false;
+                    cargarDatos(true);
+                    return;
+                }
                 if (response.isSuccessful() && response.body() != null) {
                     if (switchComparar.isChecked()) pintarComparativo(response.body());
                     else pintarIndividual(response.body());
@@ -215,10 +228,16 @@ public class GraficasMonitoreoActivity extends BaseActivity {
             }
             @Override
             public void onFailure(@NonNull Call<GraficasResponse> call, @NonNull Throwable t) {
-                cargaEnProgreso = false;
+                terminarCarga();
                 Toast.makeText(GraficasMonitoreoActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void terminarCarga() {
+        cargaEnProgreso = false;
+        handler.removeCallbacks(mostrarCargando);
+        layoutCargando.setVisibility(android.view.View.GONE);
     }
 
     //  Escenario 1 y 3
@@ -230,6 +249,7 @@ public class GraficasMonitoreoActivity extends BaseActivity {
             lineChart.invalidate();
             tvTituloGrafica.setText(tituloParametro(parametroActual) + " — sin datos en este período");
             tvUltimaActualizacion.setText("Sin lecturas registradas");
+            tvResumenGrafica.setVisibility(android.view.View.GONE);
             cardAlertaRango.setVisibility(android.view.View.GONE);
             return;
         }
@@ -239,24 +259,23 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         List<Entry> entradasAlerta = new ArrayList<>();
         List<String> etiquetasHora = new ArrayList<>();
         boolean hayAlerta = false;
+        double suma = 0, minimo = Double.MAX_VALUE, maximo = -Double.MAX_VALUE;
 
         for (int i = 0; i < datos.size(); i++) {
             SerieDato d = datos.get(i);
             entradasNormales.add(new Entry(i, (float) d.getValor()));
-            etiquetasHora.add(formatearHora(d.getFecha()));
+            etiquetasHora.add(formatearEtiqueta(d.getFecha()));
+            suma += d.getValor();
+            minimo = Math.min(minimo, d.getValor());
+            maximo = Math.max(maximo, d.getValor());
             if (d.isFueraDeRango()) {
                 entradasAlerta.add(new Entry(i, (float) d.getValor()));
                 hayAlerta = true;
             }
         }
 
-        LineDataSet setNormal = new LineDataSet(entradasNormales, tituloParametro(parametroActual));
         int colorNormal = ContextCompat.getColor(this, R.color.brand_accent);
-        setNormal.setColor(colorNormal);
-        setNormal.setCircleColor(colorNormal);
-        setNormal.setLineWidth(2f);
-        setNormal.setCircleRadius(3f);
-        setNormal.setDrawValues(false);
+        LineDataSet setNormal = GraficaUtil.linea(entradasNormales, tituloParametro(parametroActual), colorNormal, true);
 
         LineData lineData;
         if (!entradasAlerta.isEmpty()) {
@@ -264,8 +283,10 @@ public class GraficasMonitoreoActivity extends BaseActivity {
             int colorAlerta = ContextCompat.getColor(this, R.color.text_alert);
             setAlerta.setColor(colorAlerta);
             setAlerta.setCircleColor(colorAlerta);
+            setAlerta.setDrawCircleHole(false);
             setAlerta.setLineWidth(0f);
-            setAlerta.setCircleRadius(5f);
+            setAlerta.enableDashedLine(0f, 1f, 0f);
+            setAlerta.setCircleRadius(3f);
             setAlerta.setDrawValues(false);
             lineData = new LineData(setNormal, setAlerta);
         } else {
@@ -273,11 +294,20 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         }
 
         lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(etiquetasHora));
+        lineChart.getXAxis().setDrawLabels(true);
+        lineChart.getLegend().setEnabled(!entradasAlerta.isEmpty());
         lineChart.setData(lineData);
         lineChart.invalidate();
 
-        tvTituloGrafica.setText(tituloParametro(parametroActual) + " (" + datoParametro.getUnidad() + ")");
-        tvUltimaActualizacion.setText("Última lectura: " + formatearHora(datos.get(datos.size() - 1).getFecha()));
+        String unidad = datoParametro.getUnidad() == null ? "" : datoParametro.getUnidad();
+        tvTituloGrafica.setText(tituloParametro(parametroActual) + (unidad.isEmpty() ? "" : " (" + unidad + ")"));
+        double actual = datos.get(datos.size() - 1).getValor();
+        tvResumenGrafica.setText(String.format(Locale.getDefault(),
+                "Actual %s  ·  Promedio %s  ·  Mín %s  ·  Máx %s",
+                numero(actual), numero(suma / datos.size()), numero(minimo), numero(maximo)));
+        tvResumenGrafica.setVisibility(android.view.View.VISIBLE);
+        String ultima = "Última lectura: " + formatearHora(datos.get(datos.size() - 1).getFecha());
+        tvUltimaActualizacion.setText(AvisosFuga.esAdminConSesion(this) ? "Promedio de todas las viviendas · " + ultima : ultima);
 
         if (hayAlerta) {
             cardAlertaRango.setVisibility(android.view.View.VISIBLE);
@@ -309,6 +339,9 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         // no para leer un valor exacto simultáneo entre parámetros.
         LineData lineData = new LineData(new ArrayList<>(conjuntos));
         lineChart.getXAxis().setValueFormatter(null);
+        lineChart.getXAxis().setDrawLabels(false);
+        tvResumenGrafica.setText("Cada línea muestra la tendencia de su parámetro en el período elegido.");
+        tvResumenGrafica.setVisibility(android.view.View.VISIBLE);
         lineChart.setData(lineData);
         lineChart.getLegend().setEnabled(true);
         lineChart.invalidate();
@@ -332,13 +365,7 @@ public class GraficasMonitoreoActivity extends BaseActivity {
             if (datos.get(i).isFueraDeRango()) hayAlerta = true;
         }
 
-        LineDataSet set = new LineDataSet(entradas, nombre);
-        int colorLinea = ContextCompat.getColor(this, colorRes);
-        set.setColor(colorLinea);
-        set.setCircleColor(colorLinea);
-        set.setLineWidth(2f);
-        set.setCircleRadius(2.5f);
-        set.setDrawValues(false);
+        LineDataSet set = GraficaUtil.linea(entradas, nombre, ContextCompat.getColor(this, colorRes), false);
         destino.add(set);
 
         return hayAlerta;
@@ -358,6 +385,21 @@ public class GraficasMonitoreoActivity extends BaseActivity {
             case "nivel":   return "Nivel de tanque";
             default:        return "Flujo de agua";
         }
+    }
+
+    /** Hora ("14:30") para "Hoy"; día ("06/10") para semana y mes. */
+    private String formatearEtiqueta(String fechaIso) {
+        if (periodoActual.equals("hoy")) return formatearHora(fechaIso);
+        try {
+            java.util.Date fecha = FORMATO_API.parse(fechaIso.length() > 19 ? fechaIso.substring(0, 19) : fechaIso);
+            return FORMATO_DIA.format(fecha);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    private static String numero(double valor) {
+        return String.format(Locale.getDefault(), Math.abs(valor) < 10 ? "%.2f" : "%.1f", valor);
     }
 
     private String formatearHora(String fechaIso) {

@@ -153,11 +153,68 @@
                 app:cardElevation="3dp"
                 app:cardBackgroundColor="@color/bg_card">
 
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/lineChart"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="280dp"
-                    android:layout_margin="8dp" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp">
+
+                        <com.github.mikephil.charting.charts.LineChart
+                            android:id="@+id/lineChart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <!-- Pantalla de carga: solo aparece si la consulta tarda -->
+                        <LinearLayout
+                            android:id="@+id/layoutCargando"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/bg_card"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <ProgressBar
+                                style="?android:attr/progressBarStyle"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:indeterminateTint="@color/brand_accent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Recopilando datos…"
+                                android:textColor="@color/brand_accent"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvCargandoDetalle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Esto puede tardar unos segundos"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <!-- Resumen en texto: lo más importante sin leer la gráfica -->
+                    <TextView
+                        android:id="@+id/tvResumenGrafica"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 

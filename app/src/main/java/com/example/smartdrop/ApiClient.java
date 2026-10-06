@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Authenticator;
 import okhttp3.MediaType;
@@ -60,7 +61,9 @@ public class ApiClient {
                 return chain.proceed(nuevo);
             };
 
+            // Las gráficas de semana/mes pueden tardar la primera vez que el servidor junta los datos.
             OkHttpClient client = new OkHttpClient.Builder()
+                    .readTimeout(60, TimeUnit.SECONDS)
                     .addInterceptor(authInterceptor)
                     .authenticator(new TokenAuthenticator(prefs))
                     .build();

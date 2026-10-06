@@ -53,6 +53,15 @@ public class FugaVivienda {
     @SerializedName("evaluado")
     private String evaluado;
 
+    @SerializedName("resumen")
+    private String resumen;
+
+    @SerializedName("inicio")
+    private String inicio;
+
+    @SerializedName("accion")
+    private String accion;
+
     public int getHomeId() { return homeId; }
     public String getNic() { return nic; }
     public String getDireccion() { return direccion; }
@@ -68,4 +77,9 @@ public class FugaVivienda {
     public List<String> getCausas() { return causas; }
     public JsonObject getMetricas() { return metricas; }
     public String getEvaluado() { return evaluado; }
+    /** Frase sencilla de qué está pasando (la arma el servidor). */
+    public String getResumen() { return resumen; }
+    /** Inicio estimado ya formateado ("05/10 12:00"), o null. */
+    public String getInicio() { return inicio; }
+    public String getAccion() { return accion; }
 }

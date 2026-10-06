@@ -312,7 +312,7 @@ public class AdminDashboardActivity extends BaseActivity {
     private void mostrarAvisoFuga(List<AlertaFuga> nuevos, boolean notificados) {
         if (notificados || isFinishing() || isDestroyed()) return;
         AlertaFuga ultimo = nuevos.get(nuevos.size() - 1);
-        String mensaje = AvisosFuga.resumen(ultimo);
+        String mensaje = AvisosFuga.detalle(ultimo);
         if (nuevos.size() > 1) mensaje += "\n\nHay " + nuevos.size() + " avisos nuevos.";
         new AlertDialog.Builder(this)
                 .setTitle(AvisosFuga.titulo(ultimo))

@@ -198,17 +198,24 @@ public final class AvisosFuga {
     }
 
     static String resumen(AlertaFuga alerta) {
+        String clave = FugaTexto.datosClave(alerta.getMetricas(), alerta.getInicio());
         StringBuilder texto = new StringBuilder();
         if (alerta.getDireccion() != null && !alerta.getDireccion().isEmpty()) texto.append(alerta.getDireccion());
-        Double perdida = alerta.getPerdidaEstimadaLph();
-        if (perdida != null) {
+        if (!clave.isEmpty()) {
             if (texto.length() > 0) texto.append(" · ");
-            texto.append(String.format(Locale.getDefault(), "pérdida ≈ %.1f L/h", perdida));
+            texto.append(clave.split("  ·  ")[0]);
         }
         return texto.length() > 0 ? texto.toString() : "Toca para ver los detalles";
     }
 
-    private static String detalle(AlertaFuga alerta) {
-        return alerta.getMensaje() == null || alerta.getMensaje().isEmpty() ? resumen(alerta) : alerta.getMensaje();
+    /** Texto ampliado de la notificación: qué pasa, datos clave y qué hacer (sin el bloque técnico). */
+    static String detalle(AlertaFuga alerta) {
+        StringBuilder texto = new StringBuilder();
+        if (alerta.getDireccion() != null && !alerta.getDireccion().isEmpty()) texto.append(alerta.getDireccion()).append('\n');
+        if (alerta.getResumen() != null && !alerta.getResumen().isEmpty()) texto.append(alerta.getResumen()).append('\n');
+        String clave = FugaTexto.datosClave(alerta.getMetricas(), alerta.getInicio());
+        if (!clave.isEmpty()) texto.append(clave).append('\n');
+        texto.append("Qué hacer: ").append(alerta.getAccion() == null ? FugaTexto.ACCION_POR_DEFECTO : alerta.getAccion());
+        return texto.toString();
     }
 }

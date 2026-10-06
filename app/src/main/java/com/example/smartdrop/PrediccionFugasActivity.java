@@ -156,18 +156,20 @@ public class PrediccionFugasActivity extends BaseActivity {
         boolean activo = false;
         String texto;
         if (ultimo == null) {
-            texto = "El monitor automático aún no ha completado un análisis (revisa cada " + cada
-                    + " min mientras el servidor esté encendido).";
+            texto = "La vigilancia automática aún no ha hecho su primer análisis (revisa cada " + cada + " min).";
         } else {
             long minutos = Math.max(0, (System.currentTimeMillis() - ultimo.getTime()) / 60000);
             if (minutos > cada * 2L + 1) {
-                texto = "El monitor automático lleva " + minutos + " min sin analizar (revisa cada " + cada
-                        + " min mientras el servidor esté encendido).";
+                texto = "La vigilancia automática lleva " + minutos + " min sin analizar. Revisa que el servidor esté encendido.";
             } else {
                 activo = "ok".equals(monitor.getEstado());
-                texto = String.format(Locale.getDefault(),
-                        "Monitor automático activo · último análisis hace %d min · revisa cada %d min · avisa desde %.0f %%",
-                        minutos, cada, datos.getUmbralAlerta() * 100);
+                int posibles = 0;
+                if (datos.getViviendas() != null) {
+                    for (FugaVivienda v : datos.getViviendas()) if (v.isPosibleFuga()) posibles++;
+                }
+                texto = String.format(Locale.getDefault(), "Vigilancia automática activa · último análisis hace %d min\n%s",
+                        minutos, posibles == 0 ? "Ninguna vivienda con posible fuga"
+                                : posibles + (posibles == 1 ? " vivienda con posible fuga" : " viviendas con posible fuga"));
             }
         }
         tvMonitor.setText(texto);

@@ -132,7 +132,9 @@ public class AlertasActivity extends BaseActivity {
         tarjeta.addView(contenido);
 
         TextView titulo = new TextView(this);
-        titulo.setText(alerta.nombre + " fuera de rango");
+        String estado = alerta.valor.getEstado();
+        titulo.setText(alerta.nombre + ("Baja".equals(estado) ? ": valor bajo"
+                : "Alta".equals(estado) ? ": valor alto" : " fuera de rango"));
         titulo.setTextColor(getColor(R.color.text_alert));
         titulo.setTextSize(15);
         titulo.setGravity(Gravity.CENTER_VERTICAL);
@@ -150,10 +152,22 @@ public class AlertasActivity extends BaseActivity {
         valorParams.topMargin = dp(8);
         contenido.addView(valor, valorParams);
 
+        String rango = rangoNormal(alerta.valor, unidad);
+        if (!rango.isEmpty()) {
+            TextView tvRango = new TextView(this);
+            tvRango.setText(rango);
+            tvRango.setTextColor(getColor(R.color.text_primary));
+            tvRango.setTextSize(13);
+            LinearLayout.LayoutParams rangoParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            rangoParams.topMargin = dp(4);
+            contenido.addView(tvRango, rangoParams);
+        }
+
         TextView fecha = new TextView(this);
-        String fechaRegistro = alerta.valor.getFecha();
-        fecha.setText(fechaRegistro == null || fechaRegistro.trim().isEmpty()
-                ? "Lectura reciente" : "Lectura: " + fechaRegistro.replace('T', ' '));
+        String fechaCorta = PrediccionFugasActivity.fechaCorta(alerta.valor.getFecha());
+        String origen = alerta.valor.getNic() == null || alerta.valor.getNic().isEmpty() ? "" : alerta.valor.getNic() + " · ";
+        fecha.setText(origen + (fechaCorta.isEmpty() ? "Lectura reciente" : "Lectura del " + fechaCorta));
         fecha.setTextColor(getColor(R.color.text_secondary));
         fecha.setTextSize(12);
         LinearLayout.LayoutParams fechaParams = new LinearLayout.LayoutParams(
@@ -177,6 +191,21 @@ public class AlertasActivity extends BaseActivity {
             startActivity(intent);
         });
         return tarjeta;
+    }
+
+    /** "Rango normal: 1 – 25 L/min" (o solo el límite que exista). */
+    private static String rangoNormal(ValorActual valor, String unidad) {
+        Double min = valor.getRangoMin(), max = valor.getRangoMax();
+        if (min != null && max != null) {
+            return String.format(Locale.getDefault(), "Rango normal: %s – %s%s", corto(min), corto(max), unidad);
+        }
+        if (min != null) return "Mínimo normal: " + corto(min) + unidad;
+        if (max != null) return "Máximo normal: " + corto(max) + unidad;
+        return "";
+    }
+
+    private static String corto(double numero) {
+        return numero == Math.rint(numero) ? String.valueOf((long) numero) : String.format(Locale.getDefault(), "%.1f", numero);
     }
 
     private int dp(int value) {

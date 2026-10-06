@@ -73,6 +73,12 @@ public interface ApiService {
     @GET("v1/ml/zones/{id}/current-status/")
     Call<ZonaEstadoResponse> obtenerEstadoZona(@Path("id") int zoneId);
 
+    @GET("v1/ml/zones/{id}/tank-trajectory/")
+    Call<TrayectoriaTanqueResponse> obtenerTrayectoriaTanque(@Path("id") int zoneId);
+
+    @GET("v1/ml/zones/{id}/consumption-history/")
+    Call<HistorialConsumoResponse> obtenerHistorialConsumo(@Path("id") int zoneId);
+
     @POST("v1/ml/predictions/run/")
     Call<PrediccionJobResponse> ejecutarPredicciones();
 

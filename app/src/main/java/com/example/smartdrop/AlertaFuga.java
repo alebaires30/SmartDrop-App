@@ -50,6 +50,15 @@ public class AlertaFuga {
     @SerializedName("leida")
     private boolean leida;
 
+    @SerializedName("resumen")
+    private String resumen;
+
+    @SerializedName("inicio")
+    private String inicio;
+
+    @SerializedName("accion")
+    private String accion;
+
     public long getIdAlerta() { return idAlerta; }
     public String getFecha() { return fecha; }
     public String getPrioridad() { return prioridad; }
@@ -64,6 +73,11 @@ public class AlertaFuga {
     public JsonObject getMetricas() { return metricas; }
     public List<String> getCausas() { return causas; }
     public boolean isLeida() { return leida; }
+    /** Frase sencilla de qué está pasando (la arma el servidor). */
+    public String getResumen() { return resumen; }
+    /** Inicio estimado ya formateado ("05/10 12:00"), o null. */
+    public String getInicio() { return inicio; }
+    public String getAccion() { return accion; }
 
     /** Pérdida estimada en L/h, o null si el servidor no la envió. */
     public Double getPerdidaEstimadaLph() {
