@@ -3,6 +3,16 @@ package com.example.smartdrop;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.io.IOException;
+
+import okhttp3.Authenticator;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.Route;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -52,6 +62,7 @@ public class ApiClient {
 
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(authInterceptor)
+                    .authenticator(new TokenAuthenticator(prefs))
                     .build();
 
             retrofitAutenticado = new Retrofit.Builder()
@@ -61,5 +72,54 @@ public class ApiClient {
                     .build();
         }
         return retrofitAutenticado;
+    }
+    /** Renueva el token de acceso con el token de renovación cuando el servidor responde 401. */
+    private static class TokenAuthenticator implements Authenticator {
+        private final SharedPreferences prefs;
+
+        TokenAuthenticator(SharedPreferences prefs) {
+            this.prefs = prefs;
+        }
+
+        @Override
+        public synchronized Request authenticate(Route route, Response response) throws IOException {
+            if (responseCount(response) >= 2) return null;
+            String refresh = prefs.getString("refresh_token", "");
+            if (refresh.isEmpty()) return null;
+
+            String actual = prefs.getString("access_token", "");
+            String usado = response.request().header("Authorization");
+            if (usado != null && !usado.equals("Bearer " + actual)) {
+                // Otra petición ya renovó el token mientras esta esperaba.
+                return response.request().newBuilder().header("Authorization", "Bearer " + actual).build();
+            }
+
+            String nuevo = renovar(refresh);
+            if (nuevo == null) return null;
+            prefs.edit().putString("access_token", nuevo).apply();
+            return response.request().newBuilder().header("Authorization", "Bearer " + nuevo).build();
+        }
+
+        private String renovar(String refresh) {
+            JsonObject cuerpo = new JsonObject();
+            cuerpo.addProperty("refresh", refresh);
+            Request peticion = new Request.Builder()
+                    .url(BASE_URL + "auth/refresh/")
+                    .post(RequestBody.create(cuerpo.toString(), MediaType.parse("application/json")))
+                    .build();
+            try (Response respuesta = new OkHttpClient().newCall(peticion).execute()) {
+                if (!respuesta.isSuccessful() || respuesta.body() == null) return null;
+                JsonObject json = new JsonParser().parse(respuesta.body().string()).getAsJsonObject();
+                return json.has("access") ? json.get("access").getAsString() : null;
+            } catch (IOException | RuntimeException e) {
+                return null;
+            }
+        }
+
+        private int responseCount(Response response) {
+            int total = 1;
+            while ((response = response.priorResponse()) != null) total++;
+            return total;
+        }
     }
 }

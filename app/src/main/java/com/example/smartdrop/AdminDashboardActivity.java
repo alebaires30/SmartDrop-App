@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -56,6 +57,8 @@ public class AdminDashboardActivity extends BaseActivity {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private static final long INTERVALO_POLLING_MS = 10000;
     private Runnable tareaPolling;
+    private static final long INTERVALO_AVISOS_FUGA_MS = 60000;
+    private Runnable tareaAvisosFuga;
     private boolean cargaEnProgreso = false;
     private boolean primeraCargaCompleta = false;
 
@@ -143,6 +146,8 @@ public class AdminDashboardActivity extends BaseActivity {
                 startActivity(new Intent(AdminDashboardActivity.this, GraficasMonitoreoActivity.class));
             } else if (id == R.id.drawer_admin_prediccion) {
                 startActivity(new Intent(AdminDashboardActivity.this, PrediccionSuministroActivity.class));
+            } else if (id == R.id.drawer_admin_fugas) {
+                startActivity(new Intent(AdminDashboardActivity.this, PrediccionFugasActivity.class));
             } else if (id == R.id.drawer_admin_configuracion) {
                 startActivity(new Intent(AdminDashboardActivity.this, ConfiguracionActivity.class));
             } else if (id == R.id.drawer_admin_cerrar_sesion) {
@@ -172,18 +177,28 @@ public class AdminDashboardActivity extends BaseActivity {
             new IntentFilter(RealtimeClient.ACTION_SENSOR_READING),
             ContextCompat.RECEIVER_NOT_EXPORTED);
         RealtimeClient.connect(this);
+
+        // Avisos automáticos de fuga: en segundo plano cada 15 min y, con el panel abierto, cada minuto.
+        AvisosFuga.pedirPermiso(this);
+        AvisosFuga.programar(this);
+        tareaAvisosFuga = () -> {
+            AvisosFuga.revisarAhora(this, this::mostrarAvisoFuga);
+            handler.postDelayed(tareaAvisosFuga, INTERVALO_AVISOS_FUGA_MS);
+        };
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         handler.post(tareaPolling);
+        handler.post(tareaAvisosFuga);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         handler.removeCallbacks(tareaPolling);
+        handler.removeCallbacks(tareaAvisosFuga);
     }
 
     @Override
@@ -293,7 +308,23 @@ public class AdminDashboardActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    /** Con las notificaciones del sistema desactivadas, el aviso se muestra dentro de la app. */
+    private void mostrarAvisoFuga(List<AlertaFuga> nuevos, boolean notificados) {
+        if (notificados || isFinishing() || isDestroyed()) return;
+        AlertaFuga ultimo = nuevos.get(nuevos.size() - 1);
+        String mensaje = AvisosFuga.resumen(ultimo);
+        if (nuevos.size() > 1) mensaje += "\n\nHay " + nuevos.size() + " avisos nuevos.";
+        new AlertDialog.Builder(this)
+                .setTitle(AvisosFuga.titulo(ultimo))
+                .setMessage(mensaje)
+                .setPositiveButton("Ver detalles", (dialog, which) ->
+                        startActivity(new Intent(this, PrediccionFugasActivity.class)))
+                .setNegativeButton("Cerrar", null)
+                .show();
+    }
+
     private void cerrarSesion() {
+        AvisosFuga.cancelar(this);
         SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
         prefs.edit().clear().apply();
         Intent intent = new Intent(AdminDashboardActivity.this, MainActivity.class);

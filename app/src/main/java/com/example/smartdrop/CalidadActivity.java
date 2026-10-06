@@ -92,12 +92,14 @@ public class CalidadActivity extends BaseActivity {
                 if (!response.isSuccessful() || response.body() == null || response.body().getCalidad() == null) return;
                 CalidadData c = response.body().getCalidad();
 
-                tvEstado.setText(c.getEstado());
+                tvEstado.setText(ColorSeveridad.iconoDe(c.getColor()) + " " + c.getEstado());
                 tvEstado.setTextColor(ColorSeveridad.colorDe(CalidadActivity.this, c.getColor()));
                 tvDescripcion.setText(c.getDescripcion());
                 tvAnomalias.setText(c.getTextoAnomalias());
 
-                tvEstrellas.setText("Calificación: " + c.getEstrellas() + " de 5");
+                StringBuilder estrellas = new StringBuilder();
+                for (int i = 0; i < 5; i++) estrellas.append(i < c.getEstrellas() ? "★" : "☆");
+                tvEstrellas.setText(estrellas.toString());
 
                 tvUltimoAn.setText("Último análisis: " + formatearHora(c.getFecha()));
             }

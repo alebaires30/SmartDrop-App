@@ -80,15 +80,19 @@
                     android:gravity="center"
                     android:padding="20dp">
 
+                    <ImageView
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
+                        android:src="@drawable/gota_segura"/>
+
                     <TextView
                         android:id="@+id/tvEstrellas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Calificación: -- de 5"
-                        android:textColor="@color/brand_accent"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginTop="4dp"/>
+                        android:text="★★★★★"
+                        android:textColor="@color/star_yellow"
+                        android:textSize="42sp"
+                        android:layout_marginTop="10dp"/>
 
                 </LinearLayout>
 

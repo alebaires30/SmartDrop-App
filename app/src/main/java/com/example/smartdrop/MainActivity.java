@@ -64,6 +64,7 @@ public class MainActivity extends BaseActivity {
                     SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("access_token", body.getAccess());
+                    editor.putString("refresh_token", body.getRefresh() != null ? body.getRefresh() : "");
                     editor.putString("nombre", body.getNombre());
                     editor.putString("email", correoVal);
                     editor.putString("nombre_rol", body.getNombreRol() != null ? body.getNombreRol() : (body.getIdRol() == 2 ? "Administrador" : "Usuario Estándar"));

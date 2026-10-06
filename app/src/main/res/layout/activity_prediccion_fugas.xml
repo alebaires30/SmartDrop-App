@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Predicción de fugas (admin): estado del monitor, avisos sin leer y última evaluación por vivienda. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -24,39 +24,54 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Predicción de suministro"
+            android:text="Predicción de fugas"
             android:textColor="@color/on_brand"
             android:textStyle="bold"
             android:textSize="20sp"
             android:layout_centerInParent="true" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btnRealizarPredicciones"
+    <TextView
+        android:id="@+id/tvEstadoMonitor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/btn_gradient"
-        android:padding="12dp"
-        android:text="REALIZAR PREDICCIONES"
-        android:textColor="@color/on_brand"
-        android:textSize="15sp"
+        android:background="@color/bg_card_alt"
+        android:padding="10dp"
+        android:text="Consultando el monitor automático…"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvResultadoPrediccion"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/bg_card_alt"
-        android:padding="10dp"
-        android:textColor="@color/text_primary"
-        android:textSize="13sp"
-        android:visibility="gone" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvAvisosSinLeer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnMarcarLeidos"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Marcar como leídos"
+            android:textColor="@color/brand_on_card"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
@@ -65,7 +80,7 @@
         android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerZonas"
+            android:id="@+id/recyclerFugas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp"
@@ -79,7 +94,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="24dp"
-        android:text="No hay datos de predicción disponibles todavía."
+        android:text="Aún no hay viviendas analizadas. Usa Realizar predicciones en Predicción de suministro."
         android:textColor="@color/text_secondary"
         android:textSize="14sp"
         android:visibility="gone" />

@@ -50,6 +50,7 @@ public class ConfiguracionActivity extends BaseActivity {
 
         if (btnCerrarSesion != null) {
             btnCerrarSesion.setOnClickListener(v -> {
+                AvisosFuga.cancelar(this);
                 prefs.edit().clear().apply();
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

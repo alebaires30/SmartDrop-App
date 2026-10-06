@@ -18,6 +18,10 @@
         android:title="Predicción de suministro" />
 
     <item
+        android:id="@+id/drawer_admin_fugas"
+        android:title="Predicción de fugas" />
+
+    <item
         android:id="@+id/drawer_admin_configuracion"
         android:title="Configuración" />
 

@@ -47,19 +47,22 @@ public class ZonasPrediccionAdapter extends RecyclerView.Adapter<ZonasPrediccion
     public void onBindViewHolder(@NonNull ViewHolder h, int position) {
         ZonaResumen z = zonas.get(position);
 
-        h.tvNombre.setText(z.getZoneName());
+        h.tvNombre.setText(z.getNic() != null && !z.getNic().isEmpty()
+                ? z.getZoneName() + " · " + z.getNic() : z.getZoneName());
         h.tvNivel.setText(String.format(Locale.getDefault(),
                 "Nivel: %.0f L (%.1f%%)", z.getNivelActualLitros(), z.getPorcentajeLlenado()));
         h.progreso.setProgress((int) Math.round(z.getPorcentajeLlenado()));
-        h.tvConsumo.setText(String.format(Locale.getDefault(),
-                "Consumo: %.1f L/h  •  %d viviendas", z.getConsumoTotalLph(), z.getNHomes()));
+        String ubicacion = z.getDireccion() != null && !z.getDireccion().isEmpty() ? z.getDireccion() : "";
+        if (z.getZona() != null && !z.getZona().isEmpty()) ubicacion += (ubicacion.isEmpty() ? "" : " · ") + z.getZona();
+        h.tvConsumo.setText(ubicacion.isEmpty()
+                ? String.format(Locale.getDefault(), "Consumo: %.2f L/h", z.getConsumoTotalLph())
+                : ubicacion + String.format(Locale.getDefault(), "%nConsumo: %.2f L/h", z.getConsumoTotalLph()));
 
         if (z.getAnomaliasActivas24h() > 0) {
-            h.tvAnomalias.setText(String.format(Locale.getDefault(),
-                    "%d anomalías en 24 h", z.getAnomaliasActivas24h()));
+            h.tvAnomalias.setText("Posible fuga");
             h.tvAnomalias.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.text_alert));
         } else {
-            h.tvAnomalias.setText("Sin anomalías");
+            h.tvAnomalias.setText("Sin fugas");
             h.tvAnomalias.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.text_secondary));
         }
 
@@ -73,8 +76,9 @@ public class ZonasPrediccionAdapter extends RecyclerView.Adapter<ZonasPrediccion
                 h.tvRiesgo.setText("RIESGO ALTO");
                 h.tvRiesgo.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.status_orange));
                 break;
+            case "medio":
             case "moderado":
-                h.tvRiesgo.setText("RIESGO MODERADO");
+                h.tvRiesgo.setText("RIESGO MEDIO");
                 h.tvRiesgo.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.status_yellow));
                 break;
             case "bajo":
@@ -87,11 +91,34 @@ public class ZonasPrediccionAdapter extends RecyclerView.Adapter<ZonasPrediccion
                 break;
         }
 
-        h.tvPrediccion.setVisibility(View.GONE);
+        String detalle = textoPrediccion(z);
+        h.tvPrediccion.setVisibility(detalle.isEmpty() ? View.GONE : View.VISIBLE);
+        h.tvPrediccion.setText(detalle);
 
         h.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onZonaClick(z);
         });
+    }
+
+    private static String textoPrediccion(ZonaResumen z) {
+        String nota = "";
+        String calidad = z.getCalidadDatos();
+        if ("plana".equals(calidad)) nota = "Lecturas constantes: no hay patrón que analizar";
+        else if ("insuficiente".equals(calidad)) nota = "Historial insuficiente";
+        else if ("sin_lecturas_recientes".equals(calidad)) nota = "El sensor no está reportando";
+        else if ("sin_datos".equals(calidad)) nota = "Sin lecturas sincronizadas";
+        else if ("sin_tanque".equals(calidad)) nota = "Vivienda sin tanque registrado";
+        if (!nota.isEmpty()) return nota;
+
+        String riesgo = z.getNivelRiesgo() == null ? "" : z.getNivelRiesgo();
+        if (riesgo.equals("critico")) return "El tanque ya está en nivel crítico";
+        if (z.getHorasHastaDesabasto() != null) {
+            double prob = z.getProbabilidadDesabasto() == null ? 0 : z.getProbabilidadDesabasto() * 100;
+            return String.format(Locale.getDefault(), "Desabasto estimado en ≈ %.0f h (%.0f%%)",
+                    z.getHorasHastaDesabasto(), prob);
+        }
+        if (riesgo.equals("bajo")) return "Sin riesgo de desabasto en 72 h";
+        return "";
     }
 
     @Override

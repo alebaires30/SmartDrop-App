@@ -17,4 +17,14 @@ public class ColorSeveridad {
         }
     }
 
+    public static String iconoDe(String severidad) {
+        if (severidad == null) return "✅";
+        switch (severidad) {
+            case "rojo":     return "⛔";
+            case "amarillo": return "⚠️";
+            case "gris":     return "ℹ️";
+            default:         return "✅";
+        }
+    }
+
 }

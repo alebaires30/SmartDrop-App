@@ -29,6 +29,27 @@ public class ZonaResumen {
     @SerializedName("anomalias_activas_24h")
     private int anomaliasActivas24h;
 
+    @SerializedName("nic")
+    private String nic;
+
+    @SerializedName("zona")
+    private String zona;
+
+    @SerializedName("direccion")
+    private String direccion;
+
+    @SerializedName("calidad_datos")
+    private String calidadDatos;
+
+    @SerializedName("probabilidad_desabasto")
+    private Double probabilidadDesabasto;
+
+    @SerializedName("horas_hasta_desabasto")
+    private Double horasHastaDesabasto;
+
+    @SerializedName("probabilidad_fuga")
+    private Double probabilidadFuga;
+
     public int getZoneId() { return zoneId; }
     public String getZoneName() { return zoneName; }
     public int getNHomes() { return nHomes; }
@@ -37,4 +58,11 @@ public class ZonaResumen {
     public double getConsumoTotalLph() { return consumoTotalLph; }
     public String getNivelRiesgo() { return nivelRiesgo; }
     public int getAnomaliasActivas24h() { return anomaliasActivas24h; }
+    public String getNic() { return nic; }
+    public String getZona() { return zona; }
+    public String getDireccion() { return direccion; }
+    public String getCalidadDatos() { return calidadDatos; }
+    public Double getProbabilidadDesabasto() { return probabilidadDesabasto; }
+    public Double getHorasHastaDesabasto() { return horasHastaDesabasto; }
+    public Double getProbabilidadFuga() { return probabilidadFuga; }
 }

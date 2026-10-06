@@ -73,6 +73,22 @@ public interface ApiService {
     @GET("v1/ml/zones/{id}/current-status/")
     Call<ZonaEstadoResponse> obtenerEstadoZona(@Path("id") int zoneId);
 
+    @POST("v1/ml/predictions/run/")
+    Call<PrediccionJobResponse> ejecutarPredicciones();
+
+    @GET("v1/ml/predictions/jobs/{id}/")
+    Call<PrediccionJobResponse> obtenerEstadoPrediccion(@Path("id") String jobId);
+
+    // ── Predicción de fugas y avisos (admin) ──
+    @GET("v1/ml/leaks/")
+    Call<FugasResponse> obtenerFugas();
+
+    @GET("v1/ml/leaks/alerts/")
+    Call<AlertasFugaResponse> obtenerAlertasFuga(@Query("solo_no_leidas") Integer soloNoLeidas);
+
+    @POST("v1/ml/leaks/alerts/read/")
+    Call<ResponseBody> marcarAlertasFugaLeidas(@Body Map<String, Object> cuerpo);
+
     // ── Sistema de reportes ──
     @GET("api/reportes/catalogo/")
     Call<ReporteCatalogoResponse> obtenerCatalogoReportes();
