@@ -165,7 +165,8 @@
                             android:id="@+id/espacioIconPresion"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/presionn"
+                            android:src="@drawable/ic_presion"
+                            android:tint="@color/brand_accent"
                             android:scaleType="fitCenter" />
 
                         <!-- Información textual de Presión -->
@@ -238,7 +239,8 @@
                             android:id="@+id/espacioIconCalidad"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/gota"
+                            android:src="@drawable/ic_water_drop"
+                            android:tint="@color/brand_accent"
                             android:scaleType="fitCenter" />
 
 
@@ -309,7 +311,8 @@
                             android:id="@+id/espacioIconNivel"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/tanquee"
+                            android:src="@drawable/ic_tanque"
+                            android:tint="@color/brand_accent"
                             android:scaleType="fitCenter" />
 
                         <!-- Información textual del Nivel -->
@@ -392,7 +395,8 @@
                             android:id="@+id/espacioIconConsumo"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/cosumoo"
+                            android:src="@drawable/ic_consumo_vector"
+                            android:tint="@color/brand_accent"
                             android:scaleType="fitCenter" />
 
                         <!-- Información textual de Consumo -->
@@ -471,7 +475,8 @@
                             android:id="@+id/espacioIconValvulaInicio"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/electrovavula"
+                            android:src="@drawable/ic_valve"
+                            android:tint="@color/brand_accent"
                             android:scaleType="fitCenter" />
 
                         <LinearLayout

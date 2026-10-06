@@ -91,7 +91,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="🛡️ Administrador del Sistema"
+                        android:text="Administrador del sistema"
                         android:textColor="@color/brand_on_card"
                         android:textSize="13sp"
                         android:textStyle="bold"

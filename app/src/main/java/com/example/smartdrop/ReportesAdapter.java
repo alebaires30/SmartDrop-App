@@ -49,7 +49,7 @@ public class ReportesAdapter extends RecyclerView.Adapter<ReportesAdapter.ViewHo
                 ? reporte.getFechaReporte().substring(0, 16).replace('T', ' ')
                 : reporte.getFechaReporte());
         holder.tvAdjuntos.setText(reporte.getNAdjuntos() > 0
-                ? "📎 " + reporte.getNAdjuntos() : "");
+                ? reporte.getNAdjuntos() + (reporte.getNAdjuntos() == 1 ? " adjunto" : " adjuntos") : "");
         if (reporte.getAutorNombre() != null && !reporte.getAutorNombre().isEmpty()) {
             holder.tvAutor.setText(reporte.getAutorNombre());
             holder.tvAutor.setVisibility(View.VISIBLE);

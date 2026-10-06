@@ -94,7 +94,7 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
 
         if (e.getAnomaliasActivas24h() > 0) {
             tvAnomalias.setText(String.format(Locale.getDefault(),
-                    "⚠ %d anomalías detectadas en las últimas 24 h", e.getAnomaliasActivas24h()));
+                    "%d anomalías detectadas en las últimas 24 h", e.getAnomaliasActivas24h()));
             tvAnomalias.setTextColor(ContextCompat.getColor(this, R.color.text_alert));
         } else {
             tvAnomalias.setText("Sin anomalías en las últimas 24 h");

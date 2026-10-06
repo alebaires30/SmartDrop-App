@@ -89,7 +89,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="14dp"
-                        android:text="⚠ 1 sensor con valores fuera de rango"
+                        android:text="1 sensor con valores fuera de rango"
                         android:textColor="@color/text_alert"
                         android:textStyle="bold"
                         android:textSize="14sp" />
@@ -120,7 +120,8 @@
                             android:id="@+id/espacioIconFlujo"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/cosumoo"
+                            android:src="@drawable/ic_consumo_vector"
+                            android:tint="@color/brand_accent"
                             android:scaleType="fitCenter" />
 
                         <LinearLayout
@@ -185,7 +186,8 @@
                             android:id="@+id/espacioIconPresionAdmin"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/presionn"
+                            android:src="@drawable/ic_presion"
+                            android:tint="@color/brand_accent"
                             android:scaleType="fitCenter" />
 
                         <LinearLayout
@@ -250,7 +252,8 @@
                             android:id="@+id/espacioIconNivelAdmin"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/tanquee"
+                            android:src="@drawable/ic_tanque"
+                            android:tint="@color/brand_accent"
                             android:scaleType="fitCenter" />
 
                         <LinearLayout
@@ -317,7 +320,8 @@
                             android:id="@+id/espacioIconAlertas"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/alertaa"
+                            android:src="@drawable/ic_warning"
+                            android:tint="@color/brand_accent"
                             android:scaleType="fitCenter" />
 
                         <LinearLayout
@@ -382,7 +386,8 @@
                             android:id="@+id/espacioIconReportesAdmin"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/cosumoo"
+                            android:src="@drawable/ic_reporte_vector"
+                            android:tint="@color/brand_accent"
                             android:scaleType="fitCenter" />
 
                         <LinearLayout
@@ -447,7 +452,8 @@
                             android:id="@+id/espacioIconValvula"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/electrovavula"
+                            android:src="@drawable/ic_valve"
+                            android:tint="@color/brand_accent"
                             android:scaleType="fitCenter" />
 
                         <LinearLayout

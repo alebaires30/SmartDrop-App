@@ -19,6 +19,9 @@
             android:name=".RecomendacionesActivity"
             android:exported="false" />
         <activity
+            android:name=".AlertasActivity"
+            android:exported="false" />
+        <activity
             android:name=".PrediccionSuministroActivity"
             android:exported="false" />
         <activity

@@ -19,7 +19,7 @@
             android:layout_height="wrap_content" android:text="+ Reportar" android:textColor="@color/on_brand"
             android:background="@drawable/btn_gradient" android:layout_marginEnd="6dp"/>
         <Button android:id="@+id/btnComunidad" android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="wrap_content" android:text="👥 Comunidad" android:textColor="@color/brand_on_card"
+            android:layout_height="wrap_content" android:text="Comunidad" android:textColor="@color/brand_on_card"
             android:background="@drawable/fondo_redondeado" android:layout_marginStart="6dp"/>
     </LinearLayout>
 

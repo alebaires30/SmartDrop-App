@@ -155,6 +155,10 @@ public class AdminDashboardActivity extends BaseActivity {
         cardFlujo.setOnClickListener(v -> abrirGraficas("flujo"));
         cardPresion.setOnClickListener(v -> abrirGraficas("presion"));
         cardNivelAdmin.setOnClickListener(v -> abrirGraficas("nivel"));
+        cardAlertasActivas.setOnClickListener(v ->
+                startActivity(new Intent(AdminDashboardActivity.this, AlertasActivity.class)));
+        cardAlertaGeneral.setOnClickListener(v ->
+                startActivity(new Intent(AdminDashboardActivity.this, AlertasActivity.class)));
 
         inicializarRecyclerView();
         cargarHistorialValvula();
@@ -212,7 +216,7 @@ public class AdminDashboardActivity extends BaseActivity {
                 tvAlertasCount.setText(r.getTotalAlertas() + " activas");
                 if (r.getTotalAlertas() > 0) {
                     cardAlertaGeneral.setVisibility(View.VISIBLE);
-                    tvAlertaGeneral.setText("⚠️ " + r.getTotalAlertas() + " parámetro(s) fuera de rango");
+                    tvAlertaGeneral.setText(r.getTotalAlertas() + " parámetro(s) fuera de rango");
                 } else {
                     cardAlertaGeneral.setVisibility(View.GONE);
                 }
@@ -240,7 +244,7 @@ public class AdminDashboardActivity extends BaseActivity {
                 if (!response.isSuccessful() || response.body() == null) return;
                 String estado = response.body().getEstadoActual();
                 boolean abierta = "abierta".equalsIgnoreCase(estado);
-                tvValvulaEstadoAdmin.setText(abierta ? "🟢 ABIERTA" : "🔴 CERRADA");
+                tvValvulaEstadoAdmin.setText(abierta ? "ABIERTA" : "CERRADA");
                 tvValvulaEstadoAdmin.setTextColor(ContextCompat.getColor(AdminDashboardActivity.this, abierta ? R.color.success : R.color.danger));
             }
             @Override

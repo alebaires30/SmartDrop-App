@@ -172,7 +172,7 @@ public class ValvulaActivity extends BaseActivity {
                     String estado = estadoData.getEstadoActual();
                     boolean abierta = "abierta".equalsIgnoreCase(estado);
 
-                    tvEstadoDetalle.setText(abierta ? "🟢 Válvula: ABIERTA" : "🔴 Válvula: CERRADA");
+                    tvEstadoDetalle.setText(abierta ? "Válvula: ABIERTA" : "Válvula: CERRADA");
                     tvEstadoDetalle.setTextColor(ContextCompat.getColor(ValvulaActivity.this, abierta ? R.color.success : R.color.danger));
 
                     TemporizadorActivo temp = estadoData.getTemporizadorActivo();
@@ -241,7 +241,7 @@ public class ValvulaActivity extends BaseActivity {
     private void enviarComandoControl(String accion, int duracion) {
         if (duracion > 120) {
             new AlertDialog.Builder(this)
-                    .setTitle("⚠️ Límite de Seguridad")
+                    .setTitle("Límite de seguridad")
                     .setMessage("El tiempo máximo permitido es 120 segundos. ¿Deseas ajustar a 2 minutos?")
                     .setPositiveButton("Sí, ajustar", (dialog, which) -> ejecutarPeticion(accion, 120))
                     .setNegativeButton("Cancelar", null)

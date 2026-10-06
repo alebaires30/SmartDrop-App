@@ -97,7 +97,7 @@ public class PresionActivity extends BaseActivity {
                 PresionData p = response.body().getPresion();
 
                 tvPresionActual.setText(String.format(java.util.Locale.getDefault(), "Presión actual: %.1f %s", p.getValor(), p.getUnidad()));
-                tvEstadoPresion.setText(ColorSeveridad.iconoDe(p.getColor()) + " Presión: " + p.getEstado());
+                tvEstadoPresion.setText("Presión: " + p.getEstado());
                 tvEstadoPresion.setTextColor(ColorSeveridad.colorDe(PresionActivity.this, p.getColor()));
                 tvDescripcionPresion.setText(p.getDescripcion());
                 tvUltimoAn.setText("Actualizado: " + formatearHora(p.getFecha()));

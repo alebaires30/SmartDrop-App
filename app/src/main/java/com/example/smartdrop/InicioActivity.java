@@ -180,16 +180,16 @@ public class InicioActivity extends BaseActivity {
                 EstadoAguaResponse r = response.body();
 
                 if (r.getResumenGeneral() != null) {
-                    tvResumenGeneral.setText(ColorSeveridad.iconoDe(r.getResumenGeneral().getColor()) + " " + r.getResumenGeneral().getMensaje());
+                    tvResumenGeneral.setText(r.getResumenGeneral().getMensaje());
                     tvResumenGeneral.setTextColor(ColorSeveridad.colorDe(InicioActivity.this, r.getResumenGeneral().getColor()));
                 }
 
                 if (r.getPresion() != null) {
-                    tvPresionValor.setText(ColorSeveridad.iconoDe(r.getPresion().getColor()) + " " + r.getPresion().getEstado());
+                    tvPresionValor.setText(r.getPresion().getEstado());
                     tvPresionValor.setTextColor(ColorSeveridad.colorDe(InicioActivity.this, r.getPresion().getColor()));
                 }
                 if (r.getCalidad() != null) {
-                    tvCalidadValor.setText(ColorSeveridad.iconoDe(r.getCalidad().getColor()) + " " + r.getCalidad().getEstado());
+                    tvCalidadValor.setText(r.getCalidad().getEstado());
                     tvCalidadValor.setTextColor(ColorSeveridad.colorDe(InicioActivity.this, r.getCalidad().getColor()));
                 }
                 if (r.getNivel() != null) {
@@ -230,7 +230,7 @@ public class InicioActivity extends BaseActivity {
                     String estado = response.body().getEstadoActual();
                     boolean abierta = "abierta".equalsIgnoreCase(estado);
                     if (tvValvulaEstadoInicio != null) {
-                        tvValvulaEstadoInicio.setText(abierta ? "🟢 Con Suministro / ABIERTA" : "🔴 Sin Suministro / CERRADA");
+                        tvValvulaEstadoInicio.setText(abierta ? "Con suministro · Abierta" : "Sin suministro · Cerrada");
                         tvValvulaEstadoInicio.setTextColor(ContextCompat.getColor(InicioActivity.this, abierta ? R.color.success : R.color.danger));
                     }
                     if (tvValvulaActualizacionInicio != null) {
@@ -243,7 +243,7 @@ public class InicioActivity extends BaseActivity {
             @Override
             public void onFailure(Call<ValvulaEstadoResponse> call, Throwable t) {
                 if (tvValvulaEstadoInicio != null) {
-                    tvValvulaEstadoInicio.setText("⚠️ Estado no disponible");
+                    tvValvulaEstadoInicio.setText("Estado no disponible");
                 }
             }
         });

@@ -90,7 +90,7 @@ public class RecomendacionesActivity extends BaseActivity {
         fila.setPadding(32, 24, 32, 24);
         fila.setGravity(Gravity.CENTER_VERTICAL);
 
-        // ⚠️ Aquí se referencia la imagen real que agregarás tú a res/drawable/
+        // Las imágenes ilustrativas se cargan desde los recursos locales.
         int resId = getResources().getIdentifier(tip.getIconoDrawable(), "drawable", getPackageName());
         if (resId != 0) {
             ImageView icono = new ImageView(this);

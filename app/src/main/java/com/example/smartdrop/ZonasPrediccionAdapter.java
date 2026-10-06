@@ -56,7 +56,7 @@ public class ZonasPrediccionAdapter extends RecyclerView.Adapter<ZonasPrediccion
 
         if (z.getAnomaliasActivas24h() > 0) {
             h.tvAnomalias.setText(String.format(Locale.getDefault(),
-                    "⚠ %d anomalías 24h", z.getAnomaliasActivas24h()));
+                    "%d anomalías en 24 h", z.getAnomaliasActivas24h()));
             h.tvAnomalias.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.text_alert));
         } else {
             h.tvAnomalias.setText("Sin anomalías");

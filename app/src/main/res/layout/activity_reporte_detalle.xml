@@ -40,7 +40,7 @@
             </LinearLayout>
 
             <Button android:id="@+id/btnAdjuntarEvidencia" android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="📎 Agregar evidencia" android:textColor="@color/brand_on_card"
+                android:text="Agregar evidencia" android:textColor="@color/brand_on_card"
                 android:background="@drawable/fondo_redondeado" android:layout_marginTop="8dp"/>
 
             <androidx.cardview.widget.CardView android:id="@+id/cardRespuesta" android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:orientation="vertical" android:padding="14dp">
                     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:text="🛡 Respuesta del equipo" android:textStyle="bold" android:textColor="@color/success_dark"/>
+                        android:text="Respuesta del equipo" android:textStyle="bold" android:textColor="@color/success_dark"/>
                     <TextView android:id="@+id/tvRespuestaAdmin" android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:layout_marginTop="6dp" android:textSize="14sp"/>
                 </LinearLayout>

@@ -98,7 +98,7 @@ public class ConsumoActivity extends BaseActivity {
                 if (!response.isSuccessful() || response.body() == null) return;
                 ConsumoResponse r = response.body();
 
-                tvEstadoConsumo.setText(ColorSeveridad.iconoDe(r.getColor()) + " " + r.getEstadoTexto());
+                tvEstadoConsumo.setText(r.getEstadoTexto());
                 tvEstadoConsumo.setTextColor(ColorSeveridad.colorDe(ConsumoActivity.this, r.getColor()));
                 tvConsumoTotal.setText(String.format(java.util.Locale.getDefault(), "%.1f%s", r.getConsumoTotal(), r.getUnidad()));
                 tvComparacion.setText(r.getComparacion() != null ? r.getComparacion().getTexto() : "");

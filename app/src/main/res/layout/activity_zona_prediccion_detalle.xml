@@ -61,7 +61,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="💧 Nivel actual del tanque"
+                        android:text="Nivel actual del tanque"
                         android:textStyle="bold"
                         android:textSize="15sp"
                         android:textColor="@color/text_primary" />
@@ -120,7 +120,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="⏳ Tiempo estimado de suministro restante"
+                        android:text="Tiempo estimado de suministro restante"
                         android:textStyle="bold"
                         android:textSize="15sp"
                         android:textColor="@color/text_primary" />

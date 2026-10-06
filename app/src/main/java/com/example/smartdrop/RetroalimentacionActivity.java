@@ -2,11 +2,10 @@ package com.example.smartdrop;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,7 +15,7 @@ public class RetroalimentacionActivity extends BaseActivity {
 
     private ImageButton btnVolver;
     private TextView tvMensaje, tvValorGota, tvComparacionMes, tvRacha;
-    private IndicadorConsumoView indicadorGota;
+    private android.widget.ProgressBar progressConsumo;
     private com.google.android.material.bottomnavigation.BottomNavigationView bottomNav;
 
     @Override
@@ -29,7 +28,7 @@ public class RetroalimentacionActivity extends BaseActivity {
         tvValorGota      = findViewById(R.id.tvValorGota);
         tvComparacionMes = findViewById(R.id.tvComparacionMes);
         tvRacha          = findViewById(R.id.tvRacha);
-        indicadorGota    = findViewById(R.id.indicadorGota);
+        progressConsumo  = findViewById(R.id.progressConsumo);
         bottomNav        = findViewById(R.id.bottomNavRetro);
 
         btnVolver.setOnClickListener(v -> finish());
@@ -66,13 +65,16 @@ public class RetroalimentacionActivity extends BaseActivity {
 
                 double referencia = (r.getPromedioHabitualLitros() != null && r.getPromedioHabitualLitros() > 0)
                         ? r.getPromedioHabitualLitros() * 2 : 10.0;
-                double porcentajeLlenado = Math.min(100, (r.getConsumoHoyLitros() / referencia) * 100);
-                indicadorGota.actualizar(porcentajeLlenado, r.getColor());
+                int porcentajeConsumo = (int) Math.round(Math.min(100,
+                        (r.getConsumoHoyLitros() / referencia) * 100));
+                progressConsumo.setProgress(porcentajeConsumo);
+                progressConsumo.setProgressTintList(ColorStateList.valueOf(
+                        ColorSeveridad.colorDe(RetroalimentacionActivity.this, r.getColor())));
 
                 if (r.getComparacionMes() != null) {
                     tvComparacionMes.setText(r.getComparacionMes().getTexto());
                 }
-                tvRacha.setText("🔥 " + r.getRachaTexto());
+                tvRacha.setText(r.getRachaTexto());
             }
 
             @Override

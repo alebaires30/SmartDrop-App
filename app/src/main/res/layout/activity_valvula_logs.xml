@@ -108,7 +108,7 @@
                         android:id="@+id/tvMensajeSoloAdmin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="ℹ️ El control manual y registro de la válvula están reservados para administradores."
+                        android:text="El control manual y el registro de la válvula están reservados para administradores."
                         android:textColor="@color/text_alert"
                         android:gravity="center"
                         android:padding="12dp"

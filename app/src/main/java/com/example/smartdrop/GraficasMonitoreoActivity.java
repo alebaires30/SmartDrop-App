@@ -281,7 +281,7 @@ public class GraficasMonitoreoActivity extends BaseActivity {
 
         if (hayAlerta) {
             cardAlertaRango.setVisibility(android.view.View.VISIBLE);
-            tvAlertaRango.setText("⚠ Valor fuera de rango detectado en " + tituloParametro(parametroActual));
+            tvAlertaRango.setText("Valor fuera de rango detectado en " + tituloParametro(parametroActual));
         } else {
             cardAlertaRango.setVisibility(android.view.View.GONE);
         }
@@ -317,7 +317,7 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         tvUltimaActualizacion.setText("Modo comparativo activo");
 
         cardAlertaRango.setVisibility(hayAlerta ? android.view.View.VISIBLE : android.view.View.GONE);
-        if (hayAlerta) tvAlertaRango.setText("⚠ Uno o más parámetros están fuera de rango");
+        if (hayAlerta) tvAlertaRango.setText("Uno o más parámetros están fuera de rango");
     }
 
     private boolean agregarSerieComparativa(ParametroData datoParametro, String nombre, int colorRes, List<LineDataSet> destino) {

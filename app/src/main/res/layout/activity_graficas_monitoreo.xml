@@ -126,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="14dp"
-                    android:text="⚠ Valor fuera de rango detectado"
+                    android:text="Valor fuera de rango detectado"
                     android:textColor="@color/text_alert"
                     android:textStyle="bold"
                     android:textSize="14sp" />

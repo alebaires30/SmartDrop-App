@@ -36,7 +36,7 @@
         android:id="@+id/btnReportarComunidad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="📷 Reportar con evidencia"
+        android:text="Reportar problema"
         android:textColor="@color/on_brand"
         android:background="@drawable/btn_gradient"
         android:layout_margin="12dp" />

@@ -113,7 +113,6 @@ public class NivelTanqueActivity extends BaseActivity {
     private void pintarNivel() {
         if (ultimoNivel == null) return;
 
-        String icono = ColorSeveridad.iconoDe(ultimoNivel.getColor());
         String textoPrincipal;
 
         if (mostrandoLitros) {
@@ -131,7 +130,7 @@ public class NivelTanqueActivity extends BaseActivity {
             textoPrincipal += "\n" + ultimoNivel.getMensaje();
         }
 
-        tvDisponible.setText(icono + " " + textoPrincipal);
+        tvDisponible.setText(textoPrincipal);
         tvDisponible.setTextColor(ColorSeveridad.colorDe(this, ultimoNivel.getColor()));
 
         tvUltima.setText("Última lectura: " + formatearHora(ultimoNivel.getFecha()));
