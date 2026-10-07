@@ -81,9 +81,6 @@
             android:name=".ReportarProblemaActivity"
             android:exported="false" />
         <activity
-            android:name=".HistorialReportesActivity"
-            android:exported="false" />
-        <activity
             android:name=".ComunidadActivity"
             android:exported="false" />
         <activity

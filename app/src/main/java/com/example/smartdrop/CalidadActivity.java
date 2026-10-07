@@ -3,11 +3,8 @@ package com.example.smartdrop;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.content.Intent;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,27 +43,6 @@ public class CalidadActivity extends BaseActivity {
         };
     }
 
-    private void configurarBottomNav(int itemActual) {
-        com.google.android.material.bottomnavigation.BottomNavigationView nav = findViewById(R.id.bottomNav);
-        if (nav == null) return;
-        nav.setSelectedItemId(itemActual);
-        nav.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == itemActual) return true;
-            if (id == R.id.nav_tanque) {
-                startActivity(new Intent(this, NivelTanqueActivity.class));
-            } else if (id == R.id.nav_calidad) {
-                startActivity(new Intent(this, CalidadActivity.class));
-            } else if (id == R.id.nav_presion) {
-                startActivity(new Intent(this, PresionActivity.class));
-            } else if (id == R.id.nav_consumo) {
-                startActivity(new Intent(this, ConsumoActivity.class));
-            }
-            finish();
-            return true;
-        });
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -82,7 +58,6 @@ public class CalidadActivity extends BaseActivity {
     private void cargarCalidad() {
         if (cargaEnProgreso) return;
         cargaEnProgreso = true;
-
 
         ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
         api.obtenerEstadoAgua().enqueue(new Callback<EstadoAguaResponse>() {
@@ -101,7 +76,7 @@ public class CalidadActivity extends BaseActivity {
                 for (int i = 0; i < 5; i++) estrellas.append(i < c.getEstrellas() ? "★" : "☆");
                 tvEstrellas.setText(estrellas.toString());
 
-                tvUltimoAn.setText("Último análisis: " + formatearHora(c.getFecha()));
+                tvUltimoAn.setText("Último análisis: " + Fechas.formatear(c.getFecha(), "hh:mm a", "--:--"));
             }
 
             @Override
@@ -109,17 +84,5 @@ public class CalidadActivity extends BaseActivity {
                 cargaEnProgreso = false;
             }
         });
-    }
-
-    private String formatearHora(String fechaIso) {
-        try {
-            String limpio = fechaIso.length() > 19 ? fechaIso.substring(0, 19) : fechaIso;
-            java.text.SimpleDateFormat entrada = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.getDefault());
-            entrada.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
-            java.text.SimpleDateFormat salida = new java.text.SimpleDateFormat("hh:mm a", java.util.Locale.getDefault());
-            return salida.format(entrada.parse(limpio));
-        } catch (Exception e) {
-            return "--:--";
-        }
     }
 }

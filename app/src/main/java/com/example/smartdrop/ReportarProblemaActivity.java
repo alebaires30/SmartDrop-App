@@ -213,10 +213,6 @@ public class ReportarProblemaActivity extends BaseActivity {
                 && etDescripcion.getText().toString().trim().length() >= 10);
     }
 
-    private int dp(int value) {
-        return Math.round(value * getResources().getDisplayMetrics().density);
-    }
-
     private void actualizarListaAdjuntos() {
         if (adjuntos.isEmpty()) {
             tvAdjuntosSeleccionados.setText("Sin archivos seleccionados");

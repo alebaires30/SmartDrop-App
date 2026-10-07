@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -56,7 +53,6 @@ public class InicioActivity extends BaseActivity {
 
     private TextView tvConsumoLitros;
     private boolean primeraCargaCompleta = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +114,7 @@ public class InicioActivity extends BaseActivity {
             } else if (id == R.id.drawer_reportar) {
                 startActivity(new Intent(this, ReportarProblemaActivity.class));
             } else if (id == R.id.drawer_historial) {
-                startActivity(new Intent(this, HistorialReportesActivity.class));
+                startActivity(new Intent(this, ComunidadActivity.class));
             } else if (id == R.id.drawer_consumo) {
                 startActivity(new Intent(this, ConsumoActivity.class));
             }

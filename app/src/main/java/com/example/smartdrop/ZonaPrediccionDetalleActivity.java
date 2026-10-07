@@ -1,6 +1,5 @@
 package com.example.smartdrop;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -9,7 +8,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -176,7 +174,7 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
 
     /** Hora local corta para el eje X ("14:00"; con día si no es hoy: "07/10 14:00"). */
     private static String hora(String iso) {
-        Date fecha = PrediccionFugasActivity.parseFecha(iso);
+        Date fecha = Fechas.parse(iso);
         if (fecha == null) return "";
         SimpleDateFormat dia = new SimpleDateFormat("yyyyMMdd", Locale.US);
         boolean hoy = dia.format(fecha).equals(dia.format(new Date()));
@@ -231,7 +229,7 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
         tvSinPrediccion.setVisibility(View.GONE);
         pintarRiesgo(p);
         if (p.getGeneratedAt() != null) {
-            String generada = PrediccionFugasActivity.fechaCorta(p.getGeneratedAt());
+            String generada = Fechas.corta(p.getGeneratedAt());
             tvGenerada.setText(generada.isEmpty() ? "" : "Actualizada: " + generada);
         }
 

@@ -16,6 +16,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.content.Intent;
 
 /**
  * Activity base que aplica los insets del sistema (barra de estado y barra de
@@ -92,6 +93,32 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
 
         ViewCompat.requestApplyInsets(contenido);
+    }
+
+    /** Barra inferior compartida por las pantallas de tanque, calidad, presión y consumo. */
+    protected void configurarBottomNav(int itemActual) {
+        BottomNavigationView nav = findViewById(R.id.bottomNav);
+        if (nav == null) return;
+        nav.setSelectedItemId(itemActual);
+        nav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == itemActual) return true;
+            if (id == R.id.nav_tanque) {
+                startActivity(new Intent(this, NivelTanqueActivity.class));
+            } else if (id == R.id.nav_calidad) {
+                startActivity(new Intent(this, CalidadActivity.class));
+            } else if (id == R.id.nav_presion) {
+                startActivity(new Intent(this, PresionActivity.class));
+            } else if (id == R.id.nav_consumo) {
+                startActivity(new Intent(this, ConsumoActivity.class));
+            }
+            finish();
+            return true;
+        });
+    }
+
+    protected int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
     }
 
     private BottomNavigationView buscarBottomNav(View vista) {

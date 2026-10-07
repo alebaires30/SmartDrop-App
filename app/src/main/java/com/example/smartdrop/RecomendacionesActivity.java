@@ -1,7 +1,6 @@
 package com.example.smartdrop;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
@@ -90,8 +88,10 @@ public class RecomendacionesActivity extends BaseActivity {
         fila.setPadding(32, 24, 32, 24);
         fila.setGravity(Gravity.CENTER_VERTICAL);
 
-        // Las imágenes ilustrativas se cargan desde los recursos locales.
-        int resId = getResources().getIdentifier(tip.getIconoDrawable(), "drawable", getPackageName());
+        // Las imágenes ilustrativas se cargan desde los recursos locales (tip_<id> si el servidor no indica otra).
+        String drawable = tip.getIconoDrawable() != null ? tip.getIconoDrawable()
+                : tip.getId() != null ? "tip_" + tip.getId() : null;
+        int resId = drawable == null ? 0 : getResources().getIdentifier(drawable, "drawable", getPackageName());
         if (resId != 0) {
             ImageView icono = new ImageView(this);
             LinearLayout.LayoutParams paramsIcono = new LinearLayout.LayoutParams(96, 96);

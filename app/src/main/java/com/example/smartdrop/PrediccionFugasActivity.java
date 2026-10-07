@@ -12,16 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -33,8 +28,6 @@ import retrofit2.Response;
  * evaluación de cada vivienda, con las posibles fugas primero y todos sus detalles.
  */
 public class PrediccionFugasActivity extends BaseActivity {
-
-    private static final Pattern DESFASE = Pattern.compile("([+-]\\d{2}:\\d{2})$");
 
     private SwipeRefreshLayout swipeRefresh;
     private TextView tvMonitor, tvAvisos, tvSinDatos;
@@ -152,7 +145,7 @@ public class PrediccionFugasActivity extends BaseActivity {
     private void pintarMonitor(FugasResponse datos) {
         FugasResponse.Monitor monitor = datos.getMonitor();
         int cada = monitor == null ? 10 : (int) Math.round(monitor.getCadaMinutos());
-        Date ultimo = monitor == null ? null : parseFecha(monitor.getUltimoCiclo());
+        Date ultimo = monitor == null ? null : Fechas.parse(monitor.getUltimoCiclo());
         boolean activo = false;
         String texto;
         if (ultimo == null) {
@@ -174,24 +167,5 @@ public class PrediccionFugasActivity extends BaseActivity {
         }
         tvMonitor.setText(texto);
         tvMonitor.setTextColor(ContextCompat.getColor(this, activo ? R.color.status_green : R.color.status_amber));
-    }
-
-    /** Convierte una fecha ISO 8601 del servidor (terminada en Z o en un desfase ±hh:mm) a Date; null si no es válida. */
-    static Date parseFecha(String iso) {
-        if (iso == null || iso.length() < 19) return null;
-        try {
-            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-            Matcher desfase = DESFASE.matcher(iso);
-            formato.setTimeZone(TimeZone.getTimeZone(desfase.find() ? "GMT" + desfase.group(1) : "UTC"));
-            return formato.parse(iso.substring(0, 19));
-        } catch (ParseException e) {
-            return null;
-        }
-    }
-
-    /** Fecha y hora local corta ("06/10 14:25"), o cadena vacía si la fecha no es válida. */
-    static String fechaCorta(String iso) {
-        Date fecha = parseFecha(iso);
-        return fecha == null ? "" : new SimpleDateFormat("dd/MM HH:mm", Locale.getDefault()).format(fecha);
     }
 }

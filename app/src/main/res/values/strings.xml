@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name">SmartDrop</string>
-    <string name="cerrar_sesion">Cerrar sesión</string>
-    <string name="bienvenida">Bienvenido</string>
     <string name="enviar_reporte">Enviar reporte</string>
 </resources>

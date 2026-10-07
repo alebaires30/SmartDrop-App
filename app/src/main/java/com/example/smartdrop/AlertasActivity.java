@@ -165,7 +165,7 @@ public class AlertasActivity extends BaseActivity {
         }
 
         TextView fecha = new TextView(this);
-        String fechaCorta = PrediccionFugasActivity.fechaCorta(alerta.valor.getFecha());
+        String fechaCorta = Fechas.corta(alerta.valor.getFecha());
         String origen = alerta.valor.getNic() == null || alerta.valor.getNic().isEmpty() ? "" : alerta.valor.getNic() + " · ";
         fecha.setText(origen + (fechaCorta.isEmpty() ? "Lectura reciente" : "Lectura del " + fechaCorta));
         fecha.setTextColor(getColor(R.color.text_secondary));
@@ -206,10 +206,6 @@ public class AlertasActivity extends BaseActivity {
 
     private static String corto(double numero) {
         return numero == Math.rint(numero) ? String.valueOf((long) numero) : String.format(Locale.getDefault(), "%.1f", numero);
-    }
-
-    private int dp(int value) {
-        return Math.round(value * getResources().getDisplayMetrics().density);
     }
 
     private static class AlertaSensor {

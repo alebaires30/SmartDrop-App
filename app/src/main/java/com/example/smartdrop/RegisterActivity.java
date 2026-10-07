@@ -1,9 +1,7 @@
 package com.example.smartdrop;
 
-
 import android.os.Bundle;
 import android.widget.*;
-import androidx.appcompat.app.AppCompatActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,7 +12,6 @@ public class RegisterActivity extends BaseActivity {
     //Referencias de los campos del fomulario
     EditText nombre, apellido, correo, password, confirmPassword;
     Button btnCrear;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +44,6 @@ public class RegisterActivity extends BaseActivity {
             Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
             return;
         }
-
 
         RegisterRequest request = new RegisterRequest(
                 nombreVal,

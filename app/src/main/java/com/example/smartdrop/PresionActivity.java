@@ -3,11 +3,8 @@ package com.example.smartdrop;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.content.Intent;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,7 +20,6 @@ public class PresionActivity extends BaseActivity {
     private Runnable tareaPolling;
     private static final int ID_VALVULA = 2;
 
-
     private boolean cargaEnProgreso = false;
 
     @Override
@@ -38,7 +34,6 @@ public class PresionActivity extends BaseActivity {
         tvDescripcionPresion = findViewById(R.id.tvDescripcionPresion);
         tvValvula = findViewById(R.id.tvValvula);
 
-
         btnVolver.setOnClickListener(v -> finish());
 
         configurarBottomNav(R.id.nav_presion);
@@ -48,27 +43,6 @@ public class PresionActivity extends BaseActivity {
             cargarEstadoValvula();
             handler.postDelayed(tareaPolling, INTERVALO_POLLING_MS);
         };
-    }
-
-    private void configurarBottomNav(int itemActual) {
-        com.google.android.material.bottomnavigation.BottomNavigationView nav = findViewById(R.id.bottomNav);
-        if (nav == null) return;
-        nav.setSelectedItemId(itemActual);
-        nav.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == itemActual) return true;
-            if (id == R.id.nav_tanque) {
-                startActivity(new Intent(this, NivelTanqueActivity.class));
-            } else if (id == R.id.nav_calidad) {
-                startActivity(new Intent(this, CalidadActivity.class));
-            } else if (id == R.id.nav_presion) {
-                startActivity(new Intent(this, PresionActivity.class));
-            } else if (id == R.id.nav_consumo) {
-                startActivity(new Intent(this, ConsumoActivity.class));
-            }
-            finish();
-            return true;
-        });
     }
 
     @Override
@@ -87,7 +61,6 @@ public class PresionActivity extends BaseActivity {
         if (cargaEnProgreso) return;
         cargaEnProgreso = true;
 
-
         ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
         api.obtenerEstadoAgua().enqueue(new Callback<EstadoAguaResponse>() {
             @Override
@@ -100,7 +73,7 @@ public class PresionActivity extends BaseActivity {
                 tvEstadoPresion.setText("Presión: " + p.getEstado());
                 tvEstadoPresion.setTextColor(ColorSeveridad.colorDe(PresionActivity.this, p.getColor()));
                 tvDescripcionPresion.setText(p.getDescripcion());
-                tvUltimoAn.setText("Actualizado: " + formatearHora(p.getFecha()));
+                tvUltimoAn.setText("Actualizado: " + Fechas.formatear(p.getFecha(), "hh:mm:ss a", "--:--"));
 
             }
 
@@ -125,17 +98,5 @@ public class PresionActivity extends BaseActivity {
             @Override
             public void onFailure(retrofit2.Call<ValvulaEstadoResponse> call, Throwable t) { }
         });
-    }
-
-    private String formatearHora(String fechaIso) {
-        try {
-            String limpio = fechaIso.length() > 19 ? fechaIso.substring(0, 19) : fechaIso;
-            java.text.SimpleDateFormat entrada = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.getDefault());
-            entrada.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
-            java.text.SimpleDateFormat salida = new java.text.SimpleDateFormat("hh:mm:ss a", java.util.Locale.getDefault());
-            return salida.format(entrada.parse(limpio));
-        } catch (Exception e) {
-            return "--:--";
-        }
     }
 }

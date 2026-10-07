@@ -72,7 +72,7 @@ public class FugasAdapter extends RecyclerView.Adapter<FugasAdapter.ViewHolder> 
 
         String nota = notaDatos(v);
         if (nota.isEmpty() && v.getEvaluado() != null && !v.isPosibleFuga()) {
-            String fecha = PrediccionFugasActivity.fechaCorta(v.getEvaluado());
+            String fecha = Fechas.corta(v.getEvaluado());
             if (!fecha.isEmpty()) nota = "Analizada el " + fecha;
         }
         h.tvNota.setVisibility(nota.isEmpty() ? View.GONE : View.VISIBLE);
