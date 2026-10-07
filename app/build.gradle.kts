@@ -1,5 +1,13 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
+}
+
+// Datos de firma del release en keystore.properties (raíz del proyecto, fuera de Git).
+val keystoreProps = Properties().apply {
+    val file = rootProject.file("keystore.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
 }
 
 android {
@@ -13,12 +21,23 @@ android {
     val apiHost = providers.gradleProperty("smartdropApiHost").orElse("10.0.2.2").get()
     // Dominio público del servidor (solo el nombre: sin https://, puerto ni "/").
     val releaseApiHost = providers.gradleProperty("smartdropReleaseApiHost").orElse("api.smartdrop.com").get()
+    signingConfigs {
+        if (keystoreProps.containsKey("storeFile")) {
+            create("release") {
+                storeFile = file(keystoreProps.getProperty("storeFile"))
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            }
+        }
+    }
     buildTypes {
         debug {
             buildConfigField("String", "API_HOST", "\"$apiHost\"")
         }
         release {
             buildConfigField("String", "API_HOST", "\"$releaseApiHost\"")
+            signingConfigs.findByName("release")?.let { signingConfig = it }
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
