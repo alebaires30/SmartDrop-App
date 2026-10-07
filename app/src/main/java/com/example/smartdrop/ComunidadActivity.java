@@ -75,8 +75,8 @@ public class ComunidadActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<ReporteListResponse> call, Throwable t) {
-                Toast.makeText(ComunidadActivity.this,
-                        "Sin conexión al cargar la comunidad", Toast.LENGTH_SHORT).show();
+                Idioma.toast(ComunidadActivity.this,
+                        "Sin conexión al cargar la comunidad", Toast.LENGTH_SHORT);
             }
         });
     }

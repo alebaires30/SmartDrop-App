@@ -58,6 +58,9 @@ public class InicioActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
+        // Tema e idioma del servidor (pudieron cambiar en la web) y avisos push según el perfil.
+        PreferenciasRemotas.sincronizar(this);
+        AvisosUsuario.iniciar(this);
 
         drawerLayout   = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
@@ -246,8 +249,8 @@ public class InicioActivity extends BaseActivity {
     }
 
     private void cerrarSesion() {
-        SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
-        prefs.edit().clear().apply();
+        AvisosUsuario.cancelar(this);
+        Idioma.limpiarSesion(this);
         Intent intent = new Intent(InicioActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

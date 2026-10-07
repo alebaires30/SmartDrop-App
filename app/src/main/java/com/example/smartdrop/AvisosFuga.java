@@ -160,8 +160,8 @@ public final class AvisosFuga {
     private static void crearCanal(Context context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
         NotificationChannel canal = new NotificationChannel(
-                CANAL, "Avisos de fuga", NotificationManager.IMPORTANCE_HIGH);
-        canal.setDescription("Posibles fugas detectadas automáticamente en las viviendas");
+                CANAL, Idioma.t(context, "Avisos de fuga"), NotificationManager.IMPORTANCE_HIGH);
+        canal.setDescription(Idioma.t(context, "Posibles fugas detectadas automáticamente en las viviendas"));
         NotificationManager manager = context.getSystemService(NotificationManager.class);
         if (manager != null) manager.createNotificationChannel(canal);
     }
@@ -182,9 +182,9 @@ public final class AvisosFuga {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(app, CANAL)
                 .setSmallIcon(R.drawable.ic_warning)
-                .setContentTitle(titulo(alerta))
-                .setContentText(resumen(alerta))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(detalle(alerta)))
+                .setContentTitle(Idioma.t(app, titulo(alerta)))
+                .setContentText(Idioma.t(app, resumen(alerta)))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(Idioma.t(app, detalle(alerta))))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setContentIntent(abrir);

@@ -95,7 +95,7 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
                 List<TrayectoriaTanqueResponse.Punto> puntos = response.isSuccessful() && response.body() != null
                         ? response.body().getTrayectoria() : null;
                 if (puntos == null || puntos.isEmpty()) {
-                    chartTrayectoria.setNoDataText("Aún no hay proyección. Realiza las predicciones.");
+                    chartTrayectoria.setNoDataText(Idioma.t(ZonaPrediccionDetalleActivity.this, "Aún no hay proyección. Realiza las predicciones."));
                     chartTrayectoria.clear();
                     return;
                 }
@@ -122,7 +122,7 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
             @Override
             public void onFailure(Call<TrayectoriaTanqueResponse> call, Throwable t) {
                 progresoTrayectoria.setVisibility(View.GONE);
-                chartTrayectoria.setNoDataText("Sin conexión con el servidor");
+                chartTrayectoria.setNoDataText(Idioma.t(ZonaPrediccionDetalleActivity.this, "Sin conexión con el servidor"));
                 chartTrayectoria.invalidate();
             }
         });
@@ -136,7 +136,7 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
                 HistorialConsumoResponse datos = response.isSuccessful() ? response.body() : null;
                 List<HistorialConsumoResponse.Hora> horas = datos == null ? null : datos.getHistorial();
                 if (horas == null || horas.isEmpty()) {
-                    chartConsumo.setNoDataText("Sin consumo registrado todavía");
+                    chartConsumo.setNoDataText(Idioma.t(ZonaPrediccionDetalleActivity.this, "Sin consumo registrado todavía"));
                     chartConsumo.clear();
                     return;
                 }
@@ -166,7 +166,7 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
             @Override
             public void onFailure(Call<HistorialConsumoResponse> call, Throwable t) {
                 progresoConsumo.setVisibility(View.GONE);
-                chartConsumo.setNoDataText("Sin conexión con el servidor");
+                chartConsumo.setNoDataText(Idioma.t(ZonaPrediccionDetalleActivity.this, "Sin conexión con el servidor"));
                 chartConsumo.invalidate();
             }
         });
@@ -186,8 +186,8 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
             @Override
             public void onResponse(Call<ZonaEstadoResponse> call, Response<ZonaEstadoResponse> response) {
                 if (!response.isSuccessful() || response.body() == null) {
-                    Toast.makeText(ZonaPrediccionDetalleActivity.this,
-                            "No se pudo cargar el estado de la zona", Toast.LENGTH_SHORT).show();
+                    Idioma.toast(ZonaPrediccionDetalleActivity.this,
+                            "No se pudo cargar el estado de la zona", Toast.LENGTH_SHORT);
                     return;
                 }
                 mostrar(response.body());
@@ -195,8 +195,8 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<ZonaEstadoResponse> call, Throwable t) {
-                Toast.makeText(ZonaPrediccionDetalleActivity.this,
-                        "Sin conexión con el servidor", Toast.LENGTH_SHORT).show();
+                Idioma.toast(ZonaPrediccionDetalleActivity.this,
+                        "Sin conexión con el servidor", Toast.LENGTH_SHORT);
             }
         });
     }

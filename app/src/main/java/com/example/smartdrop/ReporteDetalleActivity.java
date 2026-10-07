@@ -144,7 +144,7 @@ public class ReporteDetalleActivity extends BaseActivity {
     private void avisarErrorUnaVez(String mensaje) {
         if (errorMostrado) return;
         errorMostrado = true;
-        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+        Idioma.toast(this, mensaje, Toast.LENGTH_SHORT);
     }
 
     private void pintarReporte(Reporte reporte) {
@@ -208,15 +208,15 @@ public class ReporteDetalleActivity extends BaseActivity {
                 if (response.isSuccessful() && response.body() != null && response.body().isOk()) {
                     cargarDetalle();
                 } else {
-                    Toast.makeText(ReporteDetalleActivity.this,
-                            "No se pudo enviar el mensaje", Toast.LENGTH_SHORT).show();
+                    Idioma.toast(ReporteDetalleActivity.this,
+                            "No se pudo enviar el mensaje", Toast.LENGTH_SHORT);
                 }
             }
 
             @Override
             public void onFailure(Call<ReporteMensajeResponse> call, Throwable t) {
-                Toast.makeText(ReporteDetalleActivity.this,
-                        "Sin conexión", Toast.LENGTH_SHORT).show();
+                Idioma.toast(ReporteDetalleActivity.this,
+                        "Sin conexión", Toast.LENGTH_SHORT);
             }
         });
     }
@@ -246,16 +246,16 @@ public class ReporteDetalleActivity extends BaseActivity {
             @Override
             public void onResponse(Call<ReporteCrearResponse> call, Response<ReporteCrearResponse> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().isOk()) {
-                    Toast.makeText(ReporteDetalleActivity.this,
-                            "Evidencia agregada", Toast.LENGTH_SHORT).show();
+                    Idioma.toast(ReporteDetalleActivity.this,
+                            "Evidencia agregada", Toast.LENGTH_SHORT);
                     cargarDetalle();
                 }
             }
 
             @Override
             public void onFailure(Call<ReporteCrearResponse> call, Throwable t) {
-                Toast.makeText(ReporteDetalleActivity.this,
-                        "Sin conexión al subir evidencia", Toast.LENGTH_SHORT).show();
+                Idioma.toast(ReporteDetalleActivity.this,
+                        "Sin conexión al subir evidencia", Toast.LENGTH_SHORT);
             }
         });
     }

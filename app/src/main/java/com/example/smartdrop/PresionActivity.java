@@ -18,7 +18,8 @@ public class PresionActivity extends BaseActivity {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private static final long INTERVALO_POLLING_MS = 10000;
     private Runnable tareaPolling;
-    private static final int ID_VALVULA = 2;
+    /** Válvula principal (la misma que muestra el panel de presión de la web). */
+    private static final int ID_VALVULA = 1;
 
     private boolean cargaEnProgreso = false;
 
@@ -90,13 +91,19 @@ public class PresionActivity extends BaseActivity {
         api.obtenerEstadoValvula(ID_VALVULA).enqueue(new retrofit2.Callback<ValvulaEstadoResponse>() {
             @Override
             public void onResponse(retrofit2.Call<ValvulaEstadoResponse> call, retrofit2.Response<ValvulaEstadoResponse> response) {
-                if (!response.isSuccessful() || response.body() == null) return;
+                if (!response.isSuccessful() || response.body() == null) {
+                    tvValvula.setText("Válvula: Sin datos");
+                    return;
+                }
                 boolean abierta = "abierta".equalsIgnoreCase(response.body().getEstadoActual());
-                tvValvula.setText("Válvula: " + (abierta ? "ABIERTA" : "CERRADA"));
+                tvValvula.setText(abierta ? "Válvula: ABIERTA" : "Válvula: CERRADA");
+                tvValvula.setTextColor(getColor(abierta ? R.color.status_green : R.color.text_alert));
             }
 
             @Override
-            public void onFailure(retrofit2.Call<ValvulaEstadoResponse> call, Throwable t) { }
+            public void onFailure(retrofit2.Call<ValvulaEstadoResponse> call, Throwable t) {
+                tvValvula.setText("Válvula: Sin datos");
+            }
         });
     }
 }

@@ -68,6 +68,9 @@ public class AdminDashboardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
+        // Tema e idioma del servidor (pudieron cambiar en la web) y avisos push según el perfil.
+        PreferenciasRemotas.sincronizar(this);
+        AvisosUsuario.iniciar(this);
 
         drawerLayout   = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationViewAdmin);
@@ -243,7 +246,7 @@ public class AdminDashboardActivity extends BaseActivity {
             @Override
             public void onFailure(Call<ResumenDashboardResponse> call, Throwable t) {
                 cargaEnProgreso = false;
-                Toast.makeText(AdminDashboardActivity.this, "No se pudo cargar el resumen", Toast.LENGTH_SHORT).show();
+                Idioma.toast(AdminDashboardActivity.this, "No se pudo cargar el resumen", Toast.LENGTH_SHORT);
             }
         });
     }
@@ -287,7 +290,7 @@ public class AdminDashboardActivity extends BaseActivity {
                 } else {
                     try {
                         String err = response.errorBody() != null ? response.errorBody().string() : "Error " + response.code();
-                        Toast.makeText(AdminDashboardActivity.this, "Error al obtener historial: " + err, Toast.LENGTH_SHORT).show();
+                        Idioma.toast(AdminDashboardActivity.this, "Error al obtener historial: " + err, Toast.LENGTH_SHORT);
                     } catch (Exception ignored) {}
                 }
             }
@@ -321,9 +324,9 @@ public class AdminDashboardActivity extends BaseActivity {
     }
 
     private void cerrarSesion() {
+        AvisosUsuario.cancelar(this);
         AvisosFuga.cancelar(this);
-        SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
-        prefs.edit().clear().apply();
+        Idioma.limpiarSesion(this);
         Intent intent = new Intent(AdminDashboardActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

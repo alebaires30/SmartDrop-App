@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity {
 
         // Escenario 2: campos vacíos
         if (correoVal.isEmpty() || passVal.isEmpty()) {
-            Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
+            Idioma.toast(this, "Completa todos los campos", Toast.LENGTH_SHORT);
             return;
         }
 
@@ -70,9 +70,9 @@ public class MainActivity extends BaseActivity {
                     editor.putInt("id_usuario", body.getIdUsuario());
                     editor.apply();
 
-                    Toast.makeText(MainActivity.this,
+                    Idioma.toast(MainActivity.this,
                             "¡Bienvenido " + body.getNombre() + "!",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT);
 
                     if (body.getIdRol() == 2) {
                         Intent intent = new Intent(MainActivity.this, AdminDashboardActivity.class);
@@ -84,21 +84,21 @@ public class MainActivity extends BaseActivity {
 
                 } else if (response.code() == 400) {
                     // Escenario 2 y 3: credenciales incorrectas o usuario no encontrado
-                    Toast.makeText(MainActivity.this,
+                    Idioma.toast(MainActivity.this,
                             "Correo o contraseña incorrectos.",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_LONG);
                 } else {
-                    Toast.makeText(MainActivity.this,
+                    Idioma.toast(MainActivity.this,
                             "Error inesperado. Intenta de nuevo.",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT);
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this,
+                Idioma.toast(MainActivity.this,
                         "No se pudo conectar al servidor: " + t.getMessage(),
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_LONG);
             }
         });
     }
@@ -121,8 +121,8 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<MisViviendasResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this,
-                        "No se pudo verificar tu vivienda, intenta vincularla.", Toast.LENGTH_SHORT).show();
+                Idioma.toast(MainActivity.this,
+                        "No se pudo verificar tu vivienda, intenta vincularla.", Toast.LENGTH_SHORT);
                 startActivity(new Intent(MainActivity.this, VincularViviendaActivity.class));
                 finish();
             }

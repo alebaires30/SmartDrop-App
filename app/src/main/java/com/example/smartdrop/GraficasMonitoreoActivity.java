@@ -173,7 +173,7 @@ public class GraficasMonitoreoActivity extends BaseActivity {
 
     private void configurarChart() {
         GraficaUtil.estilo(lineChart, this);
-        lineChart.setNoDataText("Cargando…");
+        lineChart.setNoDataText(Idioma.t(this, "Cargando…"));
     }
 
     private String[] calcularRangoFechas() {
@@ -221,13 +221,13 @@ public class GraficasMonitoreoActivity extends BaseActivity {
                     if (switchComparar.isChecked()) pintarComparativo(response.body());
                     else pintarIndividual(response.body());
                 } else {
-                    Toast.makeText(GraficasMonitoreoActivity.this, "No se pudo cargar la gráfica.", Toast.LENGTH_SHORT).show();
+                    Idioma.toast(GraficasMonitoreoActivity.this, "No se pudo cargar la gráfica.", Toast.LENGTH_SHORT);
                 }
             }
             @Override
             public void onFailure(@NonNull Call<GraficasResponse> call, @NonNull Throwable t) {
                 terminarCarga();
-                Toast.makeText(GraficasMonitoreoActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Idioma.toast(GraficasMonitoreoActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG);
             }
         });
     }
@@ -277,7 +277,7 @@ public class GraficasMonitoreoActivity extends BaseActivity {
 
         LineData lineData;
         if (!entradasAlerta.isEmpty()) {
-            LineDataSet setAlerta = new LineDataSet(entradasAlerta, "Fuera de rango");
+            LineDataSet setAlerta = new LineDataSet(entradasAlerta, Idioma.t(this, "Fuera de rango"));
             int colorAlerta = ContextCompat.getColor(this, R.color.text_alert);
             setAlerta.setColor(colorAlerta);
             setAlerta.setCircleColor(colorAlerta);

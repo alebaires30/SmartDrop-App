@@ -261,7 +261,7 @@ public class ValvulaActivity extends BaseActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(ValvulaActivity.this, "Comando " + accion + " ejecutado con éxito", Toast.LENGTH_SHORT).show();
+                    Idioma.toast(ValvulaActivity.this, "Comando " + accion + " ejecutado con éxito", Toast.LENGTH_SHORT);
                     if ("ABRIR".equalsIgnoreCase(accion) && duracion > 0) {
                         actualizarTemporizadorUI(duracion);
                     } else if ("CERRAR".equalsIgnoreCase(accion)) {
@@ -274,16 +274,16 @@ public class ValvulaActivity extends BaseActivity {
                 } else {
                     try {
                         String errorBody = response.errorBody() != null ? response.errorBody().string() : "Error desconocido";
-                        Toast.makeText(ValvulaActivity.this, "Error Servidor: " + errorBody, Toast.LENGTH_LONG).show();
+                        Idioma.toast(ValvulaActivity.this, "Error Servidor: " + errorBody, Toast.LENGTH_LONG);
                     } catch (Exception e) {
-                        Toast.makeText(ValvulaActivity.this, "Error de servidor: " + response.code(), Toast.LENGTH_SHORT).show();
+                        Idioma.toast(ValvulaActivity.this, "Error de servidor: " + response.code(), Toast.LENGTH_SHORT);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(ValvulaActivity.this, "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Idioma.toast(ValvulaActivity.this, "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG);
             }
         });
     }
@@ -320,7 +320,7 @@ public class ValvulaActivity extends BaseActivity {
                 } else {
                     try {
                         String err = response.errorBody() != null ? response.errorBody().string() : "Error " + response.code();
-                        Toast.makeText(ValvulaActivity.this, "Error al obtener historial: " + err, Toast.LENGTH_SHORT).show();
+                        Idioma.toast(ValvulaActivity.this, "Error al obtener historial: " + err, Toast.LENGTH_SHORT);
                     } catch (Exception ignored) {}
                 }
             }
@@ -349,10 +349,10 @@ public class ValvulaActivity extends BaseActivity {
                             if (seg >= 5) {
                                 enviarComandoControl("ABRIR", seg);
                             } else {
-                                Toast.makeText(this, "El tiempo mínimo es 5s", Toast.LENGTH_SHORT).show();
+                                Idioma.toast(this, "El tiempo mínimo es 5s", Toast.LENGTH_SHORT);
                             }
                         } catch (NumberFormatException e) {
-                            Toast.makeText(this, "Valor no válido", Toast.LENGTH_SHORT).show();
+                            Idioma.toast(this, "Valor no válido", Toast.LENGTH_SHORT);
                         }
                     }
                 })

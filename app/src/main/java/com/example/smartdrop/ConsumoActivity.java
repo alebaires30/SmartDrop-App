@@ -123,7 +123,7 @@ public class ConsumoActivity extends BaseActivity {
             etiquetas.add(r.getSerie().get(i).getFecha());
         }
 
-        LineDataSet set = new LineDataSet(entradas, "Consumo (L)");
+        LineDataSet set = new LineDataSet(entradas, Idioma.t(this, "Consumo (L)"));
         int colorLinea = ContextCompat.getColor(this, R.color.brand_accent);
         set.setColor(colorLinea);
         set.setCircleColor(colorLinea);

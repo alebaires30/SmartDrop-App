@@ -9,6 +9,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
 import retrofit2.http.Part;
@@ -32,6 +33,26 @@ public interface ApiService {
     );
     @GET("api/resumen/")
     Call<ResumenDashboardResponse> obtenerResumen();
+
+    // ── Perfil y preferencias (compartidas con la web) ──
+    /** Catálogo de traducción (público, el mismo de la web). */
+    @GET("api/i18n/{idioma}/")
+    Call<ResponseBody> obtenerCatalogo(@Path("idioma") String idioma);
+
+    @GET("auth/perfil/")
+    Call<Perfil.Datos> obtenerPerfil();
+
+    @PATCH("auth/perfil/")
+    Call<Perfil.EdicionResponse> editarPerfil(@Body Map<String, String> datos);
+
+    @GET("auth/preferencias/")
+    Call<Perfil.PreferenciasResponse> obtenerPreferencias();
+
+    @PATCH("auth/preferencias/")
+    Call<Perfil.PreferenciasResponse> actualizarPreferencias(@Body Map<String, Object> cambios);
+
+    @GET("api/notificaciones/")
+    Call<Perfil.AvisosResponse> obtenerAvisos();
 
     @GET("auth/mis-viviendas/")
     Call<MisViviendasResponse> obtenerMisViviendas();

@@ -34,7 +34,7 @@ public class VincularViviendaActivity extends BaseActivity {
         String nombreVal = etNombreTitular.getText().toString().trim();
 
         if (cuentaVal.isEmpty() || nombreVal.isEmpty()) {
-            Toast.makeText(this, "Completa todos los campos.", Toast.LENGTH_SHORT).show();
+            Idioma.toast(this, "Completa todos los campos.", Toast.LENGTH_SHORT);
             return;
         }
 
@@ -46,11 +46,11 @@ public class VincularViviendaActivity extends BaseActivity {
             public void onResponse(Call<VincularViviendaResponse> call, Response<VincularViviendaResponse> response) {
                 btnVincular.setEnabled(true);
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(VincularViviendaActivity.this,
+                    Idioma.toast(VincularViviendaActivity.this,
                             response.body().getMensaje() != null
                                     ? response.body().getMensaje()
                                     : "Vivienda vinculada exitosamente.",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_LONG);
                     Intent intent = new Intent(VincularViviendaActivity.this, InicioActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -66,16 +66,16 @@ public class VincularViviendaActivity extends BaseActivity {
                             }
                         }
                     } catch (Exception ignored) { }
-                    Toast.makeText(VincularViviendaActivity.this,
-                            mensajeError, Toast.LENGTH_LONG).show();
+                    Idioma.toast(VincularViviendaActivity.this,
+                            mensajeError, Toast.LENGTH_LONG);
                 }
             }
 
             @Override
             public void onFailure(Call<VincularViviendaResponse> call, Throwable t) {
                 btnVincular.setEnabled(true);
-                Toast.makeText(VincularViviendaActivity.this,
-                        "Sin conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Idioma.toast(VincularViviendaActivity.this,
+                        "Sin conexión: " + t.getMessage(), Toast.LENGTH_LONG);
             }
         });
     }

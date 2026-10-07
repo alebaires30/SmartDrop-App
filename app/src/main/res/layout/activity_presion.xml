@@ -60,7 +60,7 @@
                 android:id="@+id/tvValvula"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Válvula: ABIERTA"
+                android:text="Válvula: Sin datos"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:layout_marginTop="40dp"

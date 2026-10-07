@@ -30,7 +30,7 @@ final class GraficaUtil {
         chart.setPinchZoom(false);
         chart.setDoubleTapToZoomEnabled(false);
         chart.setExtraOffsets(4f, 4f, 8f, 6f);
-        chart.setNoDataText("Sin datos para mostrar");
+        chart.setNoDataText(Idioma.t(context, "Sin datos para mostrar"));
         chart.setNoDataTextColor(texto);
 
         XAxis x = chart.getXAxis();
@@ -59,12 +59,14 @@ final class GraficaUtil {
     }
 
     static void etiquetas(LineChart chart, List<String> etiquetas) {
-        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(etiquetas));
+        List<String> traducidas = new java.util.ArrayList<>();
+        for (String etiqueta : etiquetas) traducidas.add(Idioma.t(etiqueta));
+        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(traducidas));
     }
 
     /** Línea principal: suave, sin puntos y con relleno degradado opcional. */
     static LineDataSet linea(List<Entry> datos, String nombre, int color, boolean relleno) {
-        LineDataSet set = new LineDataSet(datos, nombre);
+        LineDataSet set = new LineDataSet(datos, Idioma.t(nombre));
         set.setColor(color);
         set.setLineWidth(2f);
         set.setDrawCircles(false);
