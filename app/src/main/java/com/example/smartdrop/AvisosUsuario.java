@@ -137,8 +137,8 @@ public final class AvisosUsuario {
     private static void crearCanal(Context context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
         NotificationChannel canal = new NotificationChannel(
-                CANAL, Idioma.t(context, "Alertas de tu vivienda"), NotificationManager.IMPORTANCE_DEFAULT);
-        canal.setDescription(Idioma.t(context, "Nivel, suministro, calidad, consumo y reportes semanales"));
+                CANAL, "Alertas de tu vivienda", NotificationManager.IMPORTANCE_DEFAULT);
+        canal.setDescription("Nivel, suministro, calidad, consumo y reportes semanales");
         NotificationManager manager = context.getSystemService(NotificationManager.class);
         if (manager != null) manager.createNotificationChannel(canal);
     }
@@ -155,10 +155,10 @@ public final class AvisosUsuario {
         int id = ID_BASE + (aviso.clave.hashCode() & 0x0FFFFFFF) % 100000;
         PendingIntent abrir = PendingIntent.getActivity(
                 app, id, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        String mensaje = Idioma.t(app, aviso.mensaje == null ? "" : aviso.mensaje);
+        String mensaje = aviso.mensaje == null ? "" : aviso.mensaje;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(app, CANAL)
                 .setSmallIcon(R.drawable.ic_warning)
-                .setContentTitle(aviso.titulo == null ? "SmartDrop" : Idioma.t(app, aviso.titulo))
+                .setContentTitle(aviso.titulo == null ? "SmartDrop" : aviso.titulo)
                 .setContentText(mensaje)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(mensaje))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

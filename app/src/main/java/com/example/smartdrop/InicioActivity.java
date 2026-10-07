@@ -250,7 +250,7 @@ public class InicioActivity extends BaseActivity {
 
     private void cerrarSesion() {
         AvisosUsuario.cancelar(this);
-        Idioma.limpiarSesion(this);
+        Sesion.limpiar(this);
         Intent intent = new Intent(InicioActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

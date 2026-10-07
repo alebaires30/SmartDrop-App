@@ -56,7 +56,6 @@ public class PerfilActivity extends BaseActivity {
     };
     private static final Opcion[] PREFERENCIAS = {
             new Opcion("modo_oscuro", "Modo oscuro", "Colores oscuros en la app y la web", R.drawable.ic_moon),
-            new Opcion("idioma", "Idioma español", "Apágalo para usar SmartDrop en inglés", R.drawable.ic_language),
             new Opcion("reportes_semanales", "Reportes semanales", "Resumen de tu consumo cada 7 días", R.drawable.ic_chart),
     };
 
@@ -105,7 +104,6 @@ public class PerfilActivity extends BaseActivity {
         tvRol.setText(sesion.getString("nombre_rol", ""));
         pintando = true;
         interruptores.get("modo_oscuro").setChecked(sesion.getBoolean("modo_oscuro", false));
-        interruptores.get("idioma").setChecked(!Idioma.enIngles(this));
         pintando = false;
         cargar();
     }
@@ -125,7 +123,6 @@ public class PerfilActivity extends BaseActivity {
             fila.setOnClickListener(v -> interruptor.toggle());
             interruptores.put(opcion.campo, interruptor);
             contenedor.addView(fila);
-            Idioma.traducirArbol(fila);
         }
     }
 
@@ -182,7 +179,6 @@ public class PerfilActivity extends BaseActivity {
         detalle.setTextColor(getColor(R.color.text_primary));
         fila.setPadding(0, dp(4), 0, dp(4));
         layoutDatos.addView(fila);
-        Idioma.traducirArbol(titulo);
     }
 
     private static boolean vacio(String texto) {
@@ -198,16 +194,14 @@ public class PerfilActivity extends BaseActivity {
         marcar("consumo_elevado", prefs.consumoElevado);
         marcar("modo_oscuro", prefs.modoOscuro);
         marcar("reportes_semanales", prefs.reportesSemanales);
-        if (prefs.idioma != null) marcar("idioma", Idioma.ESPANOL.equals(prefs.idioma));
         pintando = false;
 
         boolean hayReporte = reporte != null && !vacio(reporte.mensaje);
         layoutReporte.setVisibility(hayReporte ? View.VISIBLE : View.GONE);
         if (hayReporte) tvReporte.setText(reporte.mensaje);
 
-        // La web pudo cambiar el tema o el idioma: se aplican también aquí.
+        // La web pudo cambiar el tema: se aplica también aquí.
         aplicarTema(Boolean.TRUE.equals(prefs.modoOscuro));
-        if (prefs.idioma != null) Idioma.cambiar(this, prefs.idioma);
     }
 
     private void marcar(String campo, Boolean valor) {
@@ -217,7 +211,7 @@ public class PerfilActivity extends BaseActivity {
 
     private void guardar(String campo, boolean activo) {
         Map<String, Object> cambio = new HashMap<>();
-        cambio.put(campo, "idioma".equals(campo) ? (activo ? Idioma.ESPANOL : Idioma.INGLES) : activo);
+        cambio.put(campo, activo);
         tvEstado.setText("Guardando…");
         if ("modo_oscuro".equals(campo)) aplicarTema(activo);
         api.actualizarPreferencias(cambio).enqueue(new Callback<Perfil.PreferenciasResponse>() {
@@ -232,7 +226,6 @@ public class PerfilActivity extends BaseActivity {
                 boolean hayReporte = cuerpo.reporteSemanal != null && !vacio(cuerpo.reporteSemanal.mensaje);
                 layoutReporte.setVisibility(hayReporte ? View.VISIBLE : View.GONE);
                 if (hayReporte) tvReporte.setText(cuerpo.reporteSemanal.mensaje);
-                if ("idioma".equals(campo)) Idioma.cambiar(PerfilActivity.this, activo ? Idioma.ESPANOL : Idioma.INGLES);
                 // Las categorías de notificación cambian qué avisos llegan: se revisa de nuevo.
                 AvisosUsuario.revisarAhora(PerfilActivity.this);
             }
@@ -267,13 +260,12 @@ public class PerfilActivity extends BaseActivity {
         EditText apellido = campo(formulario, "Apellido", perfil == null ? "" : perfil.apellido, InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         EditText correo = campo(formulario, "Correo electrónico", perfil == null ? "" : perfil.correo,
                 InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        Idioma.traducirArbol(formulario);
 
         AlertDialog dialogo = new AlertDialog.Builder(this)
-                .setTitle(Idioma.t(this, "Editar perfil"))
+                .setTitle("Editar perfil")
                 .setView(formulario)
-                .setNegativeButton(Idioma.t(this, "Cancelar"), null)
-                .setPositiveButton(Idioma.t(this, "Guardar cambios"), null)
+                .setNegativeButton("Cancelar", null)
+                .setPositiveButton("Guardar cambios", null)
                 .create();
         dialogo.setOnShowListener(d -> dialogo.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             Map<String, String> datos = new HashMap<>();
@@ -302,18 +294,18 @@ public class PerfilActivity extends BaseActivity {
                 if (response.isSuccessful() && response.body() != null && response.body().perfil != null) {
                     dialogo.dismiss();
                     mostrar(response.body().perfil);
-                    Idioma.toast(PerfilActivity.this, "Tu información personal se actualizó correctamente.", Toast.LENGTH_SHORT);
+                    Toast.makeText(PerfilActivity.this, "Tu información personal se actualizó correctamente.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 String error = "No se pudo guardar la información.";
                 if (response.code() == 409) error = "Este correo ya está registrado.";
                 else if (response.code() == 400) error = "Revisa los datos: nombre, apellido y un correo válido.";
-                Idioma.toast(PerfilActivity.this, error, Toast.LENGTH_LONG);
+                Toast.makeText(PerfilActivity.this, error, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(Call<Perfil.EdicionResponse> call, Throwable t) {
-                Idioma.toast(PerfilActivity.this, "Sin conexión con el servidor", Toast.LENGTH_SHORT);
+                Toast.makeText(PerfilActivity.this, "Sin conexión con el servidor", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -321,7 +313,7 @@ public class PerfilActivity extends BaseActivity {
     protected void cerrarSesion() {
         AvisosUsuario.cancelar(this);
         AvisosFuga.cancelar(this);
-        Idioma.limpiarSesion(this);
+        Sesion.limpiar(this);
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

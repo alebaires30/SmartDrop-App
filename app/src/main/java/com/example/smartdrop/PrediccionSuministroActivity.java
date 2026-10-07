@@ -114,14 +114,14 @@ public class PrediccionSuministroActivity extends BaseActivity {
             public void onResponse(Call<ZonasSummaryResponse> call, Response<ZonasSummaryResponse> response) {
                 swipeRefresh.setRefreshing(false);
                 if (response.code() == 403) {
-                    Idioma.toast(PrediccionSuministroActivity.this,
-                            "Esta sección es solo para administradores", Toast.LENGTH_LONG);
+                    Toast.makeText(PrediccionSuministroActivity.this,
+                            "Esta sección es solo para administradores", Toast.LENGTH_LONG).show();
                     finish();
                     return;
                 }
                 if (!response.isSuccessful() || response.body() == null) {
-                    Idioma.toast(PrediccionSuministroActivity.this,
-                            "No se pudieron cargar las zonas", Toast.LENGTH_SHORT);
+                    Toast.makeText(PrediccionSuministroActivity.this,
+                            "No se pudieron cargar las zonas", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 List<ZonaResumen> zonas = response.body().getZonas();
@@ -133,8 +133,8 @@ public class PrediccionSuministroActivity extends BaseActivity {
             @Override
             public void onFailure(Call<ZonasSummaryResponse> call, Throwable t) {
                 swipeRefresh.setRefreshing(false);
-                Idioma.toast(PrediccionSuministroActivity.this,
-                        "Sin conexión con el servidor", Toast.LENGTH_SHORT);
+                Toast.makeText(PrediccionSuministroActivity.this,
+                        "Sin conexión con el servidor", Toast.LENGTH_SHORT).show();
             }
         });
     }

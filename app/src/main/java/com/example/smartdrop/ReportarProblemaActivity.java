@@ -112,8 +112,8 @@ public class ReportarProblemaActivity extends BaseActivity {
             @Override
             public void onFailure(Call<ReporteCatalogoResponse> call, Throwable t) {
                 tvCatalogoEstado.setText("Sin conexión para cargar las categorías.");
-                Idioma.toast(ReportarProblemaActivity.this,
-                        "Sin conexión al cargar tipos", Toast.LENGTH_SHORT);
+                Toast.makeText(ReportarProblemaActivity.this,
+                        "Sin conexión al cargar tipos", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -254,8 +254,8 @@ public class ReportarProblemaActivity extends BaseActivity {
     private void enviarReporte() {
         String descripcion = etDescripcion.getText().toString().trim();
         if (tipoSeleccionado == null || descripcion.length() < 10) {
-            Idioma.toast(this, "Selecciona el tipo y describe el problema (mín. 10 caracteres)",
-                    Toast.LENGTH_LONG);
+            Toast.makeText(this, "Selecciona el tipo y describe el problema (mín. 10 caracteres)",
+                    Toast.LENGTH_LONG).show();
             return;
         }
         btnEnviar.setEnabled(false);
@@ -286,14 +286,14 @@ public class ReportarProblemaActivity extends BaseActivity {
                 btnEnviar.setEnabled(true);
                 btnEnviar.setText(R.string.enviar_reporte);
                 if (response.isSuccessful() && response.body() != null && response.body().isOk()) {
-                    Idioma.toast(ReportarProblemaActivity.this,
-                            "Reporte enviado. El equipo lo revisará pronto.", Toast.LENGTH_LONG);
+                    Toast.makeText(ReportarProblemaActivity.this,
+                            "Reporte enviado. El equipo lo revisará pronto.", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
                     String error = response.body() != null ? response.body().getError() : null;
-                    Idioma.toast(ReportarProblemaActivity.this,
+                    Toast.makeText(ReportarProblemaActivity.this,
                             "No se pudo enviar: " + (error != null ? error : "error " + response.code()),
-                            Toast.LENGTH_LONG);
+                            Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -301,8 +301,8 @@ public class ReportarProblemaActivity extends BaseActivity {
             public void onFailure(Call<ReporteCrearResponse> call, Throwable t) {
                 btnEnviar.setEnabled(true);
                 btnEnviar.setText(R.string.enviar_reporte);
-                Idioma.toast(ReportarProblemaActivity.this,
-                        "Sin conexión. Inténtalo de nuevo.", Toast.LENGTH_LONG);
+                Toast.makeText(ReportarProblemaActivity.this,
+                        "Sin conexión. Inténtalo de nuevo.", Toast.LENGTH_LONG).show();
             }
         });
     }

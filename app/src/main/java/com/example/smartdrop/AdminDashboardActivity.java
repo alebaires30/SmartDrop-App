@@ -246,7 +246,7 @@ public class AdminDashboardActivity extends BaseActivity {
             @Override
             public void onFailure(Call<ResumenDashboardResponse> call, Throwable t) {
                 cargaEnProgreso = false;
-                Idioma.toast(AdminDashboardActivity.this, "No se pudo cargar el resumen", Toast.LENGTH_SHORT);
+                Toast.makeText(AdminDashboardActivity.this, "No se pudo cargar el resumen", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -290,7 +290,7 @@ public class AdminDashboardActivity extends BaseActivity {
                 } else {
                     try {
                         String err = response.errorBody() != null ? response.errorBody().string() : "Error " + response.code();
-                        Idioma.toast(AdminDashboardActivity.this, "Error al obtener historial: " + err, Toast.LENGTH_SHORT);
+                        Toast.makeText(AdminDashboardActivity.this, "Error al obtener historial: " + err, Toast.LENGTH_SHORT).show();
                     } catch (Exception ignored) {}
                 }
             }
@@ -326,7 +326,7 @@ public class AdminDashboardActivity extends BaseActivity {
     private void cerrarSesion() {
         AvisosUsuario.cancelar(this);
         AvisosFuga.cancelar(this);
-        Idioma.limpiarSesion(this);
+        Sesion.limpiar(this);
         Intent intent = new Intent(AdminDashboardActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

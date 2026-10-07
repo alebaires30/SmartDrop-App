@@ -33,7 +33,6 @@ public final class Perfil {
         @SerializedName("consumo_elevado") public Boolean consumoElevado;
         @SerializedName("modo_oscuro") public Boolean modoOscuro;
         @SerializedName("reportes_semanales") public Boolean reportesSemanales;
-        @SerializedName("idioma") public String idioma;
     }
 
     public static class ReporteSemanal {

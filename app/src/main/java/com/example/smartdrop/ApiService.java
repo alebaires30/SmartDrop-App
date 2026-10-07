@@ -35,9 +35,6 @@ public interface ApiService {
     Call<ResumenDashboardResponse> obtenerResumen();
 
     // ── Perfil y preferencias (compartidas con la web) ──
-    /** Catálogo de traducción (público, el mismo de la web). */
-    @GET("api/i18n/{idioma}/")
-    Call<ResponseBody> obtenerCatalogo(@Path("idioma") String idioma);
 
     @GET("auth/perfil/")
     Call<Perfil.Datos> obtenerPerfil();

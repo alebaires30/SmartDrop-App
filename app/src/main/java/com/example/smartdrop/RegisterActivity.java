@@ -36,12 +36,12 @@ public class RegisterActivity extends BaseActivity {
         String confirmVal = confirmPassword.getText().toString().trim();
 
         if (nombreVal.isEmpty() || apellidoVal.isEmpty() || confirmVal.isEmpty() || passVal.isEmpty() || confirmVal.isEmpty()) {
-            Idioma.toast(this, "Completa todos los campos", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (!passVal.equals(confirmVal)){
-            Idioma.toast(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -59,20 +59,20 @@ public class RegisterActivity extends BaseActivity {
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
 
                 if (response.isSuccessful() && response.body() != null) {
-                    Idioma.toast(RegisterActivity.this, "Registro exitoso " + response.body().getMensaje(), Toast.LENGTH_LONG);
+                    Toast.makeText(RegisterActivity.this, "Registro exitoso " + response.body().getMensaje(), Toast.LENGTH_LONG).show();
                     finish();
                 } else if (response.code() == 400) {
-                    Idioma.toast(RegisterActivity.this, "El correo ya está registrado.", Toast.LENGTH_LONG);
+                    Toast.makeText(RegisterActivity.this, "El correo ya está registrado.", Toast.LENGTH_LONG).show();
 
                 }else {
-                    Idioma.toast(RegisterActivity.this, "Error inesperado. Intenta de nuevo.", Toast.LENGTH_LONG);
+                    Toast.makeText(RegisterActivity.this, "Error inesperado. Intenta de nuevo.", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RegisterResponse> call, Throwable t) {
 
-                Idioma.toast(RegisterActivity.this, "No se pudo conectar al servidor: " + t.getMessage(), Toast.LENGTH_LONG);
+                Toast.makeText(RegisterActivity.this, "No se pudo conectar al servidor: " + t.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         });

@@ -27,13 +27,8 @@ import android.content.Intent;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    /** Idioma con el que se creó la pantalla: si cambia en el perfil, se recrea al volver a ella. */
-    private String idiomaAlCrear;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        idiomaAlCrear = Idioma.actual(this);
-        Idioma.instalar(this);
         SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
         boolean modoOscuro = prefs.getBoolean("modo_oscuro", false);
         if (modoOscuro) {
@@ -47,22 +42,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (Idioma.cambioDesde(idiomaAlCrear, this)) recreate();
-    }
-
-    @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         aplicarInsets();
-        // Vistas que no pasaron por la fábrica de Idioma (interruptores, pestañas, tarjetas armadas en
-        // código…): se traducen al crear la pantalla y cada vez que se agregan vistas nuevas.
-        View contenido = findViewById(android.R.id.content);
-        Idioma.traducirArbol(contenido);
-        if (Idioma.enIngles(this)) {
-            contenido.getViewTreeObserver().addOnGlobalLayoutListener(() -> Idioma.traducirArbol(contenido));
-        }
     }
 
     private void aplicarInsets() {

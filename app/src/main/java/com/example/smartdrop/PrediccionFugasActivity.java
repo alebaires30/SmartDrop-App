@@ -72,14 +72,14 @@ public class PrediccionFugasActivity extends BaseActivity {
             public void onResponse(Call<FugasResponse> call, Response<FugasResponse> response) {
                 swipeRefresh.setRefreshing(false);
                 if (response.code() == 403) {
-                    Idioma.toast(PrediccionFugasActivity.this,
-                            "Esta sección es solo para administradores", Toast.LENGTH_LONG);
+                    Toast.makeText(PrediccionFugasActivity.this,
+                            "Esta sección es solo para administradores", Toast.LENGTH_LONG).show();
                     finish();
                     return;
                 }
                 if (!response.isSuccessful() || response.body() == null) {
-                    Idioma.toast(PrediccionFugasActivity.this,
-                            "No se pudo cargar el estado de las viviendas", Toast.LENGTH_SHORT);
+                    Toast.makeText(PrediccionFugasActivity.this,
+                            "No se pudo cargar el estado de las viviendas", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 FugasResponse datos = response.body();
@@ -92,8 +92,8 @@ public class PrediccionFugasActivity extends BaseActivity {
             @Override
             public void onFailure(Call<FugasResponse> call, Throwable t) {
                 swipeRefresh.setRefreshing(false);
-                Idioma.toast(PrediccionFugasActivity.this,
-                        "Sin conexión con el servidor", Toast.LENGTH_SHORT);
+                Toast.makeText(PrediccionFugasActivity.this,
+                        "Sin conexión con el servidor", Toast.LENGTH_SHORT).show();
             }
         });
         cargarAvisos();
@@ -125,8 +125,8 @@ public class PrediccionFugasActivity extends BaseActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 btnMarcarLeidos.setEnabled(true);
                 if (!response.isSuccessful()) {
-                    Idioma.toast(PrediccionFugasActivity.this,
-                            "No se pudieron marcar como leídos", Toast.LENGTH_SHORT);
+                    Toast.makeText(PrediccionFugasActivity.this,
+                            "No se pudieron marcar como leídos", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 AvisosFuga.quitarNotificaciones(PrediccionFugasActivity.this);
@@ -136,8 +136,8 @@ public class PrediccionFugasActivity extends BaseActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 btnMarcarLeidos.setEnabled(true);
-                Idioma.toast(PrediccionFugasActivity.this,
-                        "Sin conexión con el servidor", Toast.LENGTH_SHORT);
+                Toast.makeText(PrediccionFugasActivity.this,
+                        "Sin conexión con el servidor", Toast.LENGTH_SHORT).show();
             }
         });
     }

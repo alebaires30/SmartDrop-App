@@ -73,7 +73,7 @@ public class BusquedaActivity extends BaseActivity {
     private void ejecutarBusqueda() {
         String q = etSearchQuery.getText().toString().trim();
         if (q.isEmpty()) {
-            Idioma.toast(this, "Ingresa un término para buscar", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Ingresa un término para buscar", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -161,7 +161,7 @@ public class BusquedaActivity extends BaseActivity {
         if (intent != null) {
             startActivity(intent);
         } else {
-            Idioma.toast(this, seccion.getTitulo() + ": " + seccion.getContenido(), Toast.LENGTH_LONG);
+            Toast.makeText(this, seccion.getTitulo() + ": " + seccion.getContenido(), Toast.LENGTH_LONG).show();
         }
     }
 }

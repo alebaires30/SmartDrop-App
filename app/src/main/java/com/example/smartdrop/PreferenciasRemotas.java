@@ -31,7 +31,6 @@ final class PreferenciasRemotas {
                             AppCompatDelegate.setDefaultNightMode(
                                     oscuro ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
                         }
-                        if (cuerpo.preferencias.idioma != null) Idioma.cambiar(activity, cuerpo.preferencias.idioma);
                     }
 
                     @Override
