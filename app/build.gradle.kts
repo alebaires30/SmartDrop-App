@@ -11,12 +11,14 @@ android {
     }
 
     val apiHost = providers.gradleProperty("smartdropApiHost").orElse("10.0.2.2").get()
+    // Dominio público del servidor (solo el nombre: sin https://, puerto ni "/").
+    val releaseApiHost = providers.gradleProperty("smartdropReleaseApiHost").orElse("api.smartdrop.com").get()
     buildTypes {
         debug {
             buildConfigField("String", "API_HOST", "\"$apiHost\"")
         }
         release {
-            buildConfigField("String", "API_HOST", "\"api.smartdrop.com\"")
+            buildConfigField("String", "API_HOST", "\"$releaseApiHost\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
