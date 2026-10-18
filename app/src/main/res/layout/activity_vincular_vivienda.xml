@@ -35,7 +35,7 @@
                     android:layout_height="88dp"
                     android:importantForAccessibility="no"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/casa_hero" />
+                    android:src="@drawable/ilus_vincular" />
 
                 <TextView
                     android:layout_width="0dp"

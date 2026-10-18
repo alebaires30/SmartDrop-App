@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Columna de agua (capa 2 de 3): el agua. columna_agua_nivel.xml la recorta desde abajo. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="96dp" android:height="160dp"
+    android:viewportWidth="120" android:viewportHeight="200">
+    <path android:pathData="M46,20H74a10,10 0,0 1,10 10V170a10,10 0,0 1,-10 10H46a10,10 0,0 1,-10 -10V30a10,10 0,0 1,10 -10z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="60" android:startY="20" android:endX="60" android:endY="180">
+                <item android:offset="0" android:color="@color/agua_claro" />
+                <item android:offset="1" android:color="@color/agua" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:fillColor="#FFFFFF" android:fillAlpha="0.4" android:pathData="M42,40h4v110h-4z" />
+</vector>

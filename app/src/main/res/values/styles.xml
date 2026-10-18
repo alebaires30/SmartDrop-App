@@ -4,9 +4,9 @@
     Tipografía (TextAppearance.SmartDrop.*), formas (ShapeAppearance.SmartDrop.*) y estilos
     de componentes (Widget.SmartDrop.*). Los colores son tokens de colors.xml (con modo oscuro).
 
-    Fuentes: Nunito (títulos y números) + Atkinson Hyperlegible Next (todo lo demás), como
+    Fuentes: Montserrat (títulos y números) + Inter (todo lo demás), como
     fuentes descargables. Cada archivo de res/font tiene UN solo peso: para negrita usa la
-    apariencia correcta (Label, BodyStrong…) o @font/atkinson_bold, nunca android:textStyle="bold"
+    apariencia correcta (Label, BodyStrong…) o @font/inter_bold, nunca android:textStyle="bold"
     (eso produce una negrita sintética).
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
@@ -15,10 +15,10 @@
          Tipografía
          ===================================================================== -->
 
-    <!-- Base: Atkinson 400, ink, sin mayúsculas forzadas, sin tracking. -->
+    <!-- Base: Inter 400, ink, sin mayúsculas forzadas, sin tracking. -->
     <style name="TextAppearance.SmartDrop" parent="TextAppearance.AppCompat">
-        <item name="fontFamily">@font/atkinson_regular</item>
-        <item name="android:fontFamily">@font/atkinson_regular</item>
+        <item name="fontFamily">@font/inter_regular</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/ink</item>
@@ -39,15 +39,15 @@
     </style>
 
     <style name="TextAppearance.SmartDrop.Default.Large">
-        <item name="fontFamily">@font/nunito_bold</item>
-        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="fontFamily">@font/montserrat_semibold</item>
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
         <item name="android:textSize">18sp</item>
     </style>
 
-    <!-- Número grande del hero (Nunito 800). -->
+    <!-- Número grande del hero (Montserrat 700). -->
     <style name="TextAppearance.SmartDrop.Display">
-        <item name="fontFamily">@font/nunito_extrabold</item>
-        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">40sp</item>
         <item name="lineHeight">44sp</item>
         <item name="android:letterSpacing">-0.01</item>
@@ -56,8 +56,8 @@
 
     <!-- Título de pantalla (h1). -->
     <style name="TextAppearance.SmartDrop.Headline">
-        <item name="fontFamily">@font/nunito_extrabold</item>
-        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">26sp</item>
         <item name="lineHeight">32sp</item>
         <item name="android:letterSpacing">-0.01</item>
@@ -65,8 +65,8 @@
 
     <!-- Título de sección (h2) y título de la barra superior. -->
     <style name="TextAppearance.SmartDrop.Title">
-        <item name="fontFamily">@font/nunito_extrabold</item>
-        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">20sp</item>
         <item name="lineHeight">26sp</item>
         <item name="android:letterSpacing">-0.01</item>
@@ -74,8 +74,8 @@
 
     <!-- Título de panel / tile (h3). -->
     <style name="TextAppearance.SmartDrop.Subtitle">
-        <item name="fontFamily">@font/nunito_bold</item>
-        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="fontFamily">@font/montserrat_semibold</item>
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
         <item name="android:textSize">18sp</item>
         <item name="lineHeight">24sp</item>
         <item name="android:letterSpacing">-0.01</item>
@@ -93,10 +93,10 @@
         <item name="lineHeight">24sp</item>
     </style>
 
-    <!-- Texto corrido con énfasis (Atkinson 600): títulos de fila, ítems del drawer. -->
+    <!-- Texto corrido con énfasis (Inter 600): títulos de fila, ítems del drawer. -->
     <style name="TextAppearance.SmartDrop.BodyStrong">
-        <item name="fontFamily">@font/atkinson_semibold</item>
-        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
         <item name="android:textSize">16sp</item>
         <item name="lineHeight">24sp</item>
     </style>
@@ -108,27 +108,27 @@
         <item name="android:textColor">@color/ink_2</item>
     </style>
 
-    <!-- Etiquetas de UI (Atkinson 600). -->
+    <!-- Etiquetas de UI (Inter 600). -->
     <style name="TextAppearance.SmartDrop.Label">
-        <item name="fontFamily">@font/atkinson_semibold</item>
-        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
         <item name="android:textSize">14sp</item>
         <item name="lineHeight">20sp</item>
     </style>
 
     <!-- Meta: "Actualizado hace 2 min", fechas, ayudas. -->
     <style name="TextAppearance.SmartDrop.Caption">
-        <item name="fontFamily">@font/atkinson_medium</item>
-        <item name="android:fontFamily">@font/atkinson_medium</item>
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
         <item name="android:textSize">13sp</item>
         <item name="lineHeight">18sp</item>
         <item name="android:textColor">@color/ink_3</item>
     </style>
 
-    <!-- Valor de un tile (KPI): Nunito 800 con cifras tabulares. -->
+    <!-- Valor de un tile (KPI): Montserrat 700 con cifras tabulares. -->
     <style name="TextAppearance.SmartDrop.Number">
-        <item name="fontFamily">@font/nunito_extrabold</item>
-        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">28sp</item>
         <item name="lineHeight">32sp</item>
         <item name="android:letterSpacing">-0.01</item>
@@ -142,51 +142,51 @@
 
     <!-- Unidad junto al número ("kPa", "%", "L"). -->
     <style name="TextAppearance.SmartDrop.Unit">
-        <item name="fontFamily">@font/atkinson_semibold</item>
-        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/ink_2</item>
     </style>
 
-    <!-- Texto de botones (Atkinson 600 16sp). -->
+    <!-- Texto de botones (Inter 600 16sp). -->
     <style name="TextAppearance.SmartDrop.Button">
-        <item name="fontFamily">@font/atkinson_semibold</item>
-        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <!-- Texto de las pills de estado (13sp 600). El color lo pone Widget.SmartDrop.StatusPill.*. -->
     <style name="TextAppearance.SmartDrop.Status">
-        <item name="fontFamily">@font/atkinson_semibold</item>
-        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
         <item name="android:textSize">13sp</item>
         <item name="lineHeight">18sp</item>
     </style>
 
-    <!-- Título de la barra superior: Nunito 800 20sp, ink. -->
+    <!-- Título de la barra superior: Montserrat 700 20sp, ink. -->
     <style name="TextAppearance.SmartDrop.Toolbar">
-        <item name="fontFamily">@font/nunito_extrabold</item>
-        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">20sp</item>
         <item name="android:letterSpacing">-0.01</item>
     </style>
 
     <!-- Etiquetas de la barra inferior (siempre visibles, nunca < 12sp). -->
     <style name="TextAppearance.SmartDrop.NavLabel">
-        <item name="fontFamily">@font/atkinson_medium</item>
-        <item name="android:fontFamily">@font/atkinson_medium</item>
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
         <item name="android:textSize">12sp</item>
     </style>
 
     <style name="TextAppearance.SmartDrop.NavLabel.Active">
-        <item name="fontFamily">@font/atkinson_semibold</item>
-        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
     </style>
 
     <!-- Título de grupo del menú lateral ("Mi casa", "Mi agua"…): 13sp 600 ink_3, sin mayúsculas. -->
     <style name="TextAppearance.SmartDrop.NavGroup">
-        <item name="fontFamily">@font/atkinson_semibold</item>
-        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/ink_3</item>
     </style>
@@ -254,7 +254,7 @@
     </style>
 
     <!-- =====================================================================
-         Botones (48dp, radius_sm, sin mayúsculas, Atkinson 600 16sp)
+         Botones (48dp, radius_sm, sin mayúsculas, Inter 600 16sp)
          ===================================================================== -->
 
     <!-- Principal: añil plano. -->
@@ -383,13 +383,24 @@
         <item name="android:minHeight">@dimen/touch_min</item>
     </style>
 
-    <!-- Hero de la casa (radius_xl, escena sol_soft, única tarjeta con sombra). -->
+    <!-- Hero de la casa (radius_xl, escena de agua azul clara, única tarjeta con sombra). -->
     <style name="Widget.SmartDrop.Card.Hero">
-        <item name="cardBackgroundColor">@color/sol_soft</item>
+        <item name="cardBackgroundColor">@color/agua_grad_medio</item>
         <item name="strokeWidth">0dp</item>
         <item name="cardElevation">2dp</item>
         <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.ExtraLarge</item>
         <item name="contentPadding">@dimen/space_6</item>
+    </style>
+
+    <!-- Escena de agua (tema agua): sin relleno propio; adentro va un FrameLayout con bg_agua,
+         la foto, las olas y las burbujas (ver activity_inicio.xml). -->
+    <style name="Widget.SmartDrop.Card.Agua">
+        <item name="cardBackgroundColor">@color/agua_grad_inicio</item>
+        <item name="strokeColor">@color/cristal_borde</item>
+        <item name="strokeWidth">@dimen/hairline</item>
+        <item name="cardElevation">2dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.ExtraLarge</item>
+        <item name="contentPadding">0dp</item>
     </style>
 
     <!-- Panel teñido de añil (avisos informativos, resumen). -->
@@ -400,7 +411,7 @@
 
     <!-- Panel cálido (consejos de ahorro, estados vacíos amables). -->
     <style name="Widget.SmartDrop.Card.Warm">
-        <item name="cardBackgroundColor">@color/sol_soft</item>
+        <item name="cardBackgroundColor">@color/agua_grad_inicio</item>
         <item name="strokeWidth">0dp</item>
     </style>
 
@@ -415,7 +426,7 @@
          Barras
          ===================================================================== -->
 
-    <!-- Barra superior: surface + línea inferior, título Nunito 800 20sp ink, iconos ink. -->
+    <!-- Barra superior: surface + línea inferior, título Montserrat 700 20sp ink, iconos ink. -->
     <style name="Widget.SmartDrop.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">@drawable/bg_toolbar</item>
         <item name="android:minHeight">@dimen/toolbar_height</item>

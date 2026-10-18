@@ -25,6 +25,11 @@ public class RegisterActivity extends BaseActivity {
         confirmPassword = findViewById(R.id.confirmPassword);
         btnCrear = findViewById(R.id.btnCrear);
 
+        // Tema agua: burbujas, olas y la tarjeta que aparece.
+        AnimacionesAgua.burbujas(findViewById(R.id.burbujasRegistro));
+        AnimacionesAgua.olas(findViewById(R.id.olasRegistro));
+        AnimacionesAgua.entrada(findViewById(R.id.cardRegistro), 120);
+
         btnCrear.setOnClickListener(v -> intentarRegistro());
 
     }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tubería con la válvula cerrada: el agua llega hasta la válvula y no pasa. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="300dp" android:height="56dp"
+    android:viewportWidth="300" android:viewportHeight="56">
+    <path android:strokeColor="@color/stroke_soft" android:strokeWidth="10" android:strokeLineCap="round"
+        android:pathData="M12,32H288" />
+    <path android:strokeColor="@color/agua" android:strokeAlpha="0.6" android:strokeWidth="4" android:strokeLineCap="round"
+        android:pathData="M12,32H128" />
+    <path android:fillColor="@color/bg_warning" android:strokeColor="@color/status_amber" android:strokeWidth="2.5"
+        android:pathData="M137,18h26a9,9 0,0 1,9 9v10a9,9 0,0 1,-9 9h-26a9,9 0,0 1,-9 -9v-10a9,9 0,0 1,9 -9z" />
+    <path android:strokeColor="@color/status_amber" android:strokeWidth="2.5" android:strokeLineCap="round"
+        android:pathData="M150,18V3" />
+</vector>

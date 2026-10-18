@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Escena del hero de la casa cuando no se usa Widget.SmartDrop.Card.Hero: sol_soft, radius_xl. -->
+<!-- Escena del hero de la casa cuando no se usa Widget.SmartDrop.Card.Hero: agua azul clara, radius_xl. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="@color/sol_soft" />
+    <gradient android:angle="315" android:startColor="@color/agua_grad_inicio" android:centerColor="@color/agua_grad_medio" android:endColor="@color/agua_grad_fin" />
     <corners android:radius="@dimen/radius_xl" />
 </shape>

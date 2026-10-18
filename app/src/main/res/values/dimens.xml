@@ -32,8 +32,4 @@
     <dimen name="icon_chip_lg">56dp</dimen>
     <dimen name="status_dot">8dp</dimen>
     <dimen name="avatar">40dp</dimen>
-
-    <!-- Hero de la casa (casa_hero_level): tamaño intrínseco del dibujo -->
-    <dimen name="casa_hero_width">240dp</dimen>
-    <dimen name="casa_hero_height">176dp</dimen>
 </resources>

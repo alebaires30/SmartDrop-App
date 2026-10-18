@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Columna de agua (capa 3 de 3): el contorno del vidrio, el brillo y las marcas de 0, 25, 50, 75 y 100 %. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp" android:height="160dp"
+    android:viewportWidth="120" android:viewportHeight="200">
+    <path android:strokeColor="@color/ink" android:strokeWidth="3" android:strokeLineJoin="round"
+        android:pathData="M44,14H76a14,14 0,0 1,14 14V172a14,14 0,0 1,-14 14H44a14,14 0,0 1,-14 -14V28a14,14 0,0 1,14 -14z" />
+    <path android:strokeColor="@color/ink_3" android:strokeWidth="2" android:strokeLineCap="round"
+        android:pathData="M96,20h10M96,60h6M96,100h10M96,140h6M96,180h10" />
+    <path android:strokeColor="#FFFFFF" android:strokeAlpha="0.7" android:strokeWidth="3" android:strokeLineCap="round"
+        android:pathData="M78,30v40" />
+</vector>

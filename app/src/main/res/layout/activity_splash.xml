@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Splash: la gota cae, crece y da paso a la casa con su tinaco y la marca. Sin fotos de fondo. -->
+<!-- Splash: la gota cae al agua, salen las ondas y aparece la marca. Sin fotos de fondo. -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,12 +11,12 @@
 
     <ImageView
         android:id="@+id/fondoCompleto"
-        android:layout_width="@dimen/casa_hero_width"
-        android:layout_height="@dimen/casa_hero_height"
+        android:layout_width="240dp"
+        android:layout_height="90dp"
         android:alpha="0"
         android:importantForAccessibility="no"
         android:scaleType="fitCenter"
-        android:src="@drawable/casa_hero"
+        android:src="@drawable/ondas_splash"
         app:layout_constraintBottom_toTopOf="@id/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

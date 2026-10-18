@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Burbuja que sube por las escenas de agua. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <gradient
+        android:type="radial"
+        android:gradientRadius="60%p"
+        android:centerX="0.35"
+        android:centerY="0.3"
+        android:startColor="@color/burbuja"
+        android:endColor="#00FFFFFF" />
+    <stroke android:width="1.5dp" android:color="@color/burbuja" />
+</shape>

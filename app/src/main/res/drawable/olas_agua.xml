@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dos olas para el pie de las escenas de agua. Se mueven de lado con AnimacionesAgua. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="480dp"
+    android:height="80dp"
+    android:viewportWidth="480"
+    android:viewportHeight="80">
+    <path
+        android:fillColor="@color/ola_2"
+        android:pathData="M0,44 Q60,58 120,44 T240,44 T360,44 T480,44 V80 H0 Z" />
+    <path
+        android:fillColor="@color/ola_1"
+        android:pathData="M0,34 Q60,18 120,34 T240,34 T360,34 T480,34 V80 H0 Z" />
+</vector>

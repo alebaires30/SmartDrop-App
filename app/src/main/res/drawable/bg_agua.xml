@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tema agua: degradado azul claro de las escenas (en modo oscuro, océano de noche). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient
+        android:angle="315"
+        android:startColor="@color/agua_grad_inicio"
+        android:centerColor="@color/agua_grad_medio"
+        android:endColor="@color/agua_grad_fin"
+        android:type="linear" />
+</shape>

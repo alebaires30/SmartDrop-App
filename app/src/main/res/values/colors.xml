@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    SmartDrop · sistema de diseño "Agua en casa" (modo claro).
+    SmartDrop · sistema de diseño "Agua en casa", tema agua (modo claro): mismos valores que la web.
     Los tokens tienen los mismos nombres que en la web (spec §3, en snake_case) y se
     redefinen con valores oscuros en values-night/colors.xml.
     Debajo están los nombres antiguos: siguen existiendo porque layouts y Java los usan,
@@ -11,27 +11,27 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- ============ Tokens: superficies ============ -->
-    <color name="page">#F3F4F7</color>
+    <color name="page">#F1F8FD</color>
     <color name="surface">#FFFFFF</color>
-    <color name="surface_2">#F7F8FB</color>
-    <color name="surface_tint">#E9EDF8</color>
-    <color name="line">#DDE1EC</color>
-    <color name="line_strong">#BFC6D9</color>
+    <color name="surface_2">#F5FAFE</color>
+    <color name="surface_tint">#E3F2FB</color>
+    <color name="line">#D6E7F2</color>
+    <color name="line_strong">#AECDE2</color>
 
     <!-- ============ Tokens: texto ============ -->
-    <color name="ink">#1B2546</color>
-    <color name="ink_2">#4A5573</color>
-    <color name="ink_3">#5F6985</color>
+    <color name="ink">#0B2A42</color>
+    <color name="ink_2">#3A5870</color>
+    <color name="ink_3">#52708A</color>
 
-    <!-- ============ Tokens: marca (añil) ============ -->
-    <color name="anil">#2B3F8F</color>
-    <color name="anil_strong">#1F2F70</color>
-    <color name="anil_soft">#E6EAF7</color>
+    <!-- ============ Tokens: marca (azul océano; el nombre "añil" se conserva) ============ -->
+    <color name="anil">#0369A1</color>
+    <color name="anil_strong">#075985</color>
+    <color name="anil_soft">#E0F2FE</color>
     <color name="on_anil">#FFFFFF</color>
 
     <!-- ============ Tokens: agua y luz cálida ============ -->
-    <color name="agua">#1D8FB8</color>
-    <color name="agua_soft">#DDF1F8</color>
+    <color name="agua">#0891D1</color>
+    <color name="agua_soft">#DDF2FC</color>
     <!-- sol: solo ilustración / hero. Nunca texto, nunca estado. -->
     <color name="sol">#F2B544</color>
     <color name="sol_soft">#FDF3DE</color>
@@ -50,9 +50,9 @@
     <color name="none_bg">#ECEEF4</color>
 
     <!-- ============ Roles inversos (Snackbar y similares) ============ -->
-    <color name="inverse_surface">#1B2546</color>
-    <color name="inverse_on_surface">#E8EBF5</color>
-    <color name="inverse_primary">#A3B4FF</color>
+    <color name="inverse_surface">#0B2A42</color>
+    <color name="inverse_on_surface">#E6F3FC</color>
+    <color name="inverse_primary">#7DD3FC</color>
 
     <!-- ===================================================================
          Nombres antiguos → tokens. Elegidos según cómo se usan hoy
@@ -115,4 +115,38 @@
     <color name="status_amber">@color/warn</color>
     <!-- star_yellow pinta estrellas de 42sp (texto): sol no llega a 3:1, warn sí -->
     <color name="star_yellow">@color/warn</color>
+
+    <!-- ============ Tema agua (igual que la web): escenas, olas, burbujas y cristal ============ -->
+    <color name="agua_grad_inicio">#EAF7FE</color>
+    <color name="agua_grad_medio">#D6EEFA</color>
+    <color name="agua_grad_fin">#C2E6F6</color>
+    <color name="agua_claro">#7DD3FC</color>
+    <color name="agua_boton_inicio">#0377B5</color>
+    <color name="agua_boton_fin">#075985</color>
+    <color name="ola_1">#8CFFFFFF</color>
+    <color name="ola_2">#260EA5E9</color>
+    <color name="burbuja">#D9FFFFFF</color>
+    <color name="cristal">#C7FFFFFF</color>
+    <color name="cristal_borde">#F2FFFFFF</color>
+
+    <!-- Casa detallada (casa_detallada.xml): colores de la ilustración -->
+    <color name="casa_pared">#FFFFFF</color>
+    <color name="casa_pared_sombra">#E3EEF6</color>
+    <color name="casa_techo">#0369A1</color>
+    <color name="casa_techo_sombra">#075985</color>
+    <color name="casa_trazo">#0B2A42</color>
+    <color name="casa_ventana">#BAE6FD</color>
+    <color name="casa_puerta">#B7794A</color>
+    <color name="casa_puerta_sombra">#8F5A33</color>
+    <color name="casa_cesped">#86CFA0</color>
+    <color name="casa_cesped_oscuro">#4FA874</color>
+    <color name="casa_arbusto">#3E9B6A</color>
+    <color name="casa_arbusto_claro">#6CC28F</color>
+    <color name="casa_tronco">#8F5A33</color>
+    <color name="casa_flor_1">#F472B6</color>
+    <color name="casa_flor_2">#F2B544</color>
+    <color name="casa_camino">#D6E2EA</color>
+    <color name="casa_luz">#F2B544</color>
+    <!-- Nubes de la escena del login -->
+    <color name="nube">#F2FFFFFF</color>
 </resources>

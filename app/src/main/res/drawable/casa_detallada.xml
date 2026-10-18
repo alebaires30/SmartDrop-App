@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Casa detallada (sin tanque): techo de tejas con chimenea y ventana redonda, ventanas con marco,
+    alféizar y jardinera con flores, puerta con farol, cochera, bajante del canal, grifo con una gota,
+    árbol, arbustos, césped y camino. Lienzo 320×220. Colores casa_* (en modo oscuro las ventanas
+    se ven encendidas). Siempre decorativa: el texto de al lado dice el estado.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="280dp"
+    android:height="192dp"
+    android:viewportWidth="320"
+    android:viewportHeight="220">
+
+    <!-- Sombra y césped -->
+    <path android:fillColor="@color/casa_trazo" android:fillAlpha="0.08"
+        android:pathData="M60,198a100,8 0,1 0,200 0a100,8 0,1 0,-200 0z" />
+    <path android:fillColor="@color/casa_cesped" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M6,196H314V205Q160,217 6,205Z" />
+    <path android:fillColor="@color/casa_camino" android:strokeColor="@color/casa_trazo" android:strokeWidth="1.5" android:strokeLineJoin="round"
+        android:pathData="M148,201H172L180,212Q160,214 140,212Z" />
+    <path android:strokeColor="@color/casa_cesped_oscuro" android:strokeWidth="1.5" android:strokeLineCap="round"
+        android:pathData="M18,201l2,-5M24,202l-1,-6M60,202l2,-5M66,203l-1,-6M110,204l2,-5M200,204l-2,-5M206,203l1,-6M252,202l2,-5M258,201l-1,-6M296,201l2,-5" />
+
+    <!-- Árbol -->
+    <path android:fillColor="@color/casa_tronco" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M31,196L34,140H42L45,196Z" />
+    <path android:fillColor="@color/casa_arbusto" android:strokeColor="@color/casa_trazo" android:strokeWidth="2"
+        android:pathData="M38,96a16,16 0,0 1,15 10a15,15 0,0 1,6 26a14,14 0,0 1,-21 11a14,14 0,0 1,-22 -10a14,14 0,0 1,6 -24a16,16 0,0 1,16 -13z" />
+    <path android:fillColor="@color/casa_arbusto_claro"
+        android:pathData="M30,110a6,6 0,1 0,12 0a6,6 0,1 0,-12 0zM44,124a4,4 0,1 0,8 0a4,4 0,1 0,-8 0zM24,128a3.5,3.5 0,1 0,7 0a3.5,3.5 0,1 0,-7 0z" />
+
+    <!-- Chimenea (detrás del techo) -->
+    <path android:fillColor="@color/casa_pared_sombra" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M192,56H208V90H192Z" />
+    <path android:fillColor="@color/casa_techo_sombra" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M189,50H211V57H189Z" />
+
+    <!-- Cochera (detrás de la casa) -->
+    <path android:fillColor="@color/casa_pared_sombra" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M226,134H290V196H226Z" />
+    <path android:fillColor="@color/casa_techo_sombra" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M220,138L260,114L298,138Z" />
+    <path android:fillColor="@color/casa_pared" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M240,152H282V196H240Z" />
+    <path android:strokeColor="@color/casa_trazo" android:strokeAlpha="0.35" android:strokeWidth="1.5"
+        android:pathData="M240,163H282M240,174H282M240,185H282" />
+
+    <!-- Casa -->
+    <path android:fillColor="@color/casa_pared" android:strokeColor="@color/casa_trazo" android:strokeWidth="2.5" android:strokeLineJoin="round"
+        android:pathData="M90,100H230V196H90Z" />
+    <path android:strokeColor="@color/casa_pared_sombra" android:strokeWidth="1.5"
+        android:pathData="M92,114H228M92,128H228M92,142H228M92,156H228M92,170H228M92,184H228" />
+
+    <!-- Techo de tejas con alero -->
+    <path android:fillColor="@color/casa_techo" android:strokeColor="@color/casa_trazo" android:strokeWidth="2.5" android:strokeLineJoin="round"
+        android:pathData="M78,106L160,44L242,106Z" />
+    <path android:strokeColor="@color/casa_techo_sombra" android:strokeWidth="1.5" android:strokeLineCap="round"
+        android:pathData="M145,60H175M132,70H188M119,80H201M106,90H214M93,100H227" />
+    <path android:fillColor="@color/casa_techo_sombra" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M78,106H242V111H78Z" />
+
+    <!-- Ventana redonda del ático -->
+    <path android:fillColor="@color/casa_ventana" android:strokeColor="@color/casa_trazo" android:strokeWidth="2"
+        android:pathData="M151,82a9,9 0,1 0,18 0a9,9 0,1 0,-18 0z" />
+    <path android:strokeColor="@color/casa_trazo" android:strokeWidth="1.5"
+        android:pathData="M160,73V91M151,82H169" />
+
+    <!-- Ventanas: marco, vidrio, divisiones, brillo y alféizar -->
+    <path android:fillColor="@color/casa_ventana" android:strokeColor="@color/casa_trazo" android:strokeWidth="2.5" android:strokeLineJoin="round"
+        android:pathData="M104,124H136V156H104ZM184,124H216V156H184Z" />
+    <path android:strokeColor="@color/casa_trazo" android:strokeWidth="1.8"
+        android:pathData="M120,124V156M104,140H136M200,124V156M184,140H216" />
+    <path android:strokeColor="#FFFFFF" android:strokeAlpha="0.75" android:strokeWidth="2.5" android:strokeLineCap="round"
+        android:pathData="M108,135l6,-7M188,135l6,-7" />
+    <path android:fillColor="@color/casa_pared_sombra" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M181,156H219V160H181Z" />
+
+    <!-- Jardinera con flores bajo la ventana izquierda -->
+    <path android:fillColor="@color/casa_puerta" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M101,156H139V164H101Z" />
+    <path android:fillColor="@color/casa_arbusto_claro"
+        android:pathData="M104,156q3,-6 8,-4q4,-5 9,-1q5,-5 9,0q4,-3 6,5z" />
+    <path android:fillColor="@color/casa_flor_1"
+        android:pathData="M106,152a2.6,2.6 0,1 0,5.2 0a2.6,2.6 0,1 0,-5.2 0zM122,151a2.6,2.6 0,1 0,5.2 0a2.6,2.6 0,1 0,-5.2 0z" />
+    <path android:fillColor="@color/casa_flor_2"
+        android:pathData="M114,150a2.6,2.6 0,1 0,5.2 0a2.6,2.6 0,1 0,-5.2 0zM130,152a2.6,2.6 0,1 0,5.2 0a2.6,2.6 0,1 0,-5.2 0z" />
+
+    <!-- Puerta con ventanita, tableros y manija; escalón -->
+    <path android:fillColor="@color/casa_puerta" android:strokeColor="@color/casa_trazo" android:strokeWidth="2.5" android:strokeLineJoin="round"
+        android:pathData="M146,140H174V196H146Z" />
+    <path android:fillColor="@color/casa_ventana" android:strokeColor="@color/casa_trazo" android:strokeWidth="1.8"
+        android:pathData="M152,146H168V158H152Z" />
+    <path android:strokeColor="@color/casa_puerta_sombra" android:strokeWidth="1.8" android:strokeLineJoin="round"
+        android:pathData="M151,164H169V178H151ZM151,182H169V192H151Z" />
+    <path android:fillColor="@color/casa_trazo"
+        android:pathData="M167,172a1.9,1.9 0,1 0,3.8 0a1.9,1.9 0,1 0,-3.8 0z" />
+    <path android:fillColor="@color/casa_pared_sombra" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M140,196H180V201H140Z" />
+
+    <!-- Farol junto a la puerta -->
+    <path android:strokeColor="@color/casa_trazo" android:strokeWidth="1.8" android:strokeLineCap="round"
+        android:pathData="M174,140h2.5" />
+    <path android:fillColor="@color/casa_luz" android:strokeColor="@color/casa_trazo" android:strokeWidth="1.8" android:strokeLineJoin="round"
+        android:pathData="M176.5,135H182V146H176.5Z" />
+
+    <!-- Bajante del canal y grifo con una gota (tema agua) -->
+    <path android:strokeColor="@color/casa_techo_sombra" android:strokeWidth="3.5" android:strokeLineCap="round"
+        android:pathData="M224,112V192" />
+    <path android:strokeColor="@color/casa_trazo" android:strokeWidth="2.5" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M92,164H101V169" />
+    <path android:fillColor="@color/casa_ventana" android:strokeColor="@color/casa_trazo" android:strokeWidth="1.2"
+        android:pathData="M101,172c-2,2.4 -3,3.8 -3,5a3,3 0,0 0,6 0c0,-1.2 -1,-2.6 -3,-5z" />
+
+    <!-- Arbustos al frente -->
+    <path android:fillColor="@color/casa_arbusto" android:strokeColor="@color/casa_trazo" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M82,196a11,11 0,0 1,22 0zM214,196a10,10 0,0 1,20 0zM286,196a9,9 0,0 1,18 0z" />
+    <path android:fillColor="@color/casa_flor_1"
+        android:pathData="M90,189a2,2 0,1 0,4 0a2,2 0,1 0,-4 0zM222,190a2,2 0,1 0,4 0a2,2 0,1 0,-4 0z" />
+</vector>

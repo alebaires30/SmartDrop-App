@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Logo de SmartDrop: gota con degradado de agua y circuito (mismo dibujo que la web). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+    <path android:pathData="M16,2.5c-0.4,0 -0.8,0.2 -1,0.5C11.6,7.8 6,15.2 6,20a10,10 0,0 0,20 0c0,-4.8 -5.6,-12.2 -9,-17c-0.2,-0.3 -0.6,-0.5 -1,-0.5Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="6"
+                android:startY="2"
+                android:endX="26"
+                android:endY="30">
+                <item android:offset="0" android:color="#FF67E8F9" />
+                <item android:offset="0.55" android:color="#FF38BDF8" />
+                <item android:offset="1" android:color="#FF0369A1" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:pathData="M13,26v-5l-3,-3M16,26v-8M19,26v-4l3,-3"
+        android:strokeWidth="1.6"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M8.2,17a1.8,1.8 0,1 0,3.6 0a1.8,1.8 0,1 0,-3.6 0M14.2,16a1.8,1.8 0,1 0,3.6 0a1.8,1.8 0,1 0,-3.6 0M20.2,18a1.8,1.8 0,1 0,3.6 0a1.8,1.8 0,1 0,-3.6 0"
+        android:strokeWidth="1.5"
+        android:strokeColor="#FFFFFFFF" />
+</vector>

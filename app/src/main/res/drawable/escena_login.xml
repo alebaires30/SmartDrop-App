@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Escena del login: sol, nubes, gotas que caen y tres capas de olas que se desvanecen hacia abajo.
+     Lienzo 360×300, fondo transparente (el degradado lo pone la pantalla). Decorativa. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="360dp" android:height="300dp"
+    android:viewportWidth="360" android:viewportHeight="300">
+    <!-- Sol -->
+    <path android:fillColor="@color/sol" android:fillAlpha="0.22"
+        android:pathData="M262,64a32,32 0,1 0,64 0a32,32 0,1 0,-64 0z" />
+    <path android:fillColor="@color/sol" android:fillAlpha="0.85"
+        android:pathData="M274,64a20,20 0,1 0,40 0a20,20 0,1 0,-40 0z" />
+    <!-- Nubes -->
+    <path android:fillColor="@color/nube"
+        android:pathData="M196,58a13,13 0,0 1,24 -6a11,11 0,0 1,19 7h1a8,8 0,0 1,0 16h-44a9,9 0,0 1,0 -17z" />
+    <path android:fillColor="@color/nube" android:fillAlpha="0.8"
+        android:pathData="M300,84a9,9 0,0 1,17 -4a8,8 0,0 1,13 5a6,6 0,0 1,0 12h-30a6.5,6.5 0,0 1,0 -13z" />
+    <!-- Gotas que caen -->
+    <path android:fillColor="@color/agua" android:fillAlpha="0.75"
+        android:pathData="M236,112c-4,4.6 -6,7.4 -6,10a6,6 0,0 0,12 0c0,-2.6 -2,-5.4 -6,-10zM296,104c-3,3.4 -4.5,5.5 -4.5,7.5a4.5,4.5 0,0 0,9 0c0,-2 -1.5,-4.1 -4.5,-7.5zM330,126c-3.5,4 -5.2,6.4 -5.2,8.6a5.2,5.2 0,0 0,10.4 0c0,-2.2 -1.7,-4.6 -5.2,-8.6z" />
+    <!-- Brillos -->
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeAlpha="0.9"
+        android:pathData="M178,30v10M173,35h10M262,108v8M258,112h8" />
+    <!-- Olas: de atrás hacia adelante, cada una se desvanece hacia abajo -->
+    <path android:pathData="M0,254Q45,242 90,254T180,254T270,254T360,254V300H0Z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="0" android:startY="242" android:endX="0" android:endY="300">
+                <item android:offset="0" android:color="#667DD3FC" />
+                <item android:offset="1" android:color="#007DD3FC" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M0,270Q45,260 90,270T180,270T270,270T360,270V300H0Z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="0" android:startY="260" android:endX="0" android:endY="300">
+                <item android:offset="0" android:color="#4D38BDF8" />
+                <item android:offset="1" android:color="#0038BDF8" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M0,284Q45,276 90,284T180,284T270,284T360,284V300H0Z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="0" android:startY="276" android:endX="0" android:endY="300">
+                <item android:offset="0" android:color="#330369A1" />
+                <item android:offset="1" android:color="#000369A1" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>

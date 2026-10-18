@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- El agua de la columna recortada desde abajo. El agua ocupa de y=20 a y=180 en un lienzo de 200:
+     nivel = (20 + 160 × fracción) / 200 × 10000 (NivelTanqueActivity). -->
+<clip xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/columna_agua"
+    android:clipOrientation="vertical"
+    android:gravity="bottom" />

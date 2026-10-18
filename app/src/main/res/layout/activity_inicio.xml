@@ -91,49 +91,123 @@
                 android:paddingEnd="@dimen/gutter"
                 android:paddingBottom="@dimen/space_8">
 
-                <!-- ── La casa: resumen del agua de la vivienda ── -->
+                <!-- ── Resumen del agua de la vivienda, en una escena de agua (tema agua) ── -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardResumenGeneral"
-                    style="@style/Widget.SmartDrop.Card.Hero"
+                    style="@style/Widget.SmartDrop.Card.Agua"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/space_7">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:background="@drawable/bg_agua">
 
-                        <TextView
-                            android:id="@+id/tvSaludoInicio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Hola"
-                            android:textAppearance="@style/TextAppearance.SmartDrop.BodyLarge"
-                            android:textColor="@color/ink_2" />
-
-                        <TextView
-                            android:id="@+id/tvResumenGeneral"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/space_1"
-                            android:accessibilityHeading="true"
-                            android:accessibilityLiveRegion="polite"
-                            android:text="Revisando el agua de tu casa…"
-                            android:textAppearance="@style/TextAppearance.SmartDrop.Headline"
-                            android:textColor="@color/ink" />
+                        <include
+                            android:id="@+id/burbujasInicio"
+                            layout="@layout/fondo_burbujas" />
 
                         <ImageView
-                            android:id="@+id/ivCasaHero"
-                            android:layout_width="@dimen/casa_hero_width"
-                            android:layout_height="@dimen/casa_hero_height"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/space_4"
-                            android:contentDescription="Tanque de tu casa"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/casa_hero_level" />
+                            android:id="@+id/olasInicio"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_gravity="bottom"
+                            android:layout_marginStart="-32dp"
+                            android:layout_marginEnd="-32dp"
+                            android:importantForAccessibility="no"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/olas_agua" />
 
-                    </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingStart="@dimen/space_6"
+                            android:paddingTop="@dimen/space_6"
+                            android:paddingEnd="@dimen/space_6"
+                            android:paddingBottom="@dimen/space_9">
+
+                            <TextView
+                                android:id="@+id/tvSaludoInicio"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_pildora_cristal"
+                                android:paddingStart="@dimen/space_3"
+                                android:paddingTop="@dimen/space_1"
+                                android:paddingEnd="@dimen/space_3"
+                                android:paddingBottom="@dimen/space_1"
+                                android:text="Hola"
+                                android:textAppearance="@style/TextAppearance.SmartDrop.Label"
+                                android:textColor="@color/anil_strong" />
+
+                            <TextView
+                                android:id="@+id/tvResumenGeneral"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/space_3"
+                                android:accessibilityHeading="true"
+                                android:accessibilityLiveRegion="polite"
+                                android:text="Revisando el agua de tu casa…"
+                                android:textAppearance="@style/TextAppearance.SmartDrop.Headline"
+                                android:textColor="@color/ink" />
+
+                            <!-- La casa (sin tanque) y, debajo, el nivel del tanque: la barra se llena hasta el nivel real -->
+                            <LinearLayout
+                                android:id="@+id/panelTanqueHero"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/space_5"
+                                android:background="@drawable/bg_cristal"
+                                android:orientation="vertical"
+                                android:padding="@dimen/space_5">
+
+                                <ImageView
+                                    android:id="@+id/ivCasaInicio"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="180dp"
+                                    android:layout_marginBottom="@dimen/space_4"
+                                    android:importantForAccessibility="no"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/casa_detallada" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tanque de tu casa"
+                                    android:textAppearance="@style/TextAppearance.SmartDrop.Label"
+                                    android:textColor="@color/ink_2" />
+
+                                <TextView
+                                    android:id="@+id/tvHeroTanque"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/space_1"
+                                    android:accessibilityLiveRegion="polite"
+                                    android:text="— %"
+                                    android:textAppearance="@style/TextAppearance.SmartDrop.Number" />
+
+                                <TextView
+                                    android:id="@+id/tvHeroLitros"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Cargando…"
+                                    android:textAppearance="@style/TextAppearance.SmartDrop.Body"
+                                    android:textColor="@color/ink_2" />
+
+                                <ProgressBar
+                                    android:id="@+id/progresoHeroTanque"
+                                    style="?android:attr/progressBarStyleHorizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="12dp"
+                                    android:layout_marginTop="@dimen/space_4"
+                                    android:importantForAccessibility="no"
+                                    android:max="100"
+                                    android:progress="0"
+                                    android:progressDrawable="@drawable/bg_progreso_agua" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </FrameLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <!-- ── Las cuatro lecturas ── -->
@@ -364,6 +438,11 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -413,6 +492,45 @@
                             android:importantForAccessibility="no"
                             android:src="@drawable/ic_chevron_right"
                             app:tint="@color/ink_3" />
+                    </LinearLayout>
+
+                    <!-- Tubería del tanque a la casa: el agua avanza si la válvula está abierta -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:background="@drawable/bg_icon_chip_agua"
+                        android:importantForAccessibility="noHideDescendants"
+                        android:paddingStart="@dimen/space_2"
+                        android:paddingTop="@dimen/space_1"
+                        android:paddingEnd="@dimen/space_2"
+                        android:paddingBottom="22dp">
+
+                        <ImageView
+                            android:id="@+id/imgTuberia"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/tuberia_cerrada" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|start"
+                            android:layout_marginStart="@dimen/space_2"
+                            android:layout_marginBottom="-16dp"
+                            android:text="Tanque"
+                            android:textAppearance="@style/TextAppearance.SmartDrop.Caption" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|end"
+                            android:layout_marginEnd="@dimen/space_2"
+                            android:layout_marginBottom="-16dp"
+                            android:text="Tu casa"
+                            android:textAppearance="@style/TextAppearance.SmartDrop.Caption" />
+                    </FrameLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

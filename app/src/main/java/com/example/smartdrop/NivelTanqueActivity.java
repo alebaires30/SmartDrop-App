@@ -107,12 +107,16 @@ public class NivelTanqueActivity extends BaseActivity {
         }
 
         tvDisponible.setText(textoPrincipal);
-        // El tinaco de la casa se llena hasta el nivel real (0..100 % → nivel 0..10000).
-        android.widget.ImageView ivCasa = findViewById(R.id.ivCasaTanque);
-        if (ivCasa != null) {
+        // La columna de agua sube hasta el nivel real. El agua ocupa de y=20 a y=180 en un lienzo de
+        // 200 (columna_agua_nivel.xml): nivel del recorte = (20 + 160 × fracción) / 200 × 10000.
+        android.widget.ImageView agua = findViewById(R.id.ivColumnaAgua);
+        android.view.View columna = findViewById(R.id.columnaTanque);
+        if (agua != null) {
             double pct = Math.max(0, Math.min(100, ultimoNivel.getPorcentaje()));
-            ivCasa.setImageLevel((int) Math.round(pct * 100));
-            ivCasa.setContentDescription(String.format(java.util.Locale.getDefault(), "Tanque de tu casa al %.0f %%", pct));
+            AnimacionesAgua.llenar(agua, (int) Math.round((20 + 160 * pct / 100.0) / 200.0 * 10000));
+            if (columna != null) {
+                columna.setContentDescription(String.format(java.util.Locale.getDefault(), "Tanque de tu casa al %.0f %%", pct));
+            }
         }
         tvDisponible.setTextColor(ColorSeveridad.colorDe(this, ultimoNivel.getColor()));
 

@@ -5,12 +5,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -47,7 +49,12 @@ public class InicioActivity extends BaseActivity {
     private CardView cardPresion, cardCalidad, cardNivel, cardConsumo, cardValvulaInicio;
     private TextView tvPresionValor, tvCalidadValor, tvNivelPorcentaje, tvNivelLitros;
     private TextView tvValvulaEstadoInicio, tvValvulaActualizacionInicio;
-    private ImageView ivCasaHero;
+    // Nivel del tanque en el héroe (tema agua): porcentaje, litros y barra de agua
+    private TextView tvHeroTanque, tvHeroLitros;
+    private ProgressBar progresoHeroTanque;
+    // Tubería de la válvula (tema agua): null hasta la primera lectura
+    private ImageView imgTuberia;
+    private Boolean tuberiaAbierta = null;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private static final long INTERVALO_POLLING_MS = 10000;
@@ -83,7 +90,21 @@ public class InicioActivity extends BaseActivity {
         tvConsumoLitros = findViewById(R.id.tvConsumoLitros);
         tvValvulaEstadoInicio = findViewById(R.id.tvValvulaEstadoInicio);
         tvValvulaActualizacionInicio = findViewById(R.id.tvValvulaActualizacionInicio);
-        ivCasaHero = findViewById(R.id.ivCasaHero);
+        tvHeroTanque = findViewById(R.id.tvHeroTanque);
+        tvHeroLitros = findViewById(R.id.tvHeroLitros);
+        progresoHeroTanque = findViewById(R.id.progresoHeroTanque);
+        imgTuberia = findViewById(R.id.imgTuberia);
+
+        // Tema agua: burbujas y olas en la escena, la casa flota y las lecturas suben a su lugar.
+        AnimacionesAgua.burbujas(findViewById(R.id.burbujasInicio));
+        AnimacionesAgua.olas(findViewById(R.id.olasInicio));
+        AnimacionesAgua.flotar(findViewById(R.id.ivCasaInicio));
+        AnimacionesAgua.entrada(findViewById(R.id.cardResumenGeneral), 0);
+        AnimacionesAgua.subir(cardPresion, 120);
+        AnimacionesAgua.subir(cardCalidad, 160);
+        AnimacionesAgua.subir(cardNivel, 220);
+        AnimacionesAgua.subir(cardConsumo, 260);
+        AnimacionesAgua.subir(cardValvulaInicio, 320);
 
         float alphaInicial = 0.5f;
         cardPresion.setAlpha(alphaInicial);
@@ -229,12 +250,11 @@ public class InicioActivity extends BaseActivity {
                     tvNivelPorcentaje.setText(String.format(Locale.getDefault(), "%.0f %%", r.getNivel().getPorcentaje()));
                     tvNivelPorcentaje.setTextColor(ColorSeveridad.colorDe(InicioActivity.this, r.getNivel().getColor()));
                     tvNivelLitros.setText(String.format(Locale.getDefault(), "%.0f L disponibles", r.getNivel().getLitrosDisponibles()));
-                    // El tinaco de la casa se llena hasta el nivel real (0..100 % → nivel 0..10000).
-                    if (ivCasaHero != null) {
-                        double pct = Math.max(0, Math.min(100, r.getNivel().getPorcentaje()));
-                        ivCasaHero.setImageLevel((int) Math.round(pct * 100));
-                        ivCasaHero.setContentDescription(String.format(Locale.getDefault(), "Tanque de tu casa al %.0f %%", pct));
-                    }
+                    // Nivel del tanque en el héroe: la barra de agua se llena hasta el nivel real.
+                    double pct = Math.max(0, Math.min(100, r.getNivel().getPorcentaje()));
+                    tvHeroTanque.setText(String.format(Locale.getDefault(), "%.0f %%", pct));
+                    tvHeroLitros.setText(String.format(Locale.getDefault(), "%.0f L disponibles", r.getNivel().getLitrosDisponibles()));
+                    AnimacionesAgua.progreso(progresoHeroTanque, (int) Math.round(pct));
                 }
                 if (r.getConsumo() != null) {
                     tvConsumoLitros.setText(String.format(Locale.getDefault(), "%.1f L", r.getConsumo().getLitrosHoy()));
@@ -260,6 +280,16 @@ public class InicioActivity extends BaseActivity {
         });
     }
 
+    /** Tubería de la válvula: con la válvula abierta el agua avanza; cerrada, se detiene antes de la válvula. */
+    private void mostrarTuberia(boolean abierta) {
+        if (imgTuberia == null || (tuberiaAbierta != null && tuberiaAbierta == abierta)) return;
+        tuberiaAbierta = abierta;
+        imgTuberia.setImageResource(abierta ? R.drawable.tuberia_flujo : R.drawable.tuberia_cerrada);
+        if (abierta && AnimacionesAgua.activas(this) && imgTuberia.getDrawable() instanceof Animatable) {
+            ((Animatable) imgTuberia.getDrawable()).start();
+        }
+    }
+
     private void cargarEstadoValvula() {
         ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
         api.obtenerEstadoValvula(1).enqueue(new Callback<ValvulaEstadoResponse>() {
@@ -272,6 +302,7 @@ public class InicioActivity extends BaseActivity {
                         tvValvulaEstadoInicio.setText(abierta ? "Abierta: el agua llega a tu casa" : "Cerrada: sin suministro por ahora");
                         tvValvulaEstadoInicio.setTextColor(ContextCompat.getColor(InicioActivity.this, abierta ? R.color.ok : R.color.warn));
                     }
+                    mostrarTuberia(abierta);
                     if (tvValvulaActualizacionInicio != null) {
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                         tvValvulaActualizacionInicio.setText("Actualizado: " + sdf.format(new Date()));

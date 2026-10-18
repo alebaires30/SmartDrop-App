@@ -1,145 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Iniciar sesión: escena cálida con la casa, título claro y campos con etiqueta. -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Iniciar sesión (tema agua, igual que la web): escena azul clara con su ilustración, olas y
+     burbujas; el formulario va en una tarjeta blanca. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surface"
-    android:fillViewport="true"
+    android:background="@drawable/bg_agua_escena"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/space_6"
-        android:paddingTop="@dimen/space_5"
-        android:paddingEnd="@dimen/space_6"
-        android:paddingBottom="@dimen/space_8">
+        android:layout_height="320dp"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/escena_login" />
 
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.SmartDrop.Card.Warm"
+    <include
+        android:id="@+id/burbujasLogin"
+        layout="@layout/fondo_burbujas" />
+
+    <ImageView
+        android:id="@+id/olasLogin"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="-32dp"
+        android:layout_marginEnd="-32dp"
+        android:importantForAccessibility="no"
+        android:scaleType="fitXY"
+        android:src="@drawable/olas_agua" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentPadding="@dimen/space_4">
+            android:orientation="vertical"
+            android:paddingStart="@dimen/space_6"
+            android:paddingTop="@dimen/space_8"
+            android:paddingEnd="@dimen/space_6"
+            android:paddingBottom="@dimen/space_8">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/logo"
-                    android:layout_width="120dp"
-                    android:layout_height="88dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:importantForAccessibility="no"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/casa_hero" />
+                    android:src="@drawable/logo_gota" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/space_4"
-                    android:layout_weight="1"
-                    android:text="Mira el nivel de tu tanque sin subir al techo."
-                    android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                    android:layout_marginStart="@dimen/space_3"
+                    android:text="SmartDrop"
+                    android:textAppearance="@style/TextAppearance.SmartDrop.Toolbar"
                     android:textColor="@color/ink" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <ImageView
-            android:layout_width="160dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="@dimen/space_7"
-            android:contentDescription="SmartDrop"
-            android:scaleType="fitStart"
-            android:src="@drawable/logo_smartdrop" />
-
-        <TextView
-            style="@style/Widget.SmartDrop.PageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_4"
-            android:text="Inicia sesión" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_2"
-            android:text="Entra para revisar la presión, la calidad y el tanque de tu casa."
-            android:textAppearance="@style/TextAppearance.SmartDrop.BodyLarge"
-            android:textColor="@color/ink_2" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_7"
-            android:hint="Correo electrónico"
-            app:startIconDrawable="@drawable/ic_person">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/usuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="emailAddress"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_4"
-            android:hint="Contraseña"
-            app:endIconContentDescription="Mostrar contraseña"
-            app:endIconMode="password_toggle"
-            app:startIconDrawable="@drawable/ic_lock">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="password"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_6"
-            android:text="Iniciar sesión" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/hairline"
-            android:layout_marginTop="@dimen/space_7"
-            android:background="@color/line" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_3"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txtRegistro"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="¿No tienes una cuenta?"
-                android:textAppearance="@style/TextAppearance.SmartDrop.Body"
+                android:layout_marginTop="@dimen/space_10"
+                android:text="Monitoreo inteligente del agua de tu hogar"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Headline"
+                android:textColor="@color/ink" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2"
+                android:text="Consulta tu tanque, la presión y la calidad del agua en tiempo real."
+                android:textAppearance="@style/TextAppearance.SmartDrop.BodyLarge"
                 android:textColor="@color/ink_2" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRegistro"
-                style="@style/Widget.SmartDrop.Button.Text"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardLogin"
+                style="@style/Widget.SmartDrop.Card"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Crear cuenta" />
-        </LinearLayout>
+                android:layout_marginTop="@dimen/space_6"
+                app:cardElevation="6dp"
+                app:contentPadding="@dimen/space_6"
+                app:strokeColor="@color/cristal_borde">
 
-    </LinearLayout>
-</ScrollView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Widget.SmartDrop.PageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Inicia sesión" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_2"
+                        android:text="Entra para revisar la presión, la calidad y el tanque de tu casa."
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodyLarge"
+                        android:textColor="@color/ink_2" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_6"
+                        android:hint="Correo electrónico"
+                        app:startIconDrawable="@drawable/ic_person">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/usuario"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="emailAddress"
+                            android:inputType="textEmailAddress" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:hint="Contraseña"
+                        app:endIconContentDescription="Mostrar contraseña"
+                        app:endIconMode="password_toggle"
+                        app:startIconDrawable="@drawable/ic_lock">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="password"
+                            android:inputType="textPassword" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_6"
+                        android:text="Iniciar sesión" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/hairline"
+                        android:layout_marginTop="@dimen/space_7"
+                        android:background="@color/line" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_3"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtRegistro"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="¿No tienes una cuenta?"
+                            android:textAppearance="@style/TextAppearance.SmartDrop.Body"
+                            android:textColor="@color/ink_2" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnRegistro"
+                            style="@style/Widget.SmartDrop.Button.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Crear cuenta" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

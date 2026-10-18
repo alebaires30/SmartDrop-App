@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vincular vivienda: un pin de ubicación con una gota, sobre una onda. Lienzo 160×140. Decorativa. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp" android:height="105dp"
+    android:viewportWidth="160" android:viewportHeight="140">
+    <path android:fillColor="@color/agua_soft"
+        android:pathData="M40,124a40,7 0,1 0,80 0a40,7 0,1 0,-80 0z" />
+    <path android:strokeColor="@color/agua" android:strokeAlpha="0.45" android:strokeWidth="2"
+        android:pathData="M24,124a56,11 0,1 0,112 0a56,11 0,1 0,-112 0z" />
+    <path android:fillColor="@color/anil_soft" android:strokeColor="@color/anil" android:strokeWidth="3" android:strokeLineJoin="round"
+        android:pathData="M80,12a34,34 0,0 1,34 34c0,26 -34,64 -34,64s-34,-38 -34,-64a34,34 0,0 1,34 -34z" />
+    <path android:fillColor="@color/agua"
+        android:pathData="M80,28c-8,9.2 -11.6,14 -11.6,19a11.6,11.6 0,0 0,23.2 0c0,-5 -3.6,-9.8 -11.6,-19z" />
+    <path android:strokeColor="#FFFFFF" android:strokeAlpha="0.8" android:strokeWidth="2.5" android:strokeLineCap="round"
+        android:pathData="M74,48c0,-3 1.5,-6 3.5,-9" />
+</vector>

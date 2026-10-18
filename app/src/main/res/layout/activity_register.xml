@@ -1,126 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Crear cuenta: mismo patrón que iniciar sesión; campos con etiqueta y ayuda. -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Crear cuenta (tema agua, igual que la web): escena azul clara con su ilustración, olas y
+     burbujas; el formulario va en una tarjeta blanca. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surface"
-    android:fillViewport="true"
+    android:background="@drawable/bg_agua_escena_registro"
     tools:context=".RegisterActivity">
 
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/space_6"
-        android:paddingTop="@dimen/space_7"
-        android:paddingEnd="@dimen/space_6"
-        android:paddingBottom="@dimen/space_8">
+        android:layout_height="240dp"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/escena_registro" />
 
-        <ImageView
-            android:layout_width="160dp"
-            android:layout_height="64dp"
-            android:contentDescription="SmartDrop"
-            android:scaleType="fitStart"
-            android:src="@drawable/logo_smartdrop" />
+    <include
+        android:id="@+id/burbujasRegistro"
+        layout="@layout/fondo_burbujas" />
 
-        <TextView
-            style="@style/Widget.SmartDrop.PageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_4"
-            android:text="Crea tu cuenta" />
+    <ImageView
+        android:id="@+id/olasRegistro"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="-32dp"
+        android:layout_marginEnd="-32dp"
+        android:importantForAccessibility="no"
+        android:scaleType="fitXY"
+        android:src="@drawable/olas_agua" />
 
-        <TextView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_2"
-            android:text="Con tu cuenta podrás ver el agua de tu casa y recibir avisos cuando algo cambie."
-            android:textAppearance="@style/TextAppearance.SmartDrop.BodyLarge"
-            android:textColor="@color/ink_2" />
+            android:orientation="vertical"
+            android:paddingStart="@dimen/space_6"
+            android:paddingTop="@dimen/space_8"
+            android:paddingEnd="@dimen/space_6"
+            android:paddingBottom="@dimen/space_8">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_7"
-            android:hint="Nombre">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/nombre"
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/logo_gota" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_3"
+                    android:text="SmartDrop"
+                    android:textAppearance="@style/TextAppearance.SmartDrop.Toolbar"
+                    android:textColor="@color/ink" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_9" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardRegistro"
+                style="@style/Widget.SmartDrop.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="personGivenName"
-                android:inputType="textPersonName|textCapWords" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="@dimen/space_6"
+                app:cardElevation="6dp"
+                app:contentPadding="@dimen/space_6"
+                app:strokeColor="@color/cristal_borde">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_4"
-            android:hint="Apellido">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/apellido"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="personFamilyName"
-                android:inputType="textPersonName|textCapWords" />
-        </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        style="@style/Widget.SmartDrop.PageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Crea tu cuenta" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_4"
-            android:hint="Correo electrónico">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_2"
+                        android:text="Con tu cuenta podrás ver el agua de tu casa y recibir avisos cuando algo cambie."
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodyLarge"
+                        android:textColor="@color/ink_2" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/correo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="emailAddress"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_6"
+                        android:hint="Nombre">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_4"
-            android:hint="Contraseña"
-            app:endIconContentDescription="Mostrar contraseña"
-            app:endIconMode="password_toggle">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nombre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="personGivenName"
+                            android:inputType="textPersonName|textCapWords" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="newPassword"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:hint="Apellido">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_4"
-            android:hint="Confirma la contraseña"
-            app:endIconContentDescription="Mostrar contraseña"
-            app:endIconMode="password_toggle"
-            app:helperText="Escríbela otra vez para evitar errores.">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/apellido"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="personFamilyName"
+                            android:inputType="textPersonName|textCapWords" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/confirmPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="newPassword"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:hint="Correo electrónico">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCrear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_6"
-            android:text="Crear cuenta" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/correo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="emailAddress"
+                            android:inputType="textEmailAddress" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
-</ScrollView>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:hint="Contraseña"
+                        app:endIconContentDescription="Mostrar contraseña"
+                        app:endIconMode="password_toggle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="newPassword"
+                            android:inputType="textPassword" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:hint="Confirma la contraseña"
+                        app:endIconContentDescription="Mostrar contraseña"
+                        app:endIconMode="password_toggle"
+                        app:helperText="Escríbela otra vez para evitar errores.">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/confirmPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="newPassword"
+                            android:inputType="textPassword" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCrear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_6"
+                        android:text="Crear cuenta" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

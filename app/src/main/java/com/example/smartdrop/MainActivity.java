@@ -24,6 +24,11 @@ public class MainActivity extends BaseActivity {
         btnLogin    = findViewById(R.id.btnLogin);
         btnRegistro = findViewById(R.id.btnRegistro);
 
+        // Tema agua: burbujas que suben, olas que se mecen y la tarjeta que aparece.
+        AnimacionesAgua.burbujas(findViewById(R.id.burbujasLogin));
+        AnimacionesAgua.olas(findViewById(R.id.olasLogin));
+        AnimacionesAgua.entrada(findViewById(R.id.cardLogin), 120);
+
         btnRegistro.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, RegisterActivity.class));
         });

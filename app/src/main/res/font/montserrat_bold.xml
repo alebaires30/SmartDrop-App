@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Fuente descargable (Google Play Services): Nunito 800. No se empaqueta ningún archivo de fuente. -->
+<!-- Fuente descargable (Google Play Services): Montserrat 700. No se empaqueta ningún archivo de fuente. -->
 <font-family xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fontProviderAuthority="com.google.android.gms.fonts"
     android:fontProviderPackage="com.google.android.gms"
-    android:fontProviderQuery="name=Nunito&amp;weight=800&amp;besteffort=true"
+    android:fontProviderQuery="name=Montserrat&amp;weight=700&amp;besteffort=true"
     android:fontProviderCerts="@array/com_google_android_gms_fonts_certs"
     app:fontProviderAuthority="com.google.android.gms.fonts"
     app:fontProviderPackage="com.google.android.gms"
-    app:fontProviderQuery="name=Nunito&amp;weight=800&amp;besteffort=true"
+    app:fontProviderQuery="name=Montserrat&amp;weight=700&amp;besteffort=true"
     app:fontProviderCerts="@array/com_google_android_gms_fonts_certs" />
