@@ -116,6 +116,9 @@ public class PerfilActivity extends BaseActivity {
             ((TextView) fila.findViewById(R.id.tvPreferenciaTitulo)).setText(opcion.titulo);
             ((TextView) fila.findViewById(R.id.tvPreferenciaDescripcion)).setText(opcion.descripcion);
             SwitchMaterial interruptor = fila.findViewById(R.id.switchPreferencia);
+            // Todas las filas comparten el id switchPreferencia: si Android guardara su estado, al recrear la
+            // pantalla (p. ej. al cambiar el tema) les pondría a todas el valor de la última y se guardaría solo.
+            interruptor.setSaveEnabled(false);
             interruptor.setContentDescription(opcion.titulo);
             interruptor.setOnCheckedChangeListener((boton, activo) -> {
                 if (!pintando) guardar(opcion.campo, activo);
