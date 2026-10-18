@@ -1,56 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    SmartDrop · sistema de diseño "Agua en casa" (modo oscuro).
+    Solo se redefinen los tokens: los nombres antiguos (bg_app, text_primary, brand_accent…)
+    están en values/colors.xml como alias de estos tokens, así que cambian solos.
+-->
 <resources>
-    <!-- ============ Paleta semántica SmartDrop (modo oscuro) ============ -->
-    <!-- Sobrescribe los nombres definidos en values/colors.xml -->
+    <!-- Superficies -->
+    <color name="page">#10152A</color>
+    <color name="surface">#171D35</color>
+    <color name="surface_2">#1D2440</color>
+    <color name="surface_tint">#252E55</color>
+    <color name="line">#2A3356</color>
+    <color name="line_strong">#3A4470</color>
 
-    <!-- Fondos -->
-    <color name="bg_app">#12121C</color>
-    <color name="bg_card">#1E1E2E</color>
-    <color name="bg_card_alt">#262040</color>
-    <color name="bg_purple_soft">#33294D</color>
-    <color name="bg_alert">#3B2528</color>
-    <color name="bg_warning">#3B3120</color>
-    <color name="bg_input">#242435</color>
-    <color name="bg_search">#242435</color>
-    <color name="bg_info_soft">#22303F</color>
-    <color name="bg_lavender">#2A2440</color>
-    <color name="bg_lavender_end">#221D38</color>
-    <color name="bg_lavender_alt">#292542</color>
-    <color name="bg_chip">#2E2A4A</color>
-    <color name="bg_circle_soft">#2B2B45</color>
-    <color name="btn_secondary_bg">#3E3463</color>
+    <!-- Texto -->
+    <color name="ink">#E8EBF5</color>
+    <color name="ink_2">#B3BAD3</color>
+    <color name="ink_3">#8F98B8</color>
 
-    <!-- Textos -->
-    <color name="text_primary">#E9E9F2</color>
-    <color name="text_secondary">#A6A7BE</color>
-    <color name="text_muted">#8F90AC</color>
-    <color name="text_hint">#77788F</color>
+    <!-- Marca (añil) -->
+    <color name="anil">#A3B4FF</color>
+    <color name="anil_strong">#C5D0FF</color>
+    <color name="anil_soft">#252E55</color>
+    <color name="on_anil">#10152A</color>
 
-    <!-- Marca -->
-    <color name="brand_primary">#4A2772</color>
-    <color name="brand_accent">#B07CE8</color>
-    <color name="brand_on_card">#C4A5F0</color>
-    <color name="brand_soft">#2A2140</color>
-    <color name="brand_blue">#4FACFE</color>
-    <color name="on_brand">#FFFFFF</color>
-    <color name="nav_bar">#1E1E2E</color>
+    <!-- Agua y luz cálida -->
+    <color name="agua">#4FC3E6</color>
+    <color name="agua_soft">#173447</color>
+    <color name="sol">#E7A93A</color>
+    <color name="sol_soft">#2E2817</color>
 
-    <!-- Bordes / strokes -->
-    <color name="stroke_soft">#343450</color>
-    <color name="stroke_input">#3A3A52</color>
-    <color name="stroke_search">#3A3A52</color>
-    <color name="stroke_lavender">#4A3F6E</color>
+    <!-- Estados -->
+    <color name="ok">#6FD6A0</color>
+    <color name="ok_bg">#163628</color>
+    <color name="ok_dot">#4CC38A</color>
+    <color name="warn">#F5C26B</color>
+    <color name="warn_bg">#3A2E14</color>
+    <color name="warn_dot">#F0B03F</color>
+    <color name="bad">#FF8C80</color>
+    <color name="bad_bg">#3D1D1F</color>
+    <color name="bad_dot">#FF6B5E</color>
+    <color name="none">#A3AAC4</color>
+    <color name="none_bg">#222A47</color>
 
-    <!-- Colores de estado -->
-    <color name="success">#4CC38A</color>
-    <color name="success_dark">#63D9B3</color>
-    <color name="danger">#FF6B5E</color>
-    <color name="text_alert">#F28B82</color>
-    <color name="warning_text">#FFD666</color>
-    <color name="status_orange">#FFB74D</color>
-    <color name="status_yellow">#DCD150</color>
-    <color name="status_green">#5BD9A0</color>
-    <color name="status_blue">#82A6FF</color>
-    <color name="status_amber">#FFB86B</color>
-    <color name="star_yellow">#F0D64B</color>
+    <!-- Roles inversos -->
+    <color name="inverse_surface">#E8EBF5</color>
+    <color name="inverse_on_surface">#1B2546</color>
+    <color name="inverse_primary">#2B3F8F</color>
 </resources>

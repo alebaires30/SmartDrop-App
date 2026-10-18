@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fuente descargable (Google Play Services): Atkinson Hyperlegible Next 400. No se empaqueta ningún archivo de fuente. -->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fontProviderAuthority="com.google.android.gms.fonts"
+    android:fontProviderPackage="com.google.android.gms"
+    android:fontProviderQuery="name=Atkinson Hyperlegible Next&amp;weight=400&amp;besteffort=true"
+    android:fontProviderCerts="@array/com_google_android_gms_fonts_certs"
+    app:fontProviderAuthority="com.google.android.gms.fonts"
+    app:fontProviderPackage="com.google.android.gms"
+    app:fontProviderQuery="name=Atkinson Hyperlegible Next&amp;weight=400&amp;besteffort=true"
+    app:fontProviderCerts="@array/com_google_android_gms_fonts_certs" />

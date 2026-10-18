@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -20,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -45,6 +47,7 @@ public class InicioActivity extends BaseActivity {
     private CardView cardPresion, cardCalidad, cardNivel, cardConsumo, cardValvulaInicio;
     private TextView tvPresionValor, tvCalidadValor, tvNivelPorcentaje, tvNivelLitros;
     private TextView tvValvulaEstadoInicio, tvValvulaActualizacionInicio;
+    private ImageView ivCasaHero;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private static final long INTERVALO_POLLING_MS = 10000;
@@ -80,6 +83,7 @@ public class InicioActivity extends BaseActivity {
         tvConsumoLitros = findViewById(R.id.tvConsumoLitros);
         tvValvulaEstadoInicio = findViewById(R.id.tvValvulaEstadoInicio);
         tvValvulaActualizacionInicio = findViewById(R.id.tvValvulaActualizacionInicio);
+        ivCasaHero = findViewById(R.id.ivCasaHero);
 
         float alphaInicial = 0.5f;
         cardPresion.setAlpha(alphaInicial);
@@ -95,6 +99,15 @@ public class InicioActivity extends BaseActivity {
         View header = navigationView.getHeaderView(0);
         TextView tvUsuarioDrawer = header.findViewById(R.id.tvUsuarioDrawer);
         tvUsuarioDrawer.setText(nombre);
+
+        // Saludo según la hora del teléfono, con el primer nombre de quien usa la app.
+        TextView tvSaludo = findViewById(R.id.tvSaludoInicio);
+        if (tvSaludo != null) {
+            int hora = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            String saludo = hora < 12 ? "Buenos días" : (hora < 19 ? "Buenas tardes" : "Buenas noches");
+            String primerNombre = nombre == null ? "" : nombre.trim().split("\\s+")[0];
+            tvSaludo.setText(primerNombre.isEmpty() || "Usuario".equals(primerNombre) ? saludo : saludo + ", " + primerNombre);
+        }
 
         btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
@@ -120,7 +133,20 @@ public class InicioActivity extends BaseActivity {
                 startActivity(new Intent(this, ComunidadActivity.class));
             } else if (id == R.id.drawer_consumo) {
                 startActivity(new Intent(this, ConsumoActivity.class));
+            } else if (id == R.id.drawer_presion) {
+                startActivity(new Intent(this, PresionActivity.class));
+            } else if (id == R.id.drawer_calidad) {
+                startActivity(new Intent(this, CalidadActivity.class));
+            } else if (id == R.id.drawer_tanque) {
+                startActivity(new Intent(this, NivelTanqueActivity.class));
+            } else if (id == R.id.drawer_retro) {
+                startActivity(new Intent(this, RetroalimentacionActivity.class));
+            } else if (id == R.id.drawer_consejos) {
+                startActivity(new Intent(this, RecomendacionesActivity.class));
+            } else if (id == R.id.drawer_alertas) {
+                startActivity(new Intent(this, AlertasActivity.class));
             }
+            // "Inicio" solo cierra el menú: ya estás aquí.
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
@@ -129,6 +155,14 @@ public class InicioActivity extends BaseActivity {
         cardCalidad.setOnClickListener(v -> startActivity(new Intent(this, CalidadActivity.class)));
         cardNivel.setOnClickListener(v -> startActivity(new Intent(this, NivelTanqueActivity.class)));
         cardConsumo.setOnClickListener(v -> startActivity(new Intent(this, ConsumoActivity.class)));
+        View btnReportarInicio = findViewById(R.id.btnReportarInicio);
+        if (btnReportarInicio != null) {
+            btnReportarInicio.setOnClickListener(v -> startActivity(new Intent(this, ReportarProblemaActivity.class)));
+        }
+        View btnConsejosInicio = findViewById(R.id.btnConsejosInicio);
+        if (btnConsejosInicio != null) {
+            btnConsejosInicio.setOnClickListener(v -> startActivity(new Intent(this, RecomendacionesActivity.class)));
+        }
         if (cardValvulaInicio != null) {
             cardValvulaInicio.setOnClickListener(v -> {
                 Intent intent = new Intent(InicioActivity.this, ValvulaActivity.class);
@@ -194,10 +228,16 @@ public class InicioActivity extends BaseActivity {
                 if (r.getNivel() != null) {
                     tvNivelPorcentaje.setText(String.format(Locale.getDefault(), "%.0f %%", r.getNivel().getPorcentaje()));
                     tvNivelPorcentaje.setTextColor(ColorSeveridad.colorDe(InicioActivity.this, r.getNivel().getColor()));
-                    tvNivelLitros.setText(String.format(Locale.getDefault(), "%.0fL disponibles", r.getNivel().getLitrosDisponibles()));
+                    tvNivelLitros.setText(String.format(Locale.getDefault(), "%.0f L disponibles", r.getNivel().getLitrosDisponibles()));
+                    // El tinaco de la casa se llena hasta el nivel real (0..100 % → nivel 0..10000).
+                    if (ivCasaHero != null) {
+                        double pct = Math.max(0, Math.min(100, r.getNivel().getPorcentaje()));
+                        ivCasaHero.setImageLevel((int) Math.round(pct * 100));
+                        ivCasaHero.setContentDescription(String.format(Locale.getDefault(), "Tanque de tu casa al %.0f %%", pct));
+                    }
                 }
                 if (r.getConsumo() != null) {
-                    tvConsumoLitros.setText(String.format(Locale.getDefault(), "%.1fL", r.getConsumo().getLitrosHoy()));
+                    tvConsumoLitros.setText(String.format(Locale.getDefault(), "%.1f L", r.getConsumo().getLitrosHoy()));
                 }
 
                 if (!primeraCargaCompleta) {
@@ -229,8 +269,8 @@ public class InicioActivity extends BaseActivity {
                     String estado = response.body().getEstadoActual();
                     boolean abierta = "abierta".equalsIgnoreCase(estado);
                     if (tvValvulaEstadoInicio != null) {
-                        tvValvulaEstadoInicio.setText(abierta ? "Con suministro · Abierta" : "Sin suministro · Cerrada");
-                        tvValvulaEstadoInicio.setTextColor(ContextCompat.getColor(InicioActivity.this, abierta ? R.color.success : R.color.danger));
+                        tvValvulaEstadoInicio.setText(abierta ? "Abierta: el agua llega a tu casa" : "Cerrada: sin suministro por ahora");
+                        tvValvulaEstadoInicio.setTextColor(ContextCompat.getColor(InicioActivity.this, abierta ? R.color.ok : R.color.warn));
                     }
                     if (tvValvulaActualizacionInicio != null) {
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());

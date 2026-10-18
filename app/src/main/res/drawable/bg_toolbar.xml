@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="@color/brand_accent" />
-</shape>
+<!-- Barra superior: surface con una línea fina (line) abajo, como la topbar de la web.
+     Sobre este fondo el título y los iconos van en ink (no en on_brand). -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/line" />
+        </shape>
+    </item>
+    <item android:bottom="@dimen/hairline">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/surface" />
+        </shape>
+    </item>
+</layer-list>

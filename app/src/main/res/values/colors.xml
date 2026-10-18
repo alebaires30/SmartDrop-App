@@ -1,59 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    SmartDrop · sistema de diseño "Agua en casa" (modo claro).
+    Los tokens tienen los mismos nombres que en la web (spec §3, en snake_case) y se
+    redefinen con valores oscuros en values-night/colors.xml.
+    Debajo están los nombres antiguos: siguen existiendo porque layouts y Java los usan,
+    pero ahora apuntan a un token (no tienen valores propios; el modo oscuro los sigue solo).
+-->
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- ============ Paleta semántica SmartDrop (modo claro) ============ -->
-    <!-- Los mismos nombres existen en values-night/colors.xml con valores oscuros -->
+    <!-- ============ Tokens: superficies ============ -->
+    <color name="page">#F3F4F7</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_2">#F7F8FB</color>
+    <color name="surface_tint">#E9EDF8</color>
+    <color name="line">#DDE1EC</color>
+    <color name="line_strong">#BFC6D9</color>
+
+    <!-- ============ Tokens: texto ============ -->
+    <color name="ink">#1B2546</color>
+    <color name="ink_2">#4A5573</color>
+    <color name="ink_3">#5F6985</color>
+
+    <!-- ============ Tokens: marca (añil) ============ -->
+    <color name="anil">#2B3F8F</color>
+    <color name="anil_strong">#1F2F70</color>
+    <color name="anil_soft">#E6EAF7</color>
+    <color name="on_anil">#FFFFFF</color>
+
+    <!-- ============ Tokens: agua y luz cálida ============ -->
+    <color name="agua">#1D8FB8</color>
+    <color name="agua_soft">#DDF1F8</color>
+    <!-- sol: solo ilustración / hero. Nunca texto, nunca estado. -->
+    <color name="sol">#F2B544</color>
+    <color name="sol_soft">#FDF3DE</color>
+
+    <!-- ============ Tokens: estados (texto/icono · fondo de pill · punto) ============ -->
+    <color name="ok">#1E7A50</color>
+    <color name="ok_bg">#E1F3E9</color>
+    <color name="ok_dot">#2E9E68</color>
+    <color name="warn">#8A5300</color>
+    <color name="warn_bg">#FDF0D6</color>
+    <color name="warn_dot">#D98A00</color>
+    <color name="bad">#B42318</color>
+    <color name="bad_bg">#FDE6E3</color>
+    <color name="bad_dot">#D92D20</color>
+    <color name="none">#5F6985</color>
+    <color name="none_bg">#ECEEF4</color>
+
+    <!-- ============ Roles inversos (Snackbar y similares) ============ -->
+    <color name="inverse_surface">#1B2546</color>
+    <color name="inverse_on_surface">#E8EBF5</color>
+    <color name="inverse_primary">#A3B4FF</color>
+
+    <!-- ===================================================================
+         Nombres antiguos → tokens. Elegidos según cómo se usan hoy
+         (texto vs fondo) para mantener ≥ 4.5:1 en texto.
+         =================================================================== -->
 
     <!-- Fondos -->
-    <color name="bg_app">#F4F3FB</color>
-    <color name="bg_card">#FFFFFF</color>
-    <color name="bg_card_alt">#F3F0FF</color>
-    <color name="bg_purple_soft">#E9D5FF</color>
-    <color name="bg_alert">#FDECEA</color>
-    <color name="bg_warning">#FFF3CD</color>
-    <color name="bg_input">#F8F5F2</color>
-    <color name="bg_search">#F8F9FA</color>
-    <color name="bg_info_soft">#E7EFF9</color>
-    <color name="bg_lavender">#EDE7F6</color>
-    <color name="bg_lavender_end">#D1C4E9</color>
-    <color name="bg_lavender_alt">#EDE8F7</color>
-    <color name="bg_chip">#E8E5FF</color>
-    <color name="bg_circle_soft">#EAE8F5</color>
-    <color name="btn_secondary_bg">#D5BAE9</color>
+    <color name="bg_app">@color/page</color>
+    <color name="bg_card">@color/surface</color>
+    <color name="bg_card_alt">@color/surface_2</color>
+    <!-- bg_purple_soft también se usa como texto sobre añil (burbuja de chat propia) -->
+    <color name="bg_purple_soft">@color/anil_soft</color>
+    <color name="bg_alert">@color/bad_bg</color>
+    <color name="bg_warning">@color/warn_bg</color>
+    <color name="bg_input">@color/surface_2</color>
+    <color name="bg_search">@color/surface_2</color>
+    <color name="bg_info_soft">@color/agua_soft</color>
+    <!-- bg_lavender: fondo de la opción seleccionada (ReportarProblemaActivity) -->
+    <color name="bg_lavender">@color/anil_soft</color>
+    <color name="bg_lavender_end">@color/surface_tint</color>
+    <color name="bg_lavender_alt">@color/surface_tint</color>
+    <color name="bg_chip">@color/surface_tint</color>
+    <color name="bg_circle_soft">@color/anil_soft</color>
+    <color name="btn_secondary_bg">@color/surface_tint</color>
 
     <!-- Textos -->
-    <color name="text_primary">#3D3D3D</color>
-    <color name="text_secondary">#9A9A9A</color>
-    <color name="text_muted">#9E9EBE</color>
-    <color name="text_hint">#999999</color>
+    <color name="text_primary">@color/ink</color>
+    <color name="text_secondary">@color/ink_2</color>
+    <color name="text_muted">@color/ink_3</color>
+    <color name="text_hint">@color/ink_3</color>
 
     <!-- Marca -->
-    <color name="brand_primary">#623398</color>
-    <color name="brand_accent">#7B2FBE</color>
-    <color name="brand_on_card">#623398</color>
-    <color name="brand_soft">#BEA9DF</color>
-    <color name="brand_blue">#4FACFE</color>
-    <color name="on_brand">#FFFFFF</color>
-    <color name="nav_bar">#FFFFFF</color>
+    <color name="brand_primary">@color/anil</color>
+    <color name="brand_accent">@color/anil</color>
+    <color name="brand_on_card">@color/anil</color>
+    <color name="brand_soft">@color/anil_soft</color>
+    <!-- brand_blue solo se usa en barras de progreso y series de gráfica (no texto) -->
+    <color name="brand_blue">@color/agua</color>
+    <color name="on_brand">@color/on_anil</color>
+    <color name="nav_bar">@color/surface</color>
 
     <!-- Bordes / strokes -->
-    <color name="stroke_soft">#E0DFF0</color>
-    <color name="stroke_input">#E0D7E7</color>
-    <color name="stroke_search">#E0E0E0</color>
-    <color name="stroke_lavender">#C0A8E8</color>
+    <color name="stroke_soft">@color/line</color>
+    <color name="stroke_input">@color/line_strong</color>
+    <color name="stroke_search">@color/line_strong</color>
+    <color name="stroke_lavender">@color/line_strong</color>
 
-    <!-- Colores de estado -->
-    <color name="success">#27AE60</color>
-    <color name="success_dark">#0F6E56</color>
-    <color name="danger">#E74C3C</color>
-    <color name="text_alert">#C0392B</color>
-    <color name="warning_text">#856404</color>
-    <color name="status_orange">#E67E22</color>
-    <color name="status_yellow">#B7950B</color>
-    <color name="status_green">#1E8449</color>
-    <color name="status_blue">#1D4ED8</color>
-    <color name="status_amber">#B45309</color>
-    <color name="star_yellow">#F0D64B</color>
+    <!-- Estados. Java los usa casi siempre como color de TEXTO (estado de válvula,
+         nivel de riesgo, estado de reporte), por eso apuntan a ok/warn/bad y no a
+         los *_dot, que no llegan a 4.5:1 sobre blanco. -->
+    <color name="success">@color/ok</color>
+    <color name="success_dark">@color/ok</color>
+    <color name="danger">@color/bad</color>
+    <color name="text_alert">@color/bad</color>
+    <color name="warning_text">@color/warn</color>
+    <color name="status_orange">@color/warn</color>
+    <color name="status_yellow">@color/warn</color>
+    <color name="status_green">@color/ok</color>
+    <color name="status_blue">@color/anil</color>
+    <color name="status_amber">@color/warn</color>
+    <!-- star_yellow pinta estrellas de 42sp (texto): sol no llega a 3:1, warn sí -->
+    <color name="star_yellow">@color/warn</color>
 </resources>

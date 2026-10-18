@@ -92,12 +92,12 @@ public class NivelTanqueActivity extends BaseActivity {
         String textoPrincipal;
 
         if (mostrandoLitros) {
-            tvConversion.setText("Cambiar conversión: Litros (L)");
-            tvCapacidad.setText(String.format(java.util.Locale.getDefault(), "Capacidad de tanque: %.0fL", ultimoNivel.getCapacidadMaximaLitros()));
+            tvConversion.setText("Ver en barriles");
+            tvCapacidad.setText(String.format(java.util.Locale.getDefault(), "Capacidad del tanque: %.0f L", ultimoNivel.getCapacidadMaximaLitros()));
             textoPrincipal = String.format(java.util.Locale.getDefault(), "%.0f litros disponibles (%.0f%%)", ultimoNivel.getLitrosDisponibles(), ultimoNivel.getPorcentaje());
         } else {
-            tvConversion.setText("Cambiar conversión: Barriles");
-            tvCapacidad.setText(String.format(java.util.Locale.getDefault(), "Capacidad de tanque: %.2f barriles", ultimoNivel.getCapacidadMaximaBarriles()));
+            tvConversion.setText("Ver en litros");
+            tvCapacidad.setText(String.format(java.util.Locale.getDefault(), "Capacidad del tanque: %.2f barriles", ultimoNivel.getCapacidadMaximaBarriles()));
             textoPrincipal = String.format(java.util.Locale.getDefault(), "%.2f barriles disponibles (%.0f%%)", ultimoNivel.getBarrilesDisponibles(), ultimoNivel.getPorcentaje());
         }
 
@@ -107,6 +107,13 @@ public class NivelTanqueActivity extends BaseActivity {
         }
 
         tvDisponible.setText(textoPrincipal);
+        // El tinaco de la casa se llena hasta el nivel real (0..100 % → nivel 0..10000).
+        android.widget.ImageView ivCasa = findViewById(R.id.ivCasaTanque);
+        if (ivCasa != null) {
+            double pct = Math.max(0, Math.min(100, ultimoNivel.getPorcentaje()));
+            ivCasa.setImageLevel((int) Math.round(pct * 100));
+            ivCasa.setContentDescription(String.format(java.util.Locale.getDefault(), "Tanque de tu casa al %.0f %%", pct));
+        }
         tvDisponible.setTextColor(ColorSeveridad.colorDe(this, ultimoNivel.getColor()));
 
         tvUltima.setText("Última lectura: " + Fechas.formatear(ultimoNivel.getFecha(), "hh:mm a", "--:--"));

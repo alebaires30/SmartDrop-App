@@ -1,91 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Búsqueda: campo en la barra superior, resultados en lista y estado vacío con orientación. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/page"
     android:orientation="vertical"
-    android:background="@color/bg_app">
+    tools:context=".BusquedaActivity">
 
-    <!-- Toolbar superior con caja de búsqueda -->
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarSearch"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="@drawable/bg_toolbar">
+        android:layout_height="@dimen/toolbar_height"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStart="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:paddingEnd="16dp">
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/space_1"
+            android:paddingEnd="@dimen/space_2">
 
             <ImageButton
                 android:id="@+id/btnSearchBack"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="@dimen/touch_min"
+                android:layout_height="@dimen/touch_min"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_back"
-                android:contentDescription="Regresar"
-                app:tint="@color/on_brand" />
+                android:contentDescription="Volver"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/ink" />
 
             <EditText
                 android:id="@+id/etSearchQuery"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/touch_min"
+                android:layout_marginStart="@dimen/space_1"
                 android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_tarjeta_estado"
-                android:hint="Buscar en SmartDrop..."
+                android:background="@drawable/bg_input"
+                android:hint="Buscar en SmartDrop…"
                 android:imeOptions="actionSearch"
+                android:importantForAutofill="no"
                 android:inputType="text"
-                android:paddingHorizontal="12dp"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_hint"
-                android:textSize="14sp" />
+                android:paddingStart="@dimen/space_4"
+                android:paddingEnd="@dimen/space_4"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Body" />
 
             <ImageButton
                 android:id="@+id/btnSearchSubmit"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="@dimen/touch_min"
+                android:layout_height="@dimen/touch_min"
+                android:layout_marginStart="@dimen/space_1"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_menu_search"
                 android:contentDescription="Buscar"
-                app:tint="@color/on_brand" />
-
+                android:src="@drawable/ic_search"
+                app:tint="@color/anil" />
         </LinearLayout>
-    </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hairline"
+        android:background="@color/line" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSearchResults"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="8dp"
-            tools:listitem="@layout/item_busqueda_result" />
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/gutter"
+            android:paddingTop="@dimen/space_4"
+            android:paddingEnd="@dimen/gutter"
+            android:paddingBottom="@dimen/space_7" />
 
         <ProgressBar
             android:id="@+id/pbSearchLoading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:indeterminateTint="@color/anil"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvSearchEmpty"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:accessibilityLiveRegion="polite"
+            android:drawablePadding="@dimen/space_3"
             android:gravity="center"
-            android:padding="24dp"
-            android:text="Ingresa un término para buscar secciones, paneles y parámetros."
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
-
+            android:padding="@dimen/space_7"
+            android:text="Escribe una palabra para buscar secciones, sensores y alertas. Por ejemplo: presión, tanque o fugas."
+            android:textAppearance="@style/TextAppearance.SmartDrop.Body"
+            android:textColor="@color/ink_2"
+            app:drawableTopCompat="@drawable/ic_search"
+            app:drawableTint="@color/ink_3" />
     </FrameLayout>
 </LinearLayout>

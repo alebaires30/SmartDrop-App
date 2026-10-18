@@ -35,12 +35,12 @@ final class FugaTexto {
         }
         texto.append("Mediciones:");
         texto.append("\n• Flujo mínimo (6 h): ").append(valor(m, "flujo_minimo_6h_lpm", "L/min", 2))
-                .append(" · normal ").append(valor(m, "flujo_minimo_normal_lpm", "L/min", 2));
+                .append(", normal ").append(valor(m, "flujo_minimo_normal_lpm", "L/min", 2));
         texto.append("\n• Presión: ").append(valor(m, "presion_actual", "", 2))
-                .append(" · normal ").append(valor(m, "presion_normal", "", 2));
+                .append(", normal ").append(valor(m, "presion_normal", "", 2));
         texto.append("\n• Tanque: ").append(valor(m, "nivel_tanque_litros", "L", 1))
                 .append(" (").append(valor(m, "nivel_tanque_pct", "%", 0)).append(")");
-        texto.append("\n\nContacto: ").append(textoO(titular)).append(" · Tel. ").append(textoO(telefono));
+        texto.append("\n\nContacto: ").append(textoO(titular)).append(". Teléfono: ").append(textoO(telefono));
         return texto.toString();
     }
 

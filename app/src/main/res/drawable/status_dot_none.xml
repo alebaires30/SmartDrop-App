@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Punto de estado "none" (8dp). Siempre acompaña a una palabra, nunca va solo. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="@color/none" />
+    <size android:width="@dimen/status_dot" android:height="@dimen/status_dot" />
+</shape>

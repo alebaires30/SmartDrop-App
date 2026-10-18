@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fuentes que Google Play Services descarga por adelantado (meta-data "preloaded_fonts" del manifest). -->
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/atkinson_regular</item>
+        <item>@font/atkinson_medium</item>
+        <item>@font/atkinson_semibold</item>
+        <item>@font/atkinson_bold</item>
+        <item>@font/nunito_bold</item>
+        <item>@font/nunito_extrabold</item>
+    </array>
+</resources>

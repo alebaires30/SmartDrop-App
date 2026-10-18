@@ -1,11 +1,137 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!--
+        SmartDrop · "Agua en casa".
+        Base.Theme.SmartDrop tiene todo el mapeo (roles de color, tipografía, formas y estilos
+        por defecto). Theme.SmartDrop solo agrega lo que cambia entre día y noche (barras del
+        sistema); su versión nocturna está en values-night/themes.xml con el mismo nombre.
+        Los colores (@color/*) ya cambian solos en modo oscuro por values-night/colors.xml.
 
-    <style name="Theme.SmartDrop" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/brand_blue</item>
-        <item name="colorPrimaryVariant">#2A5298</item>
-        <item name="colorOnPrimary">@color/on_brand</item>
-        <item name="colorSecondary">@color/brand_accent</item>
-        <item name="android:windowBackground">@color/bg_app</item>
+        Fuente por defecto: Atkinson llega a cada TextView/EditText por android:textViewStyle /
+        editTextStyle y a los componentes Material por los slots textAppearance*. NO se pone
+        android:fontFamily a nivel de tema a propósito: un fontFamily de tema le gana a cualquier
+        android:textAppearance y los títulos en Nunito (TextAppearance.SmartDrop.Title…) dejarían
+        de funcionar.
+    -->
+    <style name="Base.Theme.SmartDrop" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Roles de color -->
+        <item name="colorPrimary">@color/anil</item>
+        <item name="colorOnPrimary">@color/on_anil</item>
+        <item name="colorPrimaryContainer">@color/anil_soft</item>
+        <item name="colorOnPrimaryContainer">@color/anil_strong</item>
+        <item name="colorPrimaryInverse">@color/inverse_primary</item>
+
+        <item name="colorSecondary">@color/agua</item>
+        <item name="colorOnSecondary">@color/on_anil</item>
+        <!-- Contenedor secundario = selección (indicador de la barra inferior, chips, botón tonal) -->
+        <item name="colorSecondaryContainer">@color/anil_soft</item>
+        <item name="colorOnSecondaryContainer">@color/anil_strong</item>
+
+        <item name="colorTertiary">@color/agua</item>
+        <item name="colorOnTertiary">@color/on_anil</item>
+        <item name="colorTertiaryContainer">@color/agua_soft</item>
+        <item name="colorOnTertiaryContainer">@color/ink</item>
+
+        <item name="colorError">@color/bad</item>
+        <item name="colorOnError">@color/on_anil</item>
+        <item name="colorErrorContainer">@color/bad_bg</item>
+        <item name="colorOnErrorContainer">@color/bad</item>
+
+        <item name="android:colorBackground">@color/page</item>
+        <item name="colorOnBackground">@color/ink</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/ink</item>
+        <item name="colorSurfaceVariant">@color/surface_2</item>
+        <item name="colorOnSurfaceVariant">@color/ink_2</item>
+        <item name="colorSurfaceInverse">@color/inverse_surface</item>
+        <item name="colorOnSurfaceInverse">@color/inverse_on_surface</item>
+        <item name="colorSurfaceBright">@color/surface</item>
+        <item name="colorSurfaceDim">@color/page</item>
+        <item name="colorSurfaceContainerLowest">@color/surface</item>
+        <item name="colorSurfaceContainerLow">@color/surface</item>
+        <item name="colorSurfaceContainer">@color/surface</item>
+        <item name="colorSurfaceContainerHigh">@color/surface</item>
+        <item name="colorSurfaceContainerHighest">@color/surface_2</item>
+        <item name="colorOutline">@color/line_strong</item>
+        <item name="colorOutlineVariant">@color/line</item>
+
+        <item name="colorAccent">@color/anil</item>
+        <item name="colorControlNormal">@color/ink_2</item>
+        <item name="colorControlActivated">@color/anil</item>
+        <!-- Superficies planas: sin el tinte de elevación de Material 3 -->
+        <item name="elevationOverlayEnabled">false</item>
+
+        <item name="android:textColorPrimary">@color/ink</item>
+        <item name="android:textColorSecondary">@color/ink_2</item>
+        <item name="android:textColorTertiary">@color/ink_3</item>
+        <item name="android:textColorHint">@color/ink_3</item>
+        <item name="android:textColorLink">@color/anil</item>
+
+        <!-- Ventana -->
+        <item name="android:windowBackground">@color/page</item>
+        <item name="android:statusBarColor">@color/page</item>
+        <item name="android:navigationBarColor">@color/page</item>
+
+        <!-- Tipografía: slots de Material 3 → apariencias SmartDrop -->
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.SmartDrop.Display</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.SmartDrop.Display</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.SmartDrop.Display</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.SmartDrop.Headline</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartDrop.Headline</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.SmartDrop.Title</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartDrop.Title</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.SmartDrop.BodyStrong</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.SmartDrop.Label</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartDrop.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartDrop.Body</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.SmartDrop.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.SmartDrop.Button</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.SmartDrop.Label</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.SmartDrop.Caption</item>
+        <!-- Slots de Material 2 / framework que aún usan algunos widgets -->
+        <item name="textAppearanceHeadline5">@style/TextAppearance.SmartDrop.Headline</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.SmartDrop.Title</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.SmartDrop.BodyStrong</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.SmartDrop.Body</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.SmartDrop.BodySmall</item>
+        <item name="textAppearanceButton">@style/TextAppearance.SmartDrop.Button</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.SmartDrop.Caption</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.SmartDrop.Caption</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance.SmartDrop.Default.Large</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.SmartDrop.Default</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance.SmartDrop.Default.Small</item>
+
+        <!-- Estilos por defecto de los widgets -->
+        <item name="android:textViewStyle">@style/Widget.SmartDrop.TextView</item>
+        <item name="editTextStyle">@style/Widget.SmartDrop.EditText</item>
+        <item name="materialButtonStyle">@style/Widget.SmartDrop.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.SmartDrop.Button.Secondary</item>
+        <item name="borderlessButtonStyle">@style/Widget.SmartDrop.Button.Text</item>
+        <item name="materialCardViewStyle">@style/Widget.SmartDrop.Card</item>
+        <item name="cardViewStyle">@style/Widget.SmartDrop.CardView.Legacy</item>
+        <item name="toolbarStyle">@style/Widget.SmartDrop.Toolbar</item>
+        <item name="bottomNavigationStyle">@style/Widget.SmartDrop.BottomNav</item>
+        <item name="navigationViewStyle">@style/Widget.SmartDrop.Drawer</item>
+        <item name="textInputStyle">@style/Widget.SmartDrop.TextInput</item>
+        <item name="chipStyle">@style/Widget.SmartDrop.Chip</item>
+        <item name="materialSwitchStyle">@style/Widget.SmartDrop.Switch</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.SmartDrop.Popup</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.SmartDrop.MaterialAlertDialog</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.SmartDrop.Dialog.Alert</item>
+
+        <!-- Formas: el radio crece con la jerarquía -->
+        <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.SmartDrop.ExtraSmall</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.SmartDrop.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.SmartDrop.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.SmartDrop.Large</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.SmartDrop.ExtraLarge</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.SmartDrop.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.SmartDrop.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.SmartDrop.Large</item>
     </style>
 
+    <!-- Día: iconos oscuros en las barras del sistema (fondo page claro). -->
+    <style name="Theme.SmartDrop" parent="Base.Theme.SmartDrop">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+    </style>
 </resources>

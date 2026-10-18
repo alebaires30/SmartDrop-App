@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo del botón principal (añil plano): presionado anil_strong, deshabilitado translúcido. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.38" android:color="@color/anil" android:state_enabled="false" />
+    <item android:color="@color/anil_strong" android:state_pressed="true" />
+    <item android:color="@color/anil_strong" android:state_focused="true" />
+    <item android:color="@color/anil" />
+</selector>

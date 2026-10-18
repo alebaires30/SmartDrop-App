@@ -70,9 +70,9 @@ public class PresionActivity extends BaseActivity {
                 if (!response.isSuccessful() || response.body() == null || response.body().getPresion() == null) return;
                 PresionData p = response.body().getPresion();
 
-                tvPresionActual.setText(String.format(java.util.Locale.getDefault(), "Presión actual: %.1f %s", p.getValor(), p.getUnidad()));
-                tvEstadoPresion.setText("Presión: " + p.getEstado());
-                tvEstadoPresion.setTextColor(ColorSeveridad.colorDe(PresionActivity.this, p.getColor()));
+                tvPresionActual.setText(String.format(java.util.Locale.getDefault(), "%.1f %s", p.getValor(), p.getUnidad()));
+                tvEstadoPresion.setText(p.getEstado());
+                ColorSeveridad.aplicarPill(tvEstadoPresion, p.getColor());
                 tvDescripcionPresion.setText(p.getDescripcion());
                 tvUltimoAn.setText("Actualizado: " + Fechas.formatear(p.getFecha(), "hh:mm:ss a", "--:--"));
 
@@ -92,17 +92,17 @@ public class PresionActivity extends BaseActivity {
             @Override
             public void onResponse(retrofit2.Call<ValvulaEstadoResponse> call, retrofit2.Response<ValvulaEstadoResponse> response) {
                 if (!response.isSuccessful() || response.body() == null) {
-                    tvValvula.setText("Válvula: Sin datos");
+                    tvValvula.setText("Sin datos de la válvula");
                     return;
                 }
                 boolean abierta = "abierta".equalsIgnoreCase(response.body().getEstadoActual());
-                tvValvula.setText(abierta ? "Válvula: ABIERTA" : "Válvula: CERRADA");
-                tvValvula.setTextColor(getColor(abierta ? R.color.status_green : R.color.text_alert));
+                tvValvula.setText(abierta ? "Abierta: el agua llega a tu casa" : "Cerrada: sin suministro por ahora");
+                tvValvula.setTextColor(getColor(abierta ? R.color.ok : R.color.warn));
             }
 
             @Override
             public void onFailure(retrofit2.Call<ValvulaEstadoResponse> call, Throwable t) {
-                tvValvula.setText("Válvula: Sin datos");
+                tvValvula.setText("Sin datos de la válvula");
             }
         });
     }

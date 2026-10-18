@@ -231,7 +231,7 @@ public class AdminDashboardActivity extends BaseActivity {
                 tvAlertasCount.setText(r.getTotalAlertas() + " activas");
                 if (r.getTotalAlertas() > 0) {
                     cardAlertaGeneral.setVisibility(View.VISIBLE);
-                    tvAlertaGeneral.setText(r.getTotalAlertas() + " parámetro(s) fuera de rango");
+                    tvAlertaGeneral.setText(r.getTotalAlertas() == 1 ? "1 parámetro fuera de rango. Revísalo." : r.getTotalAlertas() + " parámetros fuera de rango. Revísalos.");
                 } else {
                     cardAlertaGeneral.setVisibility(View.GONE);
                 }
@@ -259,8 +259,8 @@ public class AdminDashboardActivity extends BaseActivity {
                 if (!response.isSuccessful() || response.body() == null) return;
                 String estado = response.body().getEstadoActual();
                 boolean abierta = "abierta".equalsIgnoreCase(estado);
-                tvValvulaEstadoAdmin.setText(abierta ? "ABIERTA" : "CERRADA");
-                tvValvulaEstadoAdmin.setTextColor(ContextCompat.getColor(AdminDashboardActivity.this, abierta ? R.color.success : R.color.danger));
+                tvValvulaEstadoAdmin.setText(abierta ? "Abierta: hay suministro" : "Cerrada: sin suministro");
+                tvValvulaEstadoAdmin.setTextColor(ContextCompat.getColor(AdminDashboardActivity.this, abierta ? R.color.ok : R.color.warn));
             }
             @Override
             public void onFailure(Call<ValvulaEstadoResponse> call, Throwable t) { }

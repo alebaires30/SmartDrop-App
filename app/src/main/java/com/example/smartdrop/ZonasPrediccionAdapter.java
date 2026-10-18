@@ -47,48 +47,37 @@ public class ZonasPrediccionAdapter extends RecyclerView.Adapter<ZonasPrediccion
         ZonaResumen z = zonas.get(position);
 
         h.tvNombre.setText(z.getNic() != null && !z.getNic().isEmpty()
-                ? z.getZoneName() + " · " + z.getNic() : z.getZoneName());
+                ? z.getZoneName() + ", " + z.getNic() : z.getZoneName());
         h.tvNivel.setText(String.format(Locale.getDefault(),
                 "Nivel: %.0f L (%.1f%%)", z.getNivelActualLitros(), z.getPorcentajeLlenado()));
         h.progreso.setProgress((int) Math.round(z.getPorcentajeLlenado()));
         String ubicacion = z.getDireccion() != null && !z.getDireccion().isEmpty() ? z.getDireccion() : "";
-        if (z.getZona() != null && !z.getZona().isEmpty()) ubicacion += (ubicacion.isEmpty() ? "" : " · ") + z.getZona();
+        if (z.getZona() != null && !z.getZona().isEmpty()) ubicacion += (ubicacion.isEmpty() ? "" : ", ") + z.getZona();
         h.tvConsumo.setText(ubicacion.isEmpty()
                 ? String.format(Locale.getDefault(), "Consumo: %.2f L/h", z.getConsumoTotalLph())
                 : ubicacion + String.format(Locale.getDefault(), "%nConsumo: %.2f L/h", z.getConsumoTotalLph()));
 
         if (z.getAnomaliasActivas24h() > 0) {
             h.tvAnomalias.setText("Posible fuga");
-            h.tvAnomalias.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.text_alert));
+            h.tvAnomalias.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.bad));
         } else {
             h.tvAnomalias.setText("Sin fugas");
-            h.tvAnomalias.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.text_secondary));
+            h.tvAnomalias.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.ink_2));
         }
 
         String riesgo = z.getNivelRiesgo() == null ? "sin_datos" : z.getNivelRiesgo();
+        String etiqueta;
+        String severidad;
         switch (riesgo) {
-            case "critico":
-                h.tvRiesgo.setText("CRÍTICO");
-                h.tvRiesgo.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.text_alert));
-                break;
-            case "alto":
-                h.tvRiesgo.setText("RIESGO ALTO");
-                h.tvRiesgo.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.status_orange));
-                break;
+            case "critico":  etiqueta = "Crítico";       severidad = "rojo";     break;
+            case "alto":     etiqueta = "Riesgo alto";   severidad = "rojo";     break;
             case "medio":
-            case "moderado":
-                h.tvRiesgo.setText("RIESGO MEDIO");
-                h.tvRiesgo.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.status_yellow));
-                break;
-            case "bajo":
-                h.tvRiesgo.setText("RIESGO BAJO");
-                h.tvRiesgo.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.status_green));
-                break;
-            default:
-                h.tvRiesgo.setText("SIN DATOS");
-                h.tvRiesgo.setTextColor(ContextCompat.getColor(h.itemView.getContext(), R.color.text_secondary));
-                break;
+            case "moderado": etiqueta = "Riesgo medio";  severidad = "amarillo"; break;
+            case "bajo":     etiqueta = "Riesgo bajo";   severidad = "verde";    break;
+            default:         etiqueta = "Sin datos";     severidad = "gris";     break;
         }
+        h.tvRiesgo.setText(etiqueta);
+        ColorSeveridad.aplicarPill(h.tvRiesgo, severidad);
 
         String detalle = textoPrediccion(z);
         h.tvPrediccion.setVisibility(detalle.isEmpty() ? View.GONE : View.VISIBLE);

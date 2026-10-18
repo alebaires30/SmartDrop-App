@@ -1,33 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Fila de reporte (ReportesAdapter): tipo, estado como pastilla, descripción y metadatos. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp" app:cardCornerRadius="12dp" app:cardElevation="3dp">
+    style="@style/Widget.SmartDrop.Card.Tile"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/space_3"
+    android:clickable="true"
+    android:focusable="true">
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="vertical" android:padding="14dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="horizontal" android:gravity="center_vertical">
-            <TextView android:id="@+id/tvReporteTipo" android:layout_width="0dp" android:layout_weight="1"
-                android:layout_height="wrap_content" android:textStyle="bold" android:textSize="15sp"
-                android:textColor="@color/text_primary"/>
-            <TextView android:id="@+id/tvReporteEstado" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:textStyle="bold" android:textSize="12sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvReporteTipo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                android:textColor="@color/ink" />
+
+            <TextView
+                android:id="@+id/tvReporteEstado"
+                style="@style/Widget.SmartDrop.StatusPill.None"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_2" />
         </LinearLayout>
 
-        <TextView android:id="@+id/tvReporteDescripcion" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_marginTop="4dp" android:textSize="13sp" android:textColor="@color/text_secondary"
-            android:maxLines="2" android:ellipsize="end"/>
+        <TextView
+            android:id="@+id/tvReporteDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_2"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.SmartDrop.Body"
+            android:textColor="@color/ink_2" />
 
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="horizontal" android:layout_marginTop="6dp">
-            <TextView android:id="@+id/tvReporteAutor" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:textSize="12sp" android:textColor="@color/brand_on_card" android:layout_marginEnd="10dp"/>
-            <TextView android:id="@+id/tvReporteFecha" android:layout_width="0dp" android:layout_weight="1"
-                android:layout_height="wrap_content" android:textSize="12sp" android:textColor="@color/text_secondary"/>
-            <TextView android:id="@+id/tvReporteAdjuntos" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:textSize="12sp" android:textColor="@color/text_secondary"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_3"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvReporteAutor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/space_3"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Label"
+                android:textColor="@color/anil" />
+
+            <TextView
+                android:id="@+id/tvReporteFecha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Caption" />
+
+            <TextView
+                android:id="@+id/tvReporteAdjuntos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Caption" />
         </LinearLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Botón de SwitchMaterial (perfil): añil encendido, surface con sombra apagado. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.5" android:color="@color/anil" android:state_enabled="false" android:state_checked="true" />
+    <item android:color="@color/anil" android:state_checked="true" />
+    <item android:color="@color/surface" />
+</selector>

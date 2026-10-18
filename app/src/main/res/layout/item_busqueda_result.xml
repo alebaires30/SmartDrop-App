@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Resultado de búsqueda (BusquedaAdapter): título, contenido y sección de destino. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.SmartDrop.Card.Tile"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginVertical="6dp"
+    android:layout_marginBottom="@dimen/space_3"
     android:clickable="true"
-    android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/bg_card">
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="14dp">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvResultTitulo"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Título de la Sección"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:text="Título de la sección"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                android:textColor="@color/ink" />
+
+            <TextView
+                android:id="@+id/tvResultContenido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_1"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text=""
+                android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
 
             <TextView
                 android:id="@+id/tvResultUrl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/valvulas/"
-                android:textColor="@color/brand_accent"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                android:background="@color/bg_card_alt"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="2dp" />
+                android:layout_marginTop="@dimen/space_2"
+                android:text=""
+                android:textAppearance="@style/TextAppearance.SmartDrop.Caption"
+                android:textColor="@color/anil" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvResultContenido"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Descripción o contenido de la sección encontrada..."
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp" />
-
+        <ImageView
+            android:layout_width="@dimen/icon_md"
+            android:layout_height="@dimen/icon_md"
+            android:layout_marginStart="@dimen/space_3"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/ink_3" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

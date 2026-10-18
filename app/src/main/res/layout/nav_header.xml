@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Encabezado del menú lateral: marca y nombre de quien usa la app, sobre surface. -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#623398"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:paddingTop="32dp"
-    android:paddingBottom="20dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp">
+    android:background="@color/surface"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/space_5"
+    android:paddingTop="@dimen/space_7"
+    android:paddingEnd="@dimen/space_5"
+    android:paddingBottom="@dimen/space_5">
 
     <ImageView
         android:id="@+id/ivPerfilDrawer"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@drawable/perfil"
-        android:scaleType="centerInside"
-        android:contentDescription="Foto de perfil" />
+        style="@style/Widget.SmartDrop.IconChip.Anil"
+        android:layout_width="@dimen/icon_chip_lg"
+        android:layout_height="@dimen/icon_chip_lg"
+        android:contentDescription="Foto de perfil"
+        android:src="@drawable/ic_person" />
 
-    <TextView
-        android:id="@+id/tvUsuarioDrawer"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Usuario"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-medium" />
+        android:layout_marginStart="@dimen/space_4"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvUsuarioDrawer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Usuario"
+            android:textAppearance="@style/TextAppearance.SmartDrop.Title"
+            android:textColor="@color/ink" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SmartDrop"
+            android:textAppearance="@style/TextAppearance.SmartDrop.Caption" />
+    </LinearLayout>
 
 </LinearLayout>

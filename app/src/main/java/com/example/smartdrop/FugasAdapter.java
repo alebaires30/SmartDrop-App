@@ -45,30 +45,30 @@ public class FugasAdapter extends RecyclerView.Adapter<FugasAdapter.ViewHolder> 
 
         h.tvNic.setText(v.getNic());
         String ubicacion = v.getDireccion() == null ? "" : v.getDireccion();
-        if (v.getZona() != null && !v.getZona().isEmpty()) ubicacion += (ubicacion.isEmpty() ? "" : " · ") + v.getZona();
+        if (v.getZona() != null && !v.getZona().isEmpty()) ubicacion += (ubicacion.isEmpty() ? "" : ", ") + v.getZona();
         h.tvUbicacion.setText(ubicacion);
 
         String riesgo = v.getNivelRiesgo() == null ? "sin_datos" : v.getNivelRiesgo();
-        int color;
         String etiqueta;
+        String severidad;
         if (v.isPosibleFuga()) {
-            etiqueta = "POSIBLE FUGA";
-            color = R.color.text_alert;
+            etiqueta = "Posible fuga";
+            severidad = "rojo";
         } else if (riesgo.equals("alto") || riesgo.equals("medio")) {
-            etiqueta = "VIGILAR";
-            color = R.color.status_orange;
+            etiqueta = "Vigilar";
+            severidad = "amarillo";
         } else if (riesgo.equals("bajo")) {
-            etiqueta = "SIN FUGA";
-            color = R.color.status_green;
+            etiqueta = "Sin fuga";
+            severidad = "verde";
         } else {
-            etiqueta = "SIN ANÁLISIS";
-            color = R.color.text_secondary;
+            etiqueta = "Sin análisis";
+            severidad = "gris";
         }
         h.tvRiesgo.setText(etiqueta);
-        h.tvRiesgo.setTextColor(ContextCompat.getColor(context, color));
+        ColorSeveridad.aplicarPill(h.tvRiesgo, severidad);
         h.tvProbabilidad.setText(v.getPorcentaje() == null ? ""
                 : String.format(Locale.getDefault(), "%.0f %%", v.getPorcentaje()));
-        h.tvProbabilidad.setTextColor(ContextCompat.getColor(context, v.isPosibleFuga() ? R.color.text_alert : R.color.text_secondary));
+        h.tvProbabilidad.setTextColor(ContextCompat.getColor(context, v.isPosibleFuga() ? R.color.bad : R.color.ink_2));
 
         String nota = notaDatos(v);
         if (nota.isEmpty() && v.getEvaluado() != null && !v.isPosibleFuga()) {
@@ -96,7 +96,8 @@ public class FugasAdapter extends RecyclerView.Adapter<FugasAdapter.ViewHolder> 
 
         boolean abierta = expandidas.contains(v.getHomeId());
         h.tvVerMas.setVisibility(View.VISIBLE);
-        h.tvVerMas.setText(abierta ? "Ocultar detalles ▴" : "Ver más detalles ▾");
+        h.tvVerMas.setText(abierta ? "Ocultar detalles" : "Ver más detalles");
+        h.tvVerMas.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_chevron_down, 0);
         h.tvDetalle.setVisibility(abierta ? View.VISIBLE : View.GONE);
         if (abierta) h.tvDetalle.setText(FugaTexto.detalle(v.getCausas(), v.getMetricas(), v.getTitular(), v.getTelefono()));
         View.OnClickListener alternar = view -> {

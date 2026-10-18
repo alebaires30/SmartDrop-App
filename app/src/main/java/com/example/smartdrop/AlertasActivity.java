@@ -113,18 +113,18 @@ public class AlertasActivity extends BaseActivity {
     }
 
     private CardView crearTarjeta(AlertaSensor alerta) {
-        CardView tarjeta = new CardView(this);
+        com.google.android.material.card.MaterialCardView tarjeta = new com.google.android.material.card.MaterialCardView(this);
         LinearLayout.LayoutParams tarjetaParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         tarjetaParams.bottomMargin = dp(12);
         tarjeta.setLayoutParams(tarjetaParams);
-        tarjeta.setRadius(dp(16));
-        tarjeta.setCardElevation(dp(3));
-        tarjeta.setCardBackgroundColor(getColor(R.color.bg_card));
-        tarjeta.setUseCompatPadding(true);
+        tarjeta.setRadius(dp(14));
+        tarjeta.setCardElevation(0);
+        tarjeta.setCardBackgroundColor(getColor(R.color.surface));
+        tarjeta.setStrokeColor(getColor(R.color.bad_dot));
+        tarjeta.setStrokeWidth(dp(1));
         tarjeta.setClickable(true);
         tarjeta.setFocusable(true);
-        tarjeta.setForeground(getDrawable(android.R.drawable.list_selector_background));
 
         LinearLayout contenido = new LinearLayout(this);
         contenido.setOrientation(LinearLayout.VERTICAL);
@@ -135,18 +135,18 @@ public class AlertasActivity extends BaseActivity {
         String estado = alerta.valor.getEstado();
         titulo.setText(alerta.nombre + ("Baja".equals(estado) ? ": valor bajo"
                 : "Alta".equals(estado) ? ": valor alto" : " fuera de rango"));
-        titulo.setTextColor(getColor(R.color.text_alert));
-        titulo.setTextSize(15);
+        titulo.setTextAppearance(R.style.TextAppearance_SmartDrop_BodyStrong);
+        titulo.setTextColor(getColor(R.color.bad));
         titulo.setGravity(Gravity.CENTER_VERTICAL);
-        titulo.setTypeface(null, android.graphics.Typeface.BOLD);
+        titulo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.status_dot_bad, 0, 0, 0);
+        titulo.setCompoundDrawablePadding(dp(8));
         contenido.addView(titulo);
 
         TextView valor = new TextView(this);
         String unidad = alerta.valor.getUnidad() == null ? "" : " " + alerta.valor.getUnidad();
         valor.setText(String.format(Locale.getDefault(), "%.2f%s", alerta.valor.getValor(), unidad));
-        valor.setTextColor(getColor(R.color.text_primary));
-        valor.setTextSize(23);
-        valor.setTypeface(null, android.graphics.Typeface.BOLD);
+        valor.setTextAppearance(R.style.TextAppearance_SmartDrop_Number);
+        valor.setTextColor(getColor(R.color.ink));
         LinearLayout.LayoutParams valorParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         valorParams.topMargin = dp(8);
@@ -156,8 +156,7 @@ public class AlertasActivity extends BaseActivity {
         if (!rango.isEmpty()) {
             TextView tvRango = new TextView(this);
             tvRango.setText(rango);
-            tvRango.setTextColor(getColor(R.color.text_primary));
-            tvRango.setTextSize(13);
+            tvRango.setTextAppearance(R.style.TextAppearance_SmartDrop_BodySmall);
             LinearLayout.LayoutParams rangoParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             rangoParams.topMargin = dp(4);
@@ -166,20 +165,21 @@ public class AlertasActivity extends BaseActivity {
 
         TextView fecha = new TextView(this);
         String fechaCorta = Fechas.corta(alerta.valor.getFecha());
-        String origen = alerta.valor.getNic() == null || alerta.valor.getNic().isEmpty() ? "" : alerta.valor.getNic() + " · ";
+        String origen = alerta.valor.getNic() == null || alerta.valor.getNic().isEmpty() ? "" : alerta.valor.getNic() + ". ";
         fecha.setText(origen + (fechaCorta.isEmpty() ? "Lectura reciente" : "Lectura del " + fechaCorta));
-        fecha.setTextColor(getColor(R.color.text_secondary));
-        fecha.setTextSize(12);
+        fecha.setTextAppearance(R.style.TextAppearance_SmartDrop_Caption);
         LinearLayout.LayoutParams fechaParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         fechaParams.topMargin = dp(4);
         contenido.addView(fecha, fechaParams);
 
         TextView accion = new TextView(this);
-        accion.setText("Ver gráfica →");
-        accion.setTextColor(getColor(R.color.brand_accent));
-        accion.setTextSize(13);
-        accion.setTypeface(null, android.graphics.Typeface.BOLD);
+        accion.setText("Ver gráfica");
+        accion.setTextAppearance(R.style.TextAppearance_SmartDrop_Label);
+        accion.setTextColor(getColor(R.color.anil));
+        accion.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_chevron_right, 0);
+        accion.setCompoundDrawableTintList(android.content.res.ColorStateList.valueOf(getColor(R.color.anil)));
+        accion.setGravity(Gravity.CENTER_VERTICAL);
         LinearLayout.LayoutParams accionParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         accionParams.topMargin = dp(12);

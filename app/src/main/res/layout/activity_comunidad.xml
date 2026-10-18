@@ -1,60 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Reportes de la comunidad (o "Problemas reportados" para administración): lista de reportes
+     con estado, y acceso para reportar un problema. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/page"
     android:orientation="vertical"
-    android:background="@color/bg_app">
+    tools:context=".ComunidadActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/brand_primary">
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/surface"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_1"
+        android:paddingEnd="@dimen/space_4">
 
         <ImageButton
             android:id="@+id/btnVolver"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_back"
-            android:scaleType="centerInside"
-            android:contentDescription="Regresar" />
+            android:contentDescription="Volver"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/ink" />
 
         <TextView
             android:id="@+id/tvComunidadTitulo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Comunidad"
-            android:textColor="@color/on_brand"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_centerInParent="true" />
-    </RelativeLayout>
+            android:layout_marginStart="@dimen/space_2"
+            android:layout_weight="1"
+            android:accessibilityHeading="true"
+            android:text="Reportes de la comunidad"
+            android:textAppearance="@style/TextAppearance.SmartDrop.Toolbar"
+            android:textColor="@color/ink" />
+    </LinearLayout>
 
-    <Button
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hairline"
+        android:background="@color/line" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnReportarComunidad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Reportar problema"
-        android:textColor="@color/on_brand"
-        android:background="@drawable/btn_gradient"
-        android:layout_margin="12dp" />
+        android:layout_marginStart="@dimen/gutter"
+        android:layout_marginTop="@dimen/space_4"
+        android:layout_marginEnd="@dimen/gutter"
+        android:text="Reportar un problema"
+        app:icon="@drawable/ic_plus" />
 
     <TextView
         android:id="@+id/tvComunidadVacia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Todavía no hay reportes de la comunidad."
+        android:drawablePadding="@dimen/space_3"
         android:gravity="center"
-        android:textColor="@color/text_secondary"
-        android:padding="24dp"
-        android:visibility="gone" />
+        android:padding="@dimen/space_7"
+        android:text="Todavía no hay reportes de la comunidad. Si notas un problema en tu zona, repórtalo y tus vecinos podrán sumarse."
+        android:textAppearance="@style/TextAppearance.SmartDrop.Body"
+        android:textColor="@color/ink_2"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/ic_users"
+        app:drawableTint="@color/ink_3" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerComunidad"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="12dp" />
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/gutter"
+        android:paddingTop="@dimen/space_4"
+        android:paddingEnd="@dimen/gutter"
+        android:paddingBottom="@dimen/space_7" />
 </LinearLayout>

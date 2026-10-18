@@ -1,39 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Perfil (usuario) y Configuración (admin): mismos datos y opciones que "Mi perfil" de la web. -->
+<!-- Mi perfil: identidad en escena cálida, datos personales, avisos y preferencias (se guardan al
+     instante) y cerrar sesión. Desliza hacia abajo para recargar. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/page"
     android:orientation="vertical"
-    android:background="@color/bg_app">
+    tools:context=".PerfilActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/brand_primary">
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/surface"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_1"
+        android:paddingEnd="@dimen/space_4">
 
         <ImageButton
             android:id="@+id/btnVolver"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:padding="10dp"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_back"
-            android:scaleType="centerInside"
-            android:contentDescription="Regresar" />
+            android:contentDescription="Volver"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/ink" />
 
         <TextView
             android:id="@+id/tvTituloPerfil"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Mi Perfil"
-            android:textColor="@color/on_brand"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_centerInParent="true" />
-    </RelativeLayout>
+            android:layout_marginStart="@dimen/space_2"
+            android:layout_weight="1"
+            android:accessibilityHeading="true"
+            android:text="Mi perfil"
+            android:textAppearance="@style/TextAppearance.SmartDrop.Toolbar"
+            android:textColor="@color/ink" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hairline"
+        android:background="@color/line" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipePerfil"
@@ -43,88 +53,84 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingStart="@dimen/gutter"
+                android:paddingTop="@dimen/space_5"
+                android:paddingEnd="@dimen/gutter"
+                android:paddingBottom="@dimen/space_8">
 
-                <!-- Encabezado: iniciales, nombre, correo y rol -->
-                <androidx.cardview.widget.CardView
+                <!-- Identidad -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.SmartDrop.Card.Warm"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="3dp"
-                    app:cardBackgroundColor="@color/bg_card">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:padding="20dp">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/tvPerfilIniciales"
-                            android:layout_width="84dp"
-                            android:layout_height="84dp"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
                             android:background="@drawable/bg_avatar"
                             android:gravity="center"
+                            android:importantForAccessibility="no"
                             android:text="—"
-                            android:textColor="@color/brand_on_card"
-                            android:textSize="28sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="@style/TextAppearance.SmartDrop.Title"
+                            android:textColor="@color/anil" />
 
-                        <TextView
-                            android:id="@+id/tvPerfilNombre"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="Cargando..."
-                            android:textColor="@color/text_primary"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:layout_marginStart="@dimen/space_4"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tvPerfilEmail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="14sp" />
+                            <TextView
+                                android:id="@+id/tvPerfilNombre"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Cargando…"
+                                android:textAppearance="@style/TextAppearance.SmartDrop.Title"
+                                android:textColor="@color/ink" />
 
-                        <TextView
-                            android:id="@+id/tvPerfilRol"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:background="@drawable/fondo_redondeado"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="4dp"
-                            android:textColor="@color/brand_on_card"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/tvPerfilEmail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text=""
+                                android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
+
+                            <TextView
+                                android:id="@+id/tvPerfilRol"
+                                style="@style/Widget.SmartDrop.StatusPill.Info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/space_2"
+                                android:text="" />
+                        </LinearLayout>
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
                 <!-- Información personal -->
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="3dp"
-                    app:cardBackgroundColor="@color/bg_card">
+                    android:layout_marginTop="@dimen/space_4">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -136,144 +142,146 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:accessibilityHeading="true"
                                 android:text="Información personal"
-                                android:textColor="@color/brand_on_card"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                                android:textColor="@color/ink" />
 
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnEditarPerfil"
-                                style="@style/Widget.Material3.Button.TextButton"
+                                style="@style/Widget.SmartDrop.Button.Secondary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Editar perfil"
-                                android:textColor="@color/brand_accent" />
+                                android:text="Editar perfil" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/layoutDatosPersonales"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_2"
                             android:orientation="vertical" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
                 <!-- Notificaciones -->
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="3dp"
-                    app:cardBackgroundColor="@color/bg_card">
+                    android:layout_marginTop="@dimen/space_4">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:accessibilityHeading="true"
                             android:text="Notificaciones"
-                            android:textColor="@color/brand_on_card"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                            android:textColor="@color/ink" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginTop="@dimen/space_1"
                             android:text="Elige qué alertas ves en la web y en la app, y cuáles te avisan en el teléfono."
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
+                            android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
 
                         <LinearLayout
                             android:id="@+id/layoutNotificaciones"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical" />
+                            android:layout_marginTop="@dimen/space_2"
+                            android:divider="@drawable/divider_line"
+                            android:orientation="vertical"
+                            android:showDividers="middle" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
                 <!-- Preferencias -->
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="3dp"
-                    app:cardBackgroundColor="@color/bg_card">
+                    android:layout_marginTop="@dimen/space_4">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:accessibilityHeading="true"
                             android:text="Preferencias"
-                            android:textColor="@color/brand_on_card"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                            android:textColor="@color/ink" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_1"
+                            android:text="Se guardan al instante y también se aplican en la web."
+                            android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
 
                         <LinearLayout
                             android:id="@+id/layoutPreferencias"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical" />
+                            android:layout_marginTop="@dimen/space_2"
+                            android:divider="@drawable/divider_line"
+                            android:orientation="vertical"
+                            android:showDividers="middle" />
 
                         <LinearLayout
                             android:id="@+id/layoutReporteSemanal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:background="@color/bg_card_alt"
+                            android:layout_marginTop="@dimen/space_3"
+                            android:background="@drawable/bg_status_info"
                             android:orientation="vertical"
-                            android:padding="10dp"
+                            android:padding="@dimen/space_4"
                             android:visibility="gone">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Último reporte semanal"
-                                android:textColor="@color/brand_on_card"
-                                android:textSize="13sp"
-                                android:textStyle="bold" />
+                                android:textAppearance="@style/TextAppearance.SmartDrop.Label"
+                                android:textColor="@color/anil" />
 
                             <TextView
                                 android:id="@+id/tvReporteSemanal"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:textColor="@color/text_primary"
-                                android:textSize="13sp" />
+                                android:layout_marginTop="@dimen/space_1"
+                                android:text=""
+                                android:textAppearance="@style/TextAppearance.SmartDrop.Body" />
                         </LinearLayout>
 
                         <TextView
                             android:id="@+id/tvEstadoPreferencias"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
+                            android:layout_marginTop="@dimen/space_2"
+                            android:accessibilityLiveRegion="polite"
+                            android:text=""
+                            android:textAppearance="@style/TextAppearance.SmartDrop.Caption" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCerrarSesionPerfil"
+                    style="@style/Widget.SmartDrop.Button.Secondary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_gradient"
-                    android:padding="12dp"
-                    android:text="Cerrar Sesión"
-                    android:textColor="@color/on_brand"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="@dimen/space_6"
+                    android:text="Cerrar sesión"
+                    app:icon="@drawable/ic_logout" />
+
             </LinearLayout>
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

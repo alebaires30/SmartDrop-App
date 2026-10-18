@@ -75,55 +75,28 @@ public class RecomendacionesActivity extends BaseActivity {
     }
 
     private View construirTarjetaTip(RecomendacionTip tip) {
-        CardView card = new CardView(this);
-        LinearLayout.LayoutParams paramsCard = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        paramsCard.bottomMargin = 24;
-        card.setLayoutParams(paramsCard);
-        card.setRadius(28f);
-        card.setCardElevation(6f);
-
-        LinearLayout fila = new LinearLayout(this);
-        fila.setOrientation(LinearLayout.HORIZONTAL);
-        fila.setPadding(32, 24, 32, 24);
-        fila.setGravity(Gravity.CENTER_VERTICAL);
+        // Tarjeta definida en res/layout/item_tip.xml (medidas en dp, estilos del sistema de diseño).
+        View card = getLayoutInflater().inflate(R.layout.item_tip, contenedorTips, false);
 
         // Las imágenes ilustrativas se cargan desde los recursos locales (tip_<id> si el servidor no indica otra).
         String drawable = tip.getIconoDrawable() != null ? tip.getIconoDrawable()
                 : tip.getId() != null ? "tip_" + tip.getId() : null;
         int resId = drawable == null ? 0 : getResources().getIdentifier(drawable, "drawable", getPackageName());
+        ImageView icono = card.findViewById(R.id.ivTipImagen);
         if (resId != 0) {
-            ImageView icono = new ImageView(this);
-            LinearLayout.LayoutParams paramsIcono = new LinearLayout.LayoutParams(96, 96);
-            paramsIcono.topMargin = 24;
-            icono.setLayoutParams(paramsIcono);
             icono.setImageResource(resId);
-            fila.addView(icono);
+        } else {
+            icono.setImageResource(R.drawable.ic_leaf);
         }
 
-        LinearLayout columnaTexto = new LinearLayout(this);
-        columnaTexto.setOrientation(LinearLayout.VERTICAL);
-        columnaTexto.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+        TextView titulo = card.findViewById(R.id.tvTipTitulo);
+        titulo.setText(tip.getTitulo());
 
-        TextView titulo = new TextView(this);
-        titulo.setText("TIP: " + tip.getTitulo());
-        titulo.setTextSize(14);
-        titulo.setTypeface(null, Typeface.BOLD);
-        titulo.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
+        TextView impacto = card.findViewById(R.id.tvTipImpacto);
+        impacto.setText("Impacto: " + tip.getImpacto());
 
-        TextView impacto = new TextView(this);
-        impacto.setText("IMPACTO: " + tip.getImpacto());
-        impacto.setTextSize(12);
-        impacto.setTextColor(ContextCompat.getColor(this, R.color.brand_on_card));
-
-        columnaTexto.addView(titulo);
-        columnaTexto.addView(impacto);
-
-        CheckBox checkbox = new CheckBox(this);
-
-        fila.addView(columnaTexto);
-        fila.addView(checkbox);
-        card.addView(fila);
+        CheckBox checkbox = card.findViewById(R.id.cbTip);
+        checkbox.setContentDescription("Ya practico: " + tip.getTitulo());
         return card;
     }
 }

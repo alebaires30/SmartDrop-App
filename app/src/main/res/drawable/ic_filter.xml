@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Icono SmartDrop: Filtrar. 24dp, trazo 2. Se tiñe con app:tint / iconTint (por defecto ?attr/colorControlNormal = ink_2). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?attr/colorControlNormal">
+    <path
+        android:pathData="M4,4h16v2.172a2,2 0 0,1 -0.586,1.414L15,12v7l-6,2v-8.5L4.52,7.572A2,2 0 0,1 4,6.227z"
+        android:fillColor="#00000000"
+        android:strokeColor="@android:color/white"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

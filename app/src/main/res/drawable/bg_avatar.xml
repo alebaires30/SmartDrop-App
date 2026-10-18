@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Círculo con borde para las iniciales del perfil (igual que en la web). -->
+<!-- Círculo de iniciales del perfil (como el avatar de la web): anil_soft, texto añil encima. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
-    <solid android:color="@color/bg_card_alt" />
-    <stroke android:width="2dp" android:color="@color/stroke_lavender" />
+    <solid android:color="@color/anil_soft" />
+    <stroke android:width="@dimen/hairline" android:color="@color/line" />
 </shape>

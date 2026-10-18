@@ -47,11 +47,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         ReporteMensaje mensaje = mensajes.get(position);
         holder.tvTexto.setText(mensaje.getMensaje());
         String autor = mensaje.isEsAdminEmisor()
-                ? "Equipo SmartDrop · " + mensaje.getAutorNombre()
+                ? "Equipo SmartDrop (" + mensaje.getAutorNombre() + ")"
                 : mensaje.getAutorNombre();
         holder.tvAutor.setText(autor);
         String fecha = mensaje.getFechaEnvio();
-        holder.tvFecha.setText(fecha != null && fecha.length() >= 16 ? fecha.substring(5, 16).replace('T', ' ') : "");
+        holder.tvFecha.setText(Fechas.formatear(fecha, "d MMM, HH:mm", fecha != null && fecha.length() >= 16 ? fecha.substring(5, 16).replace('T', ' ') : ""));
     }
 
     @Override

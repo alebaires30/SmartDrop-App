@@ -133,30 +133,28 @@ public class ReportarProblemaActivity extends BaseActivity {
             params.bottomMargin = dp(10);
             tarjeta.setLayoutParams(params);
             tarjeta.setRadius(dp(14));
-            tarjeta.setCardElevation(dp(1));
-            tarjeta.setUseCompatPadding(true);
+            tarjeta.setCardElevation(0);
             tarjeta.setStrokeWidth(dp(1));
+            tarjeta.setMinimumHeight(dp(56));
             tarjeta.setClickable(true);
             tarjeta.setFocusable(true);
             tarjeta.setTag(tipo.getKey());
 
             LinearLayout contenido = new LinearLayout(this);
             contenido.setOrientation(LinearLayout.VERTICAL);
-            contenido.setPadding(dp(14), dp(12), dp(14), dp(12));
+            contenido.setPadding(dp(16), dp(14), dp(16), dp(14));
             tarjeta.addView(contenido);
 
             TextView label = new TextView(this);
             label.setText(tipo.getLabel());
-            label.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
-            label.setTextSize(15);
-            label.setTypeface(null, android.graphics.Typeface.BOLD);
+            label.setTextAppearance(R.style.TextAppearance_SmartDrop_BodyStrong);
+            label.setTextColor(ContextCompat.getColor(this, R.color.ink));
             contenido.addView(label);
 
             if (tipo.getDescripcion() != null && !tipo.getDescripcion().trim().isEmpty()) {
                 TextView descripcion = new TextView(this);
                 descripcion.setText(tipo.getDescripcion());
-                descripcion.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
-                descripcion.setTextSize(13);
+                descripcion.setTextAppearance(R.style.TextAppearance_SmartDrop_BodySmall);
                 LinearLayout.LayoutParams descripcionParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 descripcionParams.topMargin = dp(3);
@@ -173,7 +171,7 @@ public class ReportarProblemaActivity extends BaseActivity {
     private void seleccionarTipo(String key, String label) {
         tipoSeleccionado = key;
         tipoSeleccionadoLabel = label;
-        tvTipoSeleccionado.setText("Seleccionado: " + label);
+        tvTipoSeleccionado.setText("Elegiste: " + label);
         tvTipoSeleccionado.setVisibility(View.VISIBLE);
         etDescripcion.setHint("otro".equals(key)
                 ? "Describe el otro problema con detalle (mínimo 10 caracteres)…"
@@ -191,11 +189,12 @@ public class ReportarProblemaActivity extends BaseActivity {
                     && tipoSeleccionado.equals(tarjeta.getTag());
             tarjeta.setSelected(seleccionada);
             tarjeta.setCardBackgroundColor(ContextCompat.getColor(this,
-                    seleccionada ? R.color.bg_lavender : R.color.bg_card));
+                    seleccionada ? R.color.anil_soft : R.color.surface));
             tarjeta.setStrokeColor(ContextCompat.getColor(this,
-                    seleccionada ? R.color.brand_accent : R.color.stroke_soft));
+                    seleccionada ? R.color.anil : R.color.line_strong));
+            tarjeta.setStrokeWidth(dp(seleccionada ? 2 : 1));
             label.setTextColor(ContextCompat.getColor(this,
-                    seleccionada ? R.color.brand_on_card : R.color.text_primary));
+                    seleccionada ? R.color.anil_strong : R.color.ink));
             label.setText(tipoLabelDe(tarjeta));
         }
     }

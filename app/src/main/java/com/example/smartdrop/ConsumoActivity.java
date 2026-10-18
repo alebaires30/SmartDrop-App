@@ -64,27 +64,27 @@ public class ConsumoActivity extends BaseActivity {
         tabSemana.setOnClickListener(v -> seleccionarTab("semana"));
         tabMes.setOnClickListener(v -> seleccionarTab("mes"));
 
-        lineChart.getDescription().setEnabled(false);
-        lineChart.setTouchEnabled(true);
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        lineChart.getXAxis().setGranularity(1f);
-
-        int colorTextoChart = ContextCompat.getColor(this, R.color.text_secondary);
-        lineChart.getXAxis().setTextColor(colorTextoChart);
-        lineChart.getAxisLeft().setTextColor(colorTextoChart);
-        lineChart.getAxisRight().setTextColor(colorTextoChart);
-        lineChart.getLegend().setTextColor(colorTextoChart);
+        // Mismo estilo que las demás gráficas de la app (GraficaUtil): ejes discretos, sin rejilla vertical.
+        GraficaUtil.estilo(lineChart, this);
+        lineChart.getLegend().setEnabled(false);
 
         cargarConsumo();
     }
 
     private void seleccionarTab(String periodo) {
         periodoActual = periodo;
-        int colorActivo = ContextCompat.getColor(this, R.color.brand_on_card);
-        int colorInactivo = ContextCompat.getColor(this, R.color.text_secondary);
+        int colorActivo = ContextCompat.getColor(this, R.color.ink);
+        int colorInactivo = ContextCompat.getColor(this, R.color.ink_2);
         tabDia.setTextColor(periodo.equals("dia") ? colorActivo : colorInactivo);
         tabSemana.setTextColor(periodo.equals("semana") ? colorActivo : colorInactivo);
         tabMes.setTextColor(periodo.equals("mes") ? colorActivo : colorInactivo);
+        // Control segmentado: la opción elegida queda resaltada y se anuncia como seleccionada.
+        tabDia.setBackgroundResource(periodo.equals("dia") ? R.drawable.bg_segment_active : 0);
+        tabSemana.setBackgroundResource(periodo.equals("semana") ? R.drawable.bg_segment_active : 0);
+        tabMes.setBackgroundResource(periodo.equals("mes") ? R.drawable.bg_segment_active : 0);
+        tabDia.setSelected(periodo.equals("dia"));
+        tabSemana.setSelected(periodo.equals("semana"));
+        tabMes.setSelected(periodo.equals("mes"));
         cargarConsumo();
     }
 
@@ -97,8 +97,8 @@ public class ConsumoActivity extends BaseActivity {
                 ConsumoResponse r = response.body();
 
                 tvEstadoConsumo.setText(r.getEstadoTexto());
-                tvEstadoConsumo.setTextColor(ColorSeveridad.colorDe(ConsumoActivity.this, r.getColor()));
-                tvConsumoTotal.setText(String.format(java.util.Locale.getDefault(), "%.1f%s", r.getConsumoTotal(), r.getUnidad()));
+                ColorSeveridad.aplicarPill(tvEstadoConsumo, r.getColor());
+                tvConsumoTotal.setText(String.format(java.util.Locale.getDefault(), "%.1f %s", r.getConsumoTotal(), r.getUnidad()));
                 tvComparacion.setText(r.getComparacion() != null ? r.getComparacion().getTexto() : "");
 
                 pintarGrafica(r);
@@ -123,12 +123,8 @@ public class ConsumoActivity extends BaseActivity {
             etiquetas.add(r.getSerie().get(i).getFecha());
         }
 
-        LineDataSet set = new LineDataSet(entradas, "Consumo (L)");
-        int colorLinea = ContextCompat.getColor(this, R.color.brand_accent);
-        set.setColor(colorLinea);
-        set.setCircleColor(colorLinea);
-        set.setLineWidth(2f);
-        set.setDrawValues(false);
+        int colorLinea = ContextCompat.getColor(this, R.color.agua);
+        LineDataSet set = GraficaUtil.linea(entradas, "Consumo (L)", colorLinea, true);
 
         lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(etiquetas));
         lineChart.setData(new LineData(set));

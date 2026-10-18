@@ -1,37 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Consejos de ahorro: saludo con el contexto del consumo y la lista de consejos (item_tip). -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:background="@color/bg_app">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page"
+    android:orientation="vertical"
+    tools:context=".RecomendacionesActivity">
 
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="56dp" android:background="@color/brand_primary">
-        <ImageButton android:id="@+id/btnVolver" android:layout_width="20dp" android:layout_height="20dp"
-            android:layout_centerVertical="true" android:layout_marginStart="20dp"
-            android:background="?attr/selectableItemBackgroundBorderless" android:src="@drawable/ic_back"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="Recomendaciones" android:textColor="@color/on_brand" android:textStyle="bold"
-            android:textSize="20sp" android:layout_centerInParent="true"/>
-    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/surface"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_1"
+        android:paddingEnd="@dimen/space_4">
 
-    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="vertical" android:padding="16dp">
+        <ImageButton
+            android:id="@+id/btnVolver"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Volver"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/ink" />
 
-            <TextView android:id="@+id/tvSaludo" android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="Cargando..." android:textSize="15sp" android:layout_marginBottom="16dp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_2"
+            android:layout_weight="1"
+            android:accessibilityHeading="true"
+            android:text="Consejos de ahorro"
+            android:textAppearance="@style/TextAppearance.SmartDrop.Toolbar"
+            android:textColor="@color/ink" />
+    </LinearLayout>
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="Lista de verificación" android:textStyle="bold" android:textSize="18sp" android:layout_marginBottom="8dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hairline"
+        android:background="@color/line" />
 
-            <LinearLayout android:id="@+id/contenedorTips" android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="vertical"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/gutter"
+            android:paddingTop="@dimen/space_5"
+            android:paddingEnd="@dimen/gutter"
+            android:paddingBottom="@dimen/space_7">
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.SmartDrop.Card.Warm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:importantForAccessibility="no"
+                        style="@style/Widget.SmartDrop.IconChip.Sol"
+                        android:layout_width="@dimen/icon_chip"
+                        android:layout_height="@dimen/icon_chip"
+                        android:src="@drawable/ic_leaf" />
+
+                    <TextView
+                        android:id="@+id/tvSaludo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_4"
+                        android:layout_weight="1"
+                        android:text="Cargando…"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodyStrong"
+                        android:textColor="@color/ink" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                style="@style/Widget.SmartDrop.SectionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:text="Consejos para tu casa" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_1"
+                android:layout_marginBottom="@dimen/space_4"
+                android:text="Marca los que ya practicas."
+                android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
+
+            <LinearLayout
+                android:id="@+id/contenedorTips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
 
         </LinearLayout>
     </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavRecom" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:background="@color/nav_bar" app:menu="@menu/menu_consumo"
-        app:itemIconTint="@color/bottom_nav_selector" app:itemTextColor="@color/bottom_nav_selector"
-        app:labelVisibilityMode="labeled"/>
+        android:id="@+id/bottomNavRecom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/menu_consumo" />
 </LinearLayout>

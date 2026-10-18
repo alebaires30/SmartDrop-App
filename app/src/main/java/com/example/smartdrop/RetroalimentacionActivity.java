@@ -61,7 +61,7 @@ public class RetroalimentacionActivity extends BaseActivity {
                 RetroalimentacionResponse r = response.body();
 
                 tvMensaje.setText(r.getMensaje().replace("!", ", " + nombre + "!"));
-                tvValorGota.setText(String.format(java.util.Locale.getDefault(), "%.1fL", r.getConsumoHoyLitros()));
+                tvValorGota.setText(String.format(java.util.Locale.getDefault(), "%.1f L", r.getConsumoHoyLitros()));
 
                 double referencia = (r.getPromedioHabitualLitros() != null && r.getPromedioHabitualLitros() > 0)
                         ? r.getPromedioHabitualLitros() * 2 : 10.0;

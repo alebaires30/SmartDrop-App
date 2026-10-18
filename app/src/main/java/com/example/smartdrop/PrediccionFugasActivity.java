@@ -166,6 +166,6 @@ public class PrediccionFugasActivity extends BaseActivity {
             }
         }
         tvMonitor.setText(texto);
-        tvMonitor.setTextColor(ContextCompat.getColor(this, activo ? R.color.status_green : R.color.status_amber));
+        tvMonitor.setTextColor(ContextCompat.getColor(this, activo ? R.color.ok : R.color.warn));
     }
 }

@@ -1,136 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Tarjeta de vivienda para la lista de predicción de fugas (admin). -->
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Vivienda en Predicción de fugas (FugasAdapter): NIC, estado (pastilla), probabilidad,
+     resumen y qué hacer, con detalles plegables. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.SmartDrop.Card.Tile"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    app:cardCornerRadius="14dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/bg_card">
+    android:layout_marginBottom="@dimen/space_3">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="14dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvFugaNic"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@color/text_primary" />
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                android:textColor="@color/ink" />
 
             <TextView
                 android:id="@+id/tvFugaProbabilidad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:layout_marginEnd="@dimen/space_2"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Number.Small" />
 
             <TextView
                 android:id="@+id/tvFugaRiesgo"
+                style="@style/Widget.SmartDrop.StatusPill.None"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_label"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                android:textColor="@color/brand_on_card" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tvFugaUbicacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:textSize="12sp"
-            android:textColor="@color/text_secondary" />
+            android:layout_marginTop="@dimen/space_1"
+            android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
 
-        <!-- Solo con posible fuga -->
         <LinearLayout
             android:id="@+id/layoutFugaInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/bg_alert"
+            android:layout_marginTop="@dimen/space_3"
+            android:background="@drawable/bg_status_bad"
             android:orientation="vertical"
-            android:padding="10dp"
+            android:padding="@dimen/space_4"
             android:visibility="gone">
 
             <TextView
                 android:id="@+id/tvFugaResumen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:textAppearance="@style/TextAppearance.SmartDrop.BodyStrong"
+                android:textColor="@color/ink" />
 
             <TextView
                 android:id="@+id/tvFugaDatosClave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:textSize="13sp"
-                android:textColor="@color/text_alert"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/space_2"
+                android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall"
+                android:textColor="@color/ink" />
 
             <TextView
                 android:id="@+id/tvFugaAccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:textSize="13sp"
-                android:textColor="@color/text_primary" />
+                android:layout_marginTop="@dimen/space_2"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Body"
+                android:textColor="@color/ink" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tvFugaNota"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:textSize="12sp"
-            android:textColor="@color/text_secondary" />
+            android:layout_marginTop="@dimen/space_2"
+            android:textAppearance="@style/TextAppearance.SmartDrop.Caption" />
 
         <TextView
             android:id="@+id/tvFugaVerMas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:text="Ver más detalles ▾"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textColor="@color/brand_accent"
-            android:visibility="gone" />
+            android:layout_marginTop="@dimen/space_1"
+            android:background="?attr/selectableItemBackground"
+            android:drawablePadding="@dimen/space_1"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/touch_min"
+            android:text="Ver más detalles"
+            android:textAppearance="@style/TextAppearance.SmartDrop.Label"
+            android:textColor="@color/anil"
+            android:visibility="gone"
+            app:drawableTint="@color/anil" />
 
         <TextView
             android:id="@+id/tvFugaDetalle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:background="@color/bg_card_alt"
-            android:padding="10dp"
-            android:lineSpacingExtra="2dp"
-            android:textIsSelectable="true"
-            android:textSize="13sp"
-            android:textColor="@color/text_primary"
+            android:layout_marginTop="@dimen/space_1"
+            android:background="@drawable/bg_panel"
+            android:padding="@dimen/space_3"
+            android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall"
+            android:textColor="@color/ink"
             android:visibility="gone" />
-
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

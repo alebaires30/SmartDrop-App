@@ -1,9 +1,701 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="DrawerItemTextStyle">
+<!--
+    SmartDrop · sistema de diseño "Agua en casa".
+    Tipografía (TextAppearance.SmartDrop.*), formas (ShapeAppearance.SmartDrop.*) y estilos
+    de componentes (Widget.SmartDrop.*). Los colores son tokens de colors.xml (con modo oscuro).
+
+    Fuentes: Nunito (títulos y números) + Atkinson Hyperlegible Next (todo lo demás), como
+    fuentes descargables. Cada archivo de res/font tiene UN solo peso: para negrita usa la
+    apariencia correcta (Label, BodyStrong…) o @font/atkinson_bold, nunca android:textStyle="bold"
+    (eso produce una negrita sintética).
+-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- =====================================================================
+         Tipografía
+         ===================================================================== -->
+
+    <!-- Base: Atkinson 400, ink, sin mayúsculas forzadas, sin tracking. -->
+    <style name="TextAppearance.SmartDrop" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/atkinson_regular</item>
+        <item name="android:fontFamily">@font/atkinson_regular</item>
+        <item name="android:textStyle">normal</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:textColorHint">@color/ink_3</item>
+        <item name="android:textColorLink">@color/anil</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <!-- Apariencia por defecto de TODO TextView/EditText (vía android:textViewStyle).
+         No fija lineHeight a propósito: así un layout que solo cambia textSize no se encima. -->
+    <style name="TextAppearance.SmartDrop.Default" />
+
+    <!-- Variantes sin lineHeight para los slots android:textAppearanceSmall / Large del framework. -->
+    <style name="TextAppearance.SmartDrop.Default.Small">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/ink_2</item>
+    </style>
+
+    <style name="TextAppearance.SmartDrop.Default.Large">
+        <item name="fontFamily">@font/nunito_bold</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- Número grande del hero (Nunito 800). -->
+    <style name="TextAppearance.SmartDrop.Display">
+        <item name="fontFamily">@font/nunito_extrabold</item>
+        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="android:textSize">40sp</item>
+        <item name="lineHeight">44sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
+    <!-- Título de pantalla (h1). -->
+    <style name="TextAppearance.SmartDrop.Headline">
+        <item name="fontFamily">@font/nunito_extrabold</item>
+        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="android:textSize">26sp</item>
+        <item name="lineHeight">32sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <!-- Título de sección (h2) y título de la barra superior. -->
+    <style name="TextAppearance.SmartDrop.Title">
+        <item name="fontFamily">@font/nunito_extrabold</item>
+        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="lineHeight">26sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <!-- Título de panel / tile (h3). -->
+    <style name="TextAppearance.SmartDrop.Subtitle">
+        <item name="fontFamily">@font/nunito_bold</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">24sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <!-- Entradilla / frase principal del estado. -->
+    <style name="TextAppearance.SmartDrop.BodyLarge">
+        <item name="android:textSize">17sp</item>
+        <item name="lineHeight">26sp</item>
+    </style>
+
+    <!-- Texto corrido. -->
+    <style name="TextAppearance.SmartDrop.Body">
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">24sp</item>
+    </style>
+
+    <!-- Texto corrido con énfasis (Atkinson 600): títulos de fila, ítems del drawer. -->
+    <style name="TextAppearance.SmartDrop.BodyStrong">
+        <item name="fontFamily">@font/atkinson_semibold</item>
+        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">24sp</item>
+    </style>
+
+    <!-- Texto secundario. -->
+    <style name="TextAppearance.SmartDrop.BodySmall">
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">20sp</item>
+        <item name="android:textColor">@color/ink_2</item>
+    </style>
+
+    <!-- Etiquetas de UI (Atkinson 600). -->
+    <style name="TextAppearance.SmartDrop.Label">
+        <item name="fontFamily">@font/atkinson_semibold</item>
+        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">20sp</item>
+    </style>
+
+    <!-- Meta: "Actualizado hace 2 min", fechas, ayudas. -->
+    <style name="TextAppearance.SmartDrop.Caption">
+        <item name="fontFamily">@font/atkinson_medium</item>
+        <item name="android:fontFamily">@font/atkinson_medium</item>
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">18sp</item>
+        <item name="android:textColor">@color/ink_3</item>
+    </style>
+
+    <!-- Valor de un tile (KPI): Nunito 800 con cifras tabulares. -->
+    <style name="TextAppearance.SmartDrop.Number">
+        <item name="fontFamily">@font/nunito_extrabold</item>
+        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="android:textSize">28sp</item>
+        <item name="lineHeight">32sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
+    <style name="TextAppearance.SmartDrop.Number.Small">
+        <item name="android:textSize">20sp</item>
+        <item name="lineHeight">26sp</item>
+    </style>
+
+    <!-- Unidad junto al número ("kPa", "%", "L"). -->
+    <style name="TextAppearance.SmartDrop.Unit">
+        <item name="fontFamily">@font/atkinson_semibold</item>
+        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/ink_2</item>
+    </style>
+
+    <!-- Texto de botones (Atkinson 600 16sp). -->
+    <style name="TextAppearance.SmartDrop.Button">
+        <item name="fontFamily">@font/atkinson_semibold</item>
+        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- Texto de las pills de estado (13sp 600). El color lo pone Widget.SmartDrop.StatusPill.*. -->
+    <style name="TextAppearance.SmartDrop.Status">
+        <item name="fontFamily">@font/atkinson_semibold</item>
+        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">18sp</item>
+    </style>
+
+    <!-- Título de la barra superior: Nunito 800 20sp, ink. -->
+    <style name="TextAppearance.SmartDrop.Toolbar">
+        <item name="fontFamily">@font/nunito_extrabold</item>
+        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <!-- Etiquetas de la barra inferior (siempre visibles, nunca < 12sp). -->
+    <style name="TextAppearance.SmartDrop.NavLabel">
+        <item name="fontFamily">@font/atkinson_medium</item>
+        <item name="android:fontFamily">@font/atkinson_medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartDrop.NavLabel.Active">
+        <item name="fontFamily">@font/atkinson_semibold</item>
+        <item name="android:fontFamily">@font/atkinson_semibold</item>
+    </style>
+
+    <!-- Título de grupo del menú lateral ("Mi casa", "Mi agua"…): 13sp 600 ink_3, sin mayúsculas. -->
+    <style name="TextAppearance.SmartDrop.NavGroup">
+        <item name="fontFamily">@font/atkinson_semibold</item>
+        <item name="android:fontFamily">@font/atkinson_semibold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/ink_3</item>
+    </style>
+
+    <!-- Ítems del menú lateral (NavigationView app:itemTextAppearance). Se mantiene el nombre
+         porque activity_inicio y activity_admin_dashboard lo usan. -->
+    <style name="DrawerItemTextStyle" parent="TextAppearance.SmartDrop.BodyStrong" />
+
+    <!-- =====================================================================
+         Formas (el radio crece con la jerarquía)
+         ===================================================================== -->
+    <style name="ShapeAppearance.SmartDrop.ExtraSmall" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_xs</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartDrop.Small" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_sm</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartDrop.Medium" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_md</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartDrop.Large" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_lg</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartDrop.ExtraLarge" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_xl</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartDrop.Pill" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- =====================================================================
+         Texto y campos por defecto (los aplica el tema)
+         ===================================================================== -->
+    <style name="Widget.SmartDrop.TextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Default</item>
+    </style>
+
+    <style name="Widget.SmartDrop.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Default</item>
+        <item name="android:textColorHint">@color/ink_3</item>
+        <item name="android:minHeight">@dimen/touch_min</item>
+    </style>
+
+    <!-- Título de pantalla: <TextView style="@style/Widget.SmartDrop.PageTitle" />. -->
+    <style name="Widget.SmartDrop.PageTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Headline</item>
+        <item name="android:accessibilityHeading" tools:targetApi="28">true</item>
+    </style>
+
+    <!-- Título de sección. -->
+    <style name="Widget.SmartDrop.SectionTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Title</item>
+        <item name="android:accessibilityHeading" tools:targetApi="28">true</item>
+    </style>
+
+    <!-- =====================================================================
+         Botones (48dp, radius_sm, sin mayúsculas, Atkinson 600 16sp)
+         ===================================================================== -->
+
+    <!-- Principal: añil plano. -->
+    <style name="Widget.SmartDrop.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/touch_min</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">@dimen/space_5</item>
+        <item name="android:paddingRight">@dimen/space_5</item>
+        <item name="android:paddingStart">@dimen/space_5</item>
+        <item name="android:paddingEnd">@dimen/space_5</item>
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.Small</item>
+        <item name="iconPadding">@dimen/space_2</item>
+        <item name="iconSize">@dimen/icon_sm</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <!-- Peligro: cerrar válvula, eliminar… (texto on_anil sobre bad). -->
+    <style name="Widget.SmartDrop.Button.Danger">
+        <item name="backgroundTint">@color/sd_btn_danger_bg</item>
+    </style>
+
+    <!-- Suave: fondo anil_soft, texto añil (acciones secundarias destacadas). -->
+    <style name="Widget.SmartDrop.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">@dimen/touch_min</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">@dimen/space_5</item>
+        <item name="android:paddingRight">@dimen/space_5</item>
+        <item name="android:paddingStart">@dimen/space_5</item>
+        <item name="android:paddingEnd">@dimen/space_5</item>
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.Small</item>
+        <item name="iconPadding">@dimen/space_2</item>
+        <item name="iconSize">@dimen/icon_sm</item>
+    </style>
+
+    <!-- Secundario: fondo surface, borde line_strong, texto ink. -->
+    <style name="Widget.SmartDrop.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">@dimen/touch_min</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">@dimen/space_5</item>
+        <item name="android:paddingRight">@dimen/space_5</item>
+        <item name="android:paddingStart">@dimen/space_5</item>
+        <item name="android:paddingEnd">@dimen/space_5</item>
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/sd_btn_secondary_fg</item>
+        <item name="iconTint">@color/sd_btn_secondary_fg</item>
+        <item name="backgroundTint">@color/surface</item>
+        <item name="strokeColor">@color/sd_btn_secondary_stroke</item>
+        <item name="strokeWidth">@dimen/hairline</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.Small</item>
+        <item name="iconPadding">@dimen/space_2</item>
+        <item name="iconSize">@dimen/icon_sm</item>
+    </style>
+
+    <!-- Texto: acción ligera en añil ("Ver detalle de presión"). -->
+    <style name="Widget.SmartDrop.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">@dimen/touch_min</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.Small</item>
+        <item name="iconPadding">@dimen/space_2</item>
+        <item name="iconSize">@dimen/icon_sm</item>
+    </style>
+
+    <!-- Solo icono (48×48). Requiere android:contentDescription. -->
+    <style name="Widget.SmartDrop.Button.Icon" parent="Widget.Material3.Button.IconButton">
+        <item name="android:minWidth">@dimen/touch_min</item>
+        <item name="android:minHeight">@dimen/touch_min</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="iconSize">@dimen/icon_md</item>
+        <item name="iconTint">@color/ink</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.Small</item>
+    </style>
+
+    <!-- Botones de los diálogos. -->
+    <style name="Widget.SmartDrop.Button.Dialog" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:minHeight">@dimen/touch_min</item>
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.Small</item>
+    </style>
+
+    <!-- =====================================================================
+         Tarjetas: surface, borde 1dp line, elevación 0. Usar con
+         com.google.android.material.card.MaterialCardView (subclase de CardView).
+         Incluyen contentPadding: no repitas padding en el hijo.
+         ===================================================================== -->
+
+    <!-- Panel / sección (radius_lg). -->
+    <style name="Widget.SmartDrop.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="strokeColor">@color/line</item>
+        <item name="strokeWidth">@dimen/hairline</item>
+        <item name="cardElevation">0dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.Large</item>
+        <item name="contentPadding">@dimen/space_5</item>
+    </style>
+
+    <!-- Panel sin padding (listas, tablas, gráficas a sangre). -->
+    <style name="Widget.SmartDrop.Card.Flush">
+        <item name="contentPadding">0dp</item>
+    </style>
+
+    <!-- Tile de métrica (radius_md). Si es tocable, el borde pasa a añil al presionar/enfocar. -->
+    <style name="Widget.SmartDrop.Card.Tile">
+        <item name="strokeColor">@color/sd_tile_stroke</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.Medium</item>
+        <item name="contentPadding">@dimen/space_4</item>
+        <item name="android:minHeight">@dimen/touch_min</item>
+    </style>
+
+    <!-- Hero de la casa (radius_xl, escena sol_soft, única tarjeta con sombra). -->
+    <style name="Widget.SmartDrop.Card.Hero">
+        <item name="cardBackgroundColor">@color/sol_soft</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.ExtraLarge</item>
+        <item name="contentPadding">@dimen/space_6</item>
+    </style>
+
+    <!-- Panel teñido de añil (avisos informativos, resumen). -->
+    <style name="Widget.SmartDrop.Card.Tint">
+        <item name="cardBackgroundColor">@color/anil_soft</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <!-- Panel cálido (consejos de ahorro, estados vacíos amables). -->
+    <style name="Widget.SmartDrop.Card.Warm">
+        <item name="cardBackgroundColor">@color/sol_soft</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <!-- Por defecto para androidx.cardview.widget.CardView (tema → cardViewStyle). -->
+    <style name="Widget.SmartDrop.CardView.Legacy" parent="CardView">
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardCornerRadius">@dimen/radius_md</item>
+    </style>
+
+    <!-- =====================================================================
+         Barras
+         ===================================================================== -->
+
+    <!-- Barra superior: surface + línea inferior, título Nunito 800 20sp ink, iconos ink. -->
+    <style name="Widget.SmartDrop.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@drawable/bg_toolbar</item>
+        <item name="android:minHeight">@dimen/toolbar_height</item>
+        <item name="titleTextAppearance">@style/TextAppearance.SmartDrop.Toolbar</item>
+        <item name="titleTextColor">@color/ink</item>
+        <item name="subtitleTextAppearance">@style/TextAppearance.SmartDrop.BodySmall</item>
+        <item name="subtitleTextColor">@color/ink_2</item>
+        <item name="navigationIconTint">@color/ink</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.SmartDrop.Toolbar</item>
+        <item name="popupTheme">@style/ThemeOverlay.SmartDrop.Popup</item>
+    </style>
+
+    <!-- Menús emergentes (overflow de la barra): mantienen surface / ink del tema en vez de
+         los colores base de Material 3 que trae actionBarPopupTheme. -->
+    <style name="ThemeOverlay.SmartDrop.Popup" parent="">
+        <item name="android:colorBackground">@color/surface</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorSurfaceContainer">@color/surface</item>
+        <item name="colorOnSurface">@color/ink</item>
+        <item name="colorOnSurfaceVariant">@color/ink_2</item>
+        <item name="android:textColorPrimary">@color/ink</item>
+    </style>
+
+    <style name="ThemeOverlay.SmartDrop.Toolbar" parent="">
+        <item name="colorControlNormal">@color/ink</item>
+        <item name="actionMenuTextColor">@color/ink</item>
+        <item name="colorOnSurface">@color/ink</item>
+        <item name="colorOnSurfaceVariant">@color/ink_2</item>
+    </style>
+
+    <!-- Barra inferior: surface + línea superior, activo añil con indicador anil_soft, etiquetas siempre visibles. -->
+    <style name="Widget.SmartDrop.BottomNav" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@drawable/bg_bottom_nav</item>
+        <item name="backgroundTint">@null</item>
+        <item name="elevation">0dp</item>
+        <item name="itemIconTint">@color/bottom_nav_selector</item>
+        <item name="itemTextColor">@color/bottom_nav_selector</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.SmartDrop.BottomNav.ActiveIndicator</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.SmartDrop.NavLabel</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.SmartDrop.NavLabel.Active</item>
+        <item name="itemTextAppearanceActiveBoldEnabled">false</item>
+    </style>
+
+    <style name="Widget.SmartDrop.BottomNav.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/anil_soft</item>
+    </style>
+
+    <!-- Menú lateral (NavigationView): surface, ítem activo surface_tint + añil. -->
+    <style name="Widget.SmartDrop.Drawer" parent="Widget.Material3.NavigationView">
+        <item name="android:background">@color/surface</item>
+        <item name="itemTextAppearance">@style/DrawerItemTextStyle</item>
+        <item name="itemTextColor">@color/sd_nav_item_text</item>
+        <item name="itemIconTint">@color/sd_nav_item_icon</item>
+        <item name="itemIconSize">@dimen/icon_md</item>
+        <item name="itemShapeFillColor">@color/sd_nav_item_fill</item>
+        <item name="itemShapeAppearance">@style/ShapeAppearance.SmartDrop.Small</item>
+        <item name="itemShapeInsetStart">@dimen/space_3</item>
+        <item name="itemShapeInsetEnd">@dimen/space_3</item>
+        <item name="itemHorizontalPadding">@dimen/space_4</item>
+        <item name="itemIconPadding">@dimen/space_4</item>
+        <item name="subheaderTextAppearance">@style/TextAppearance.SmartDrop.NavGroup</item>
+        <item name="subheaderColor">@color/ink_3</item>
+    </style>
+
+    <!-- =====================================================================
+         Medidor (LinearProgressIndicator): nivel del tanque, consumo frente a meta…
+         Relleno agua por defecto; variantes por estado. Pon contentDescription con el valor.
+         ===================================================================== -->
+    <style name="Widget.SmartDrop.Meter" parent="Widget.Material3.LinearProgressIndicator">
+        <item name="indicatorColor">@color/agua</item>
+        <item name="trackColor">@color/surface_tint</item>
+        <item name="trackThickness">@dimen/space_2</item>
+        <item name="trackCornerRadius">@dimen/space_1</item>
+        <item name="indicatorTrackGapSize">0dp</item>
+        <item name="trackStopIndicatorSize">0dp</item>
+    </style>
+
+    <style name="Widget.SmartDrop.Meter.Anil">
+        <item name="indicatorColor">@color/anil</item>
+    </style>
+
+    <style name="Widget.SmartDrop.Meter.Ok">
+        <item name="indicatorColor">@color/ok_dot</item>
+    </style>
+
+    <style name="Widget.SmartDrop.Meter.Warn">
+        <item name="indicatorColor">@color/warn_dot</item>
+    </style>
+
+    <style name="Widget.SmartDrop.Meter.Bad">
+        <item name="indicatorColor">@color/bad_dot</item>
+    </style>
+
+    <!-- =====================================================================
+         Campos, chips, interruptor
+         ===================================================================== -->
+
+    <!-- TextInputLayout con contorno: radius_sm, borde line_strong → añil 2dp con foco. -->
+    <style name="Widget.SmartDrop.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.Small</item>
+        <item name="boxStrokeColor">@color/sd_input_stroke</item>
+        <item name="boxStrokeWidth">@dimen/hairline</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxStrokeErrorColor">@color/bad</item>
+        <item name="boxBackgroundColor">@color/surface</item>
+        <item name="hintTextColor">@color/anil</item>
+        <item name="android:textColorHint">@color/ink_2</item>
+        <item name="helperTextTextColor">@color/ink_3</item>
+        <item name="errorTextColor">@color/bad</item>
+        <item name="errorIconTint">@color/bad</item>
+        <item name="startIconTint">@color/ink_2</item>
+        <item name="endIconTint">@color/ink_2</item>
+    </style>
+
+    <!-- Chip de filtro: pill, surface con borde; seleccionado anil_soft + añil. -->
+    <style name="Widget.SmartDrop.Chip" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/sd_chip_bg</item>
+        <item name="chipStrokeColor">@color/sd_chip_stroke</item>
+        <item name="chipStrokeWidth">@dimen/hairline</item>
+        <item name="android:textColor">@color/sd_chip_text</item>
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Label</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SmartDrop.Pill</item>
+        <item name="chipMinHeight">@dimen/space_8</item>
+        <item name="checkedIconTint">@color/anil_strong</item>
+        <item name="chipIconTint">@color/ink_2</item>
+    </style>
+
+    <!-- com.google.android.material.materialswitch.MaterialSwitch -->
+    <style name="Widget.SmartDrop.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Body</item>
+        <item name="android:minHeight">@dimen/touch_min</item>
+        <item name="thumbTint">@color/sd_switch_thumb</item>
+        <item name="trackTint">@color/sd_switch_track</item>
+        <item name="trackDecorationTint">@color/sd_switch_track_decoration</item>
+    </style>
+
+    <!-- =====================================================================
+         Estado: pill = punto + palabra (nunca solo color).
+         <TextView style="@style/Widget.SmartDrop.StatusPill.Ok" android:text="Normal" />
+         En Java: ColorSeveridad.aplicarPill(textView, severidad).
+         ===================================================================== -->
+    <style name="Widget.SmartDrop.StatusPill" parent="Widget.AppCompat.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Status</item>
+        <item name="android:minHeight">28dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">@dimen/space_3</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">@dimen/space_3</item>
+        <item name="android:paddingTop">@dimen/space_1</item>
+        <item name="android:paddingBottom">@dimen/space_1</item>
+        <item name="android:drawablePadding">6dp</item>
+        <item name="android:background">@drawable/bg_status_none</item>
+        <item name="android:textColor">@color/none</item>
+        <item name="android:drawableStart">@drawable/status_dot_none</item>
+    </style>
+
+    <style name="Widget.SmartDrop.StatusPill.Ok">
+        <item name="android:background">@drawable/bg_status_ok</item>
+        <item name="android:textColor">@color/ok</item>
+        <item name="android:drawableStart">@drawable/status_dot_ok</item>
+    </style>
+
+    <style name="Widget.SmartDrop.StatusPill.Warn">
+        <item name="android:background">@drawable/bg_status_warn</item>
+        <item name="android:textColor">@color/warn</item>
+        <item name="android:drawableStart">@drawable/status_dot_warn</item>
+    </style>
+
+    <style name="Widget.SmartDrop.StatusPill.Bad">
+        <item name="android:background">@drawable/bg_status_bad</item>
+        <item name="android:textColor">@color/bad</item>
+        <item name="android:drawableStart">@drawable/status_dot_bad</item>
+    </style>
+
+    <style name="Widget.SmartDrop.StatusPill.None">
+        <item name="android:background">@drawable/bg_status_none</item>
+        <item name="android:textColor">@color/none</item>
+        <item name="android:drawableStart">@drawable/status_dot_none</item>
+    </style>
+
+    <style name="Widget.SmartDrop.StatusPill.Info">
+        <item name="android:background">@drawable/bg_status_info</item>
+        <item name="android:textColor">@color/anil</item>
+        <item name="android:drawableStart">@drawable/status_dot_info</item>
+    </style>
+
+    <!-- =====================================================================
+         Icon chip: ImageView de 40dp (@dimen/icon_chip) con icono de 24dp.
+         <ImageView style="@style/Widget.SmartDrop.IconChip.Agua"
+             android:layout_width="@dimen/icon_chip" android:layout_height="@dimen/icon_chip"
+             android:src="@drawable/ic_drop" />
+         Decorativo por defecto (importantForAccessibility=no).
+         ===================================================================== -->
+    <style name="Widget.SmartDrop.IconChip" parent="">
+        <item name="android:padding">@dimen/space_2</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:background">@drawable/bg_icon_chip_anil</item>
+        <item name="tint">@color/anil</item>
+    </style>
+
+    <style name="Widget.SmartDrop.IconChip.Anil">
+        <item name="android:background">@drawable/bg_icon_chip_anil</item>
+        <item name="tint">@color/anil</item>
+    </style>
+
+    <style name="Widget.SmartDrop.IconChip.Agua">
+        <item name="android:background">@drawable/bg_icon_chip_agua</item>
+        <item name="tint">@color/agua</item>
+    </style>
+
+    <style name="Widget.SmartDrop.IconChip.Ok">
+        <item name="android:background">@drawable/bg_icon_chip_ok</item>
+        <item name="tint">@color/ok</item>
+    </style>
+
+    <style name="Widget.SmartDrop.IconChip.Warn">
+        <item name="android:background">@drawable/bg_icon_chip_warn</item>
+        <item name="tint">@color/warn</item>
+    </style>
+
+    <style name="Widget.SmartDrop.IconChip.Bad">
+        <item name="android:background">@drawable/bg_icon_chip_bad</item>
+        <item name="tint">@color/bad</item>
+    </style>
+
+    <!-- Cálido: fondo sol_soft; el icono va en warn (sol no tiene contraste como icono). -->
+    <style name="Widget.SmartDrop.IconChip.Sol">
+        <item name="android:background">@drawable/bg_icon_chip_sol</item>
+        <item name="tint">@color/warn</item>
+    </style>
+
+    <style name="Widget.SmartDrop.IconChip.None">
+        <item name="android:background">@drawable/bg_icon_chip_none</item>
+        <item name="tint">@color/none</item>
+    </style>
+
+    <!-- =====================================================================
+         Fila de lista (LinearLayout horizontal tocable, ≥ 56dp):
+         [icon chip] [título + meta (weight 1)] [valor / chevron]
+         ===================================================================== -->
+    <style name="Widget.SmartDrop.ListRow" parent="">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:paddingLeft">@dimen/space_4</item>
+        <item name="android:paddingRight">@dimen/space_4</item>
+        <item name="android:paddingStart">@dimen/space_4</item>
+        <item name="android:paddingEnd">@dimen/space_4</item>
+        <item name="android:paddingTop">@dimen/space_3</item>
+        <item name="android:paddingBottom">@dimen/space_3</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <!-- =====================================================================
+         Diálogos
+         ===================================================================== -->
+
+    <!-- MaterialAlertDialogBuilder (recomendado): radius_lg, botones SmartDrop. -->
+    <style name="ThemeOverlay.SmartDrop.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.SmartDrop.Large</item>
+        <item name="colorSurfaceContainerHigh">@color/surface</item>
+        <item name="buttonBarButtonStyle">@style/Widget.SmartDrop.Button.Dialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.SmartDrop.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.SmartDrop.Button.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.SmartDrop.Button.Dialog</item>
+    </style>
+
+    <!-- androidx.appcompat.app.AlertDialog.Builder (ValvulaActivity). -->
+    <style name="ThemeOverlay.SmartDrop.Dialog.Alert" parent="ThemeOverlay.Material3.Dialog.Alert">
+        <item name="buttonBarButtonStyle">@style/Widget.SmartDrop.Button.Dialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.SmartDrop.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.SmartDrop.Button.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.SmartDrop.Button.Dialog</item>
+        <item name="android:windowTitleStyle">@style/Widget.SmartDrop.DialogTitle</item>
+    </style>
+
+    <style name="Widget.SmartDrop.DialogTitle" parent="Base.DialogWindowTitle.AppCompat">
+        <item name="android:textAppearance">@style/TextAppearance.SmartDrop.Title</item>
     </style>
 </resources>

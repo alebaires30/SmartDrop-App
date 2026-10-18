@@ -1,32 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Menú lateral de administración: mismos grupos que la barra lateral web del administrador. -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/drawer_admin_dashboard"
-        android:title="Dashboard" />
+    <item android:title="Operación">
+        <menu>
+            <group
+                android:id="@+id/grupo_admin_operacion"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/drawer_admin_dashboard"
+                    android:checked="true"
+                    android:icon="@drawable/ic_home"
+                    android:title="Panel general" />
+                <item
+                    android:id="@+id/drawer_admin_graficas"
+                    android:icon="@drawable/ic_chart"
+                    android:title="Gráficas y monitoreo" />
+                <item
+                    android:id="@+id/drawer_admin_reportes"
+                    android:icon="@drawable/ic_reporte_vector"
+                    android:title="Problemas reportados" />
+            </group>
+        </menu>
+    </item>
 
-    <item
-        android:id="@+id/drawer_admin_reportes"
-        android:title="Problemas reportados" />
+    <item android:title="Predicción">
+        <menu>
+            <group
+                android:id="@+id/grupo_admin_prediccion"
+                android:checkableBehavior="none">
+                <item
+                    android:id="@+id/drawer_admin_prediccion"
+                    android:icon="@drawable/ic_tank"
+                    android:title="Suministro" />
+                <item
+                    android:id="@+id/drawer_admin_fugas"
+                    android:icon="@drawable/ic_drop"
+                    android:title="Fugas" />
+            </group>
+        </menu>
+    </item>
 
-    <item
-        android:id="@+id/drawer_admin_graficas"
-        android:title="Gráficas y Monitoreo" />
-
-    <item
-        android:id="@+id/drawer_admin_prediccion"
-        android:title="Predicción de suministro" />
-
-    <item
-        android:id="@+id/drawer_admin_fugas"
-        android:title="Predicción de fugas" />
-
-    <item
-        android:id="@+id/drawer_admin_configuracion"
-        android:title="Configuración" />
-
-    <item
-        android:id="@+id/drawer_admin_cerrar_sesion"
-        android:title="Cerrar sesión" />
+    <item android:title="Cuenta">
+        <menu>
+            <group
+                android:id="@+id/grupo_admin_cuenta"
+                android:checkableBehavior="none">
+                <item
+                    android:id="@+id/drawer_admin_configuracion"
+                    android:icon="@drawable/ic_settings"
+                    android:title="Configuración" />
+                <item
+                    android:id="@+id/drawer_admin_cerrar_sesion"
+                    android:icon="@drawable/ic_logout"
+                    android:title="Cerrar sesión" />
+            </group>
+        </menu>
+    </item>
 
 </menu>

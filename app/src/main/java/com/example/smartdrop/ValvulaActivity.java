@@ -61,7 +61,7 @@ public class ValvulaActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Control de Electroválvula");
+            getSupportActionBar().setTitle("Electroválvula");
         }
 
         // Vistas
@@ -170,8 +170,8 @@ public class ValvulaActivity extends BaseActivity {
                     String estado = estadoData.getEstadoActual();
                     boolean abierta = "abierta".equalsIgnoreCase(estado);
 
-                    tvEstadoDetalle.setText(abierta ? "Válvula: ABIERTA" : "Válvula: CERRADA");
-                    tvEstadoDetalle.setTextColor(ContextCompat.getColor(ValvulaActivity.this, abierta ? R.color.success : R.color.danger));
+                    tvEstadoDetalle.setText(abierta ? "Abierta: hay suministro" : "Cerrada: sin suministro");
+                    tvEstadoDetalle.setTextColor(ContextCompat.getColor(ValvulaActivity.this, abierta ? R.color.ok : R.color.warn));
 
                     TemporizadorActivo temp = estadoData.getTemporizadorActivo();
                     if (abierta && temp != null && temp.getSegundosRestantes() > 0) {
@@ -240,13 +240,40 @@ public class ValvulaActivity extends BaseActivity {
         if (duracion > 120) {
             new AlertDialog.Builder(this)
                     .setTitle("Límite de seguridad")
-                    .setMessage("El tiempo máximo permitido es 120 segundos. ¿Deseas ajustar a 2 minutos?")
-                    .setPositiveButton("Sí, ajustar", (dialog, which) -> ejecutarPeticion(accion, 120))
+                    .setMessage("El tiempo máximo es de 120 segundos (2 minutos). La válvula se abrirá durante 120 segundos.")
+                    .setPositiveButton("Abrir 120 segundos", (dialog, which) -> ejecutarPeticion(accion, 120))
                     .setNegativeButton("Cancelar", null)
                     .show();
             return;
         }
-        ejecutarPeticion(accion, duracion);
+        // Todo comando físico se confirma antes de enviarse: el diálogo dice qué va a pasar.
+        confirmarComando(accion, duracion, () -> ejecutarPeticion(accion, duracion));
+    }
+
+    private void confirmarComando(String accion, int duracion, Runnable alConfirmar) {
+        boolean abrir = "ABRIR".equals(accion);
+        String titulo;
+        String mensaje;
+        String boton;
+        if (!abrir) {
+            titulo = "¿Cerrar la válvula?";
+            mensaje = "Se cortará el paso de agua. Las viviendas conectadas se quedarán sin suministro hasta que vuelvas a abrirla.";
+            boton = "Cerrar válvula";
+        } else if (duracion > 0) {
+            titulo = "¿Abrir por " + duracion + " segundos?";
+            mensaje = "Se abrirá el paso de agua y la válvula se cerrará sola después de " + duracion + " segundos.";
+            boton = "Abrir " + duracion + " s";
+        } else {
+            titulo = "¿Abrir la válvula?";
+            mensaje = "Se abrirá el paso de agua hasta que alguien la cierre.";
+            boton = "Abrir válvula";
+        }
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle(titulo)
+                .setMessage(mensaje)
+                .setNegativeButton("Cancelar", null)
+                .setPositiveButton(boton, (dialog, which) -> alConfirmar.run())
+                .show();
     }
 
     private void ejecutarPeticion(String accion, int duracion) {

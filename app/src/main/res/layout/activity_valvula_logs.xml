@@ -1,298 +1,321 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Electroválvula: estado grande y claro, acciones con nombre (cada una pide confirmación en
+     ValvulaActivity), temporizador y movimientos recientes. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/page"
     android:orientation="vertical"
-    android:background="@color/bg_app">
+    tools:context=".ValvulaActivity">
 
-    <!-- Toolbar superior -->
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarValvula"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@drawable/bg_toolbar"
-        app:title="Control de Electroválvula"
-        app:titleTextColor="@color/on_brand" />
+        android:layout_height="@dimen/toolbar_height"
+        app:navigationContentDescription="Volver"
+        app:navigationIcon="@drawable/ic_arrow_back" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hairline"
+        android:background="@color/line" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="@dimen/gutter"
+            android:paddingTop="@dimen/space_5"
+            android:paddingEnd="@dimen/gutter"
+            android:paddingBottom="@dimen/space_8">
 
-            <!-- Card 1: Estado Actual (Visible para Todos) -->
-            <androidx.cardview.widget.CardView
+            <!-- Estado -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/bg_card">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ESTADO DE LA VÁLVULA"
-                        android:textColor="@color/text_primary"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:text="Estado actual"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Label"
+                        android:textColor="@color/ink_2" />
 
                     <TextView
                         android:id="@+id/tvValvulaEstadoDetalle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="Cargando..."
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="@dimen/space_1"
+                        android:accessibilityLiveRegion="polite"
+                        android:text="Cargando…"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Headline" />
 
-                    <!-- Indicador / Contenedor de Temporizador en Estado -->
                     <LinearLayout
                         android:id="@+id/layoutTemporizadorActivo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp"
-                        android:background="@color/bg_card_alt"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:background="@drawable/bg_status_info"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/space_4"
                         android:visibility="gone">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Tiempo restante:"
-                                android:textStyle="bold"
-                                android:textColor="@color/text_primary"/>
+                                android:drawablePadding="@dimen/space_2"
+                                android:gravity="center_vertical"
+                                android:text="Se cierra sola en"
+                                android:textAppearance="@style/TextAppearance.SmartDrop.Label"
+                                android:textColor="@color/anil"
+                                app:drawableStartCompat="@drawable/ic_timer"
+                                app:drawableTint="@color/anil" />
 
                             <TextView
                                 android:id="@+id/tvTiempoRestanteAdmin"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:accessibilityLiveRegion="polite"
                                 android:text="0s"
-                                android:textStyle="bold"
-                                android:textColor="@color/brand_accent"/>
+                                android:textAppearance="@style/TextAppearance.SmartDrop.Number" />
                         </LinearLayout>
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnCancelarTemporizador"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            android:layout_width="match_parent"
+                            style="@style/Widget.SmartDrop.Button.Danger"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="CANCELAR / CERRAR"
-                            android:textColor="@color/danger"
-                            android:textSize="12sp"
+                            android:text="Cerrar ahora"
                             android:visibility="gone" />
                     </LinearLayout>
 
-                    <!-- Mensaje para usuarios no administradores -->
                     <TextView
                         android:id="@+id/tvMensajeSoloAdmin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="El control manual y el registro de la válvula están reservados para administradores."
-                        android:textColor="@color/text_alert"
-                        android:gravity="center"
-                        android:padding="12dp"
-                        android:visibility="gone"
-                        android:textSize="13sp"
-                        android:layout_marginTop="8dp"/>
-
+                        android:layout_marginTop="@dimen/space_4"
+                        android:text="Solo los administradores pueden abrir o cerrar la válvula y ver sus movimientos."
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall"
+                        android:visibility="gone" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card 2: Panel de Control (Solo Administradores) -->
-            <androidx.cardview.widget.CardView
+            <!-- Control (solo administración) -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardControlesAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/bg_card"
+                android:layout_marginTop="@dimen/space_4"
                 android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/layoutControlesAdmin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="PANEL DE CONTROL (ADMIN)"
-                        android:textColor="@color/text_primary"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="12dp" />
+                        android:accessibilityHeading="true"
+                        android:text="Control"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                        android:textColor="@color/ink" />
 
-                    <!-- Botones ABRIR / CERRAR -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_1"
+                        android:text="Cada cambio pide confirmación y queda registrado."
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
                         android:orientation="horizontal">
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnAbrirValvula"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/space_2"
                             android:layout_weight="1"
-                            android:layout_marginEnd="4dp"
-                            android:text="ABRIR"
-                            android:backgroundTint="@color/success" />
+                            android:text="Abrir válvula"
+                            app:icon="@drawable/ic_lock_open" />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnCerrarValvula"
+                            style="@style/Widget.SmartDrop.Button.Secondary"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_2"
                             android:layout_weight="1"
-                            android:layout_marginStart="4dp"
-                            android:text="CERRAR"
-                            android:backgroundTint="@color/danger" />
+                            android:text="Cerrar válvula"
+                            app:icon="@drawable/ic_lock" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/hairline"
+                        android:layout_marginTop="@dimen/space_5"
+                        android:background="@color/line" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="TEMPORIZADOR DE APERTURA"
-                        android:textColor="@color/brand_accent"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="@dimen/space_4"
+                        android:text="Abrir por un tiempo"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodyStrong"
+                        android:textColor="@color/ink" />
 
-                    <!-- Presets Rápidos -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Se cierra sola al terminar. Máximo 120 segundos."
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="4"
-                        android:layout_marginTop="6dp">
+                        android:layout_marginTop="@dimen/space_3"
+                        android:orientation="horizontal">
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn10s"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.SmartDrop.Button.Secondary"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/space_1"
                             android:layout_weight="1"
-                            android:text="10S"
-                            android:textSize="11sp" />
+                            android:contentDescription="Abrir 10 segundos"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="0dp"
+                            android:text="10 s" />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn30s"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.SmartDrop.Button.Secondary"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_1"
+                            android:layout_marginEnd="@dimen/space_1"
                             android:layout_weight="1"
-                            android:text="30S"
-                            android:textSize="11sp" />
+                            android:contentDescription="Abrir 30 segundos"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="0dp"
+                            android:text="30 s" />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn60s"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.SmartDrop.Button.Secondary"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_1"
+                            android:layout_marginEnd="@dimen/space_1"
                             android:layout_weight="1"
-                            android:text="60S"
-                            android:textSize="11sp" />
+                            android:contentDescription="Abrir 60 segundos"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="0dp"
+                            android:text="60 s" />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn120s"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.SmartDrop.Button.Secondary"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_1"
                             android:layout_weight="1"
-                            android:text="120S"
-                            android:textSize="11sp" />
+                            android:contentDescription="Abrir 120 segundos"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="0dp"
+                            android:text="120 s" />
                     </LinearLayout>
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnPersonalizado"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="match_parent"
+                        style="@style/Widget.SmartDrop.Button.Text"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="TIEMPO PERSONALIZADO"
-                        android:textSize="12sp" />
-
+                        android:layout_marginTop="@dimen/space_2"
+                        android:text="Elegir otro tiempo"
+                        app:icon="@drawable/ic_timer" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card 3: Historial de Movimientos / Logs (Solo Administradores) -->
-            <androidx.cardview.widget.CardView
+            <!-- Movimientos -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardLogsAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/bg_card"
+                android:layout_marginTop="@dimen/space_4"
                 android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="HISTORIAL DE MOVIMIENTOS"
-                        android:textColor="@color/text_primary"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="12dp" />
+                        android:accessibilityHeading="true"
+                        android:text="Movimientos recientes"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                        android:textColor="@color/ink" />
 
-                    <!-- Banner de Advertencia opcional -->
                     <TextView
                         android:id="@+id/tvAdvertenciaLogs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/bg_warning"
-                        android:textColor="@color/warning_text"
-                        android:padding="8dp"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:visibility="gone" />
+                        android:layout_marginTop="@dimen/space_3"
+                        android:background="@drawable/bg_status_warn"
+                        android:drawablePadding="@dimen/space_2"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/space_3"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall"
+                        android:textColor="@color/warn"
+                        android:visibility="gone"
+                        app:drawableStartCompat="@drawable/ic_warning"
+                        app:drawableTint="@color/warn" />
 
-                    <!-- Indicador de Historial Vacío -->
                     <TextView
                         android:id="@+id/tvLogsVacio"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:gravity="center"
-                        android:text="No hay movimientos registrados"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="13sp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_3"
+                        android:text="Todavía no hay movimientos registrados."
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall"
                         android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvLogsValvula"
                         android:layout_width="match_parent"
-                        android:layout_height="320dp"
-                        android:nestedScrollingEnabled="true"
-                        tools:listitem="@layout/item_valvula_log" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_2"
+                        android:nestedScrollingEnabled="false" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </ScrollView>

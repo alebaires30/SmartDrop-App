@@ -151,6 +151,7 @@ public class ReporteDetalleActivity extends BaseActivity {
         tvTipo.setText(reporte.getTipoLabel());
         tvDescripcion.setText(reporte.getDescripcion());
         tvEstado.setText(reporte.getEstadoLabel());
+        ColorSeveridad.aplicarPill(tvEstado, ColorSeveridad.deEstadoReporte(reporte.getEstado()));
         tvUbicacion.setText(reporte.getUbicacion() != null && !reporte.getUbicacion().isEmpty()
                 ? reporte.getUbicacion() : "");
         tvUbicacion.setVisibility(reporte.getUbicacion() != null && !reporte.getUbicacion().isEmpty()
@@ -169,7 +170,7 @@ public class ReporteDetalleActivity extends BaseActivity {
                 if (adjunto.esVideo()) {
                     TextView enlace = new TextView(this);
                     enlace.setText("Video: " + (adjunto.getNombre() != null ? adjunto.getNombre() : "archivo"));
-                    enlace.setTextColor(ContextCompat.getColor(this, R.color.brand_on_card));
+                    enlace.setTextColor(ContextCompat.getColor(this, R.color.anil));
                     enlace.setPadding(0, 12, 0, 12);
                     String url = urlAbsoluta(adjunto.getUrl());
                     enlace.setOnClickListener(v ->

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tile (métrica u opción tocable): surface + borde line, radius_md. Presionado: surface_tint + borde añil. Con foco (teclado / TalkBack): borde añil 2dp. Seleccionado: anil_soft + borde añil. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/surface_tint" />
+            <stroke android:width="@dimen/hairline" android:color="@color/anil" />
+            <corners android:radius="@dimen/radius_md" />
+        </shape>
+    </item>
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/surface" />
+            <stroke android:width="2dp" android:color="@color/anil" />
+            <corners android:radius="@dimen/radius_md" />
+        </shape>
+    </item>
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/anil_soft" />
+            <stroke android:width="@dimen/hairline" android:color="@color/anil" />
+            <corners android:radius="@dimen/radius_md" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/surface" />
+            <stroke android:width="@dimen/hairline" android:color="@color/line" />
+            <corners android:radius="@dimen/radius_md" />
+        </shape>
+    </item>
+</selector>

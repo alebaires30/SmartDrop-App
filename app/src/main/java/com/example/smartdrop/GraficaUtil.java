@@ -20,8 +20,8 @@ final class GraficaUtil {
     private GraficaUtil() { }
 
     static void estilo(LineChart chart, Context context) {
-        int texto = ContextCompat.getColor(context, R.color.text_secondary);
-        int rejilla = ContextCompat.getColor(context, R.color.stroke_soft);
+        int texto = ContextCompat.getColor(context, R.color.ink_3);
+        int rejilla = ContextCompat.getColor(context, R.color.line);
         chart.getDescription().setEnabled(false);
         chart.setDrawGridBackground(false);
         chart.setTouchEnabled(true);
@@ -30,7 +30,7 @@ final class GraficaUtil {
         chart.setPinchZoom(false);
         chart.setDoubleTapToZoomEnabled(false);
         chart.setExtraOffsets(4f, 4f, 8f, 6f);
-        chart.setNoDataText("Sin datos para mostrar");
+        chart.setNoDataText("Aún no hay datos para este periodo");
         chart.setNoDataTextColor(texto);
 
         XAxis x = chart.getXAxis();

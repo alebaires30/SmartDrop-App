@@ -202,7 +202,7 @@ public final class AvisosFuga {
         StringBuilder texto = new StringBuilder();
         if (alerta.getDireccion() != null && !alerta.getDireccion().isEmpty()) texto.append(alerta.getDireccion());
         if (!clave.isEmpty()) {
-            if (texto.length() > 0) texto.append(" · ");
+            if (texto.length() > 0) texto.append(", ");
             texto.append(clave.split("  ·  ")[0]);
         }
         return texto.length() > 0 ? texto.toString() : "Toca para ver los detalles";

@@ -1,37 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Botón secundario heredado: surface + borde line_strong, radius_sm. Presionado: surface_tint + borde añil. Texto encima: ink. -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-
-    <item android:state_pressed="true">
-        <shape android:shape="rectangle">
-            <solid android:color="@color/btn_secondary_bg" />
-            <stroke
-                android:width="1.5dp"
-                android:color="@color/btn_secondary_bg" />
-            <corners android:radius="100dp" />
-        </shape>
-    </item>
-
-
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
-            <solid android:color="@color/btn_secondary_bg" />
-            <corners android:radius="100dp" />
+            <solid android:color="@color/surface_2" />
+            <stroke android:width="@dimen/hairline" android:color="@color/line" />
+            <corners android:radius="@dimen/radius_sm" />
         </shape>
     </item>
-
-
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/surface_tint" />
+            <stroke android:width="@dimen/hairline" android:color="@color/anil" />
+            <corners android:radius="@dimen/radius_sm" />
+        </shape>
+    </item>
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/surface" />
+            <stroke android:width="2dp" android:color="@color/anil" />
+            <corners android:radius="@dimen/radius_sm" />
+        </shape>
+    </item>
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/btn_secondary_bg" />
-            <stroke
-                android:width="1dp"
-                android:color="@color/btn_secondary_bg" />
-            <corners android:radius="100dp" />
+            <solid android:color="@color/surface" />
+            <stroke android:width="@dimen/hairline" android:color="@color/line_strong" />
+            <corners android:radius="@dimen/radius_sm" />
         </shape>
     </item>
-
-
-
-
 </selector>

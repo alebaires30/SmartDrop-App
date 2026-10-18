@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo de la pill de estado "ok" (Widget.SmartDrop.StatusPill.*). Sin padding: lo pone el estilo. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/ok_bg" />
+    <corners android:radius="@dimen/radius_pill" />
+</shape>

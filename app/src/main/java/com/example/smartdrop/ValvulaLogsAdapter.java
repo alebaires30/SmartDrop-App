@@ -37,10 +37,16 @@ public class ValvulaLogsAdapter extends RecyclerView.Adapter<ValvulaLogsAdapter.
 
         // Acción (ABRIR -> Verde #27AE60, CERRAR -> Rojo #E74C3C)
         String accion = log.getAccion() != null ? log.getAccion().toUpperCase() : "ACCIÓN";
-        holder.tvAccion.setText(accion);
         boolean esAbrir = accion.contains("ABRIR") || accion.contains("OPEN");
+        holder.tvAccion.setText(esAbrir ? "Apertura" : "Cierre");
         holder.tvAccion.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),
-                esAbrir ? R.color.success : R.color.danger));
+                esAbrir ? R.color.ok : R.color.ink));
+        if (holder.ivIcono != null) {
+            holder.ivIcono.setImageResource(esAbrir ? R.drawable.ic_lock_open : R.drawable.ic_lock);
+            holder.ivIcono.setBackgroundResource(esAbrir ? R.drawable.bg_icon_chip_ok : R.drawable.bg_icon_chip_none);
+            holder.ivIcono.setImageTintList(android.content.res.ColorStateList.valueOf(ContextCompat.getColor(
+                    holder.itemView.getContext(), esAbrir ? R.color.ok : R.color.none)));
+        }
 
         // Etiqueta/Badge: {usuario} • {tipo_activacion}
         String usuario = (log.getUsuario() != null && !log.getUsuario().isEmpty()) ? log.getUsuario() : "Sistema";
@@ -53,10 +59,10 @@ public class ValvulaLogsAdapter extends RecyclerView.Adapter<ValvulaLogsAdapter.
             if (!duracionTexto.endsWith("s") && !duracionTexto.isEmpty()) {
                 duracionTexto += "s";
             }
-            badgeText = usuario + " • Temporizado (" + duracionTexto + ")";
+            badgeText = usuario + ", temporizado (" + duracionTexto + ")";
         } else {
             String origenLimpio = origen.replace("App (", "").replace(")", "");
-            badgeText = usuario + " • " + origenLimpio;
+            badgeText = usuario + ", " + origenLimpio.toLowerCase();
         }
 
         holder.tvTipo.setText(badgeText);
@@ -66,7 +72,7 @@ public class ValvulaLogsAdapter extends RecyclerView.Adapter<ValvulaLogsAdapter.
         if (fecha.contains(".")) {
             fecha = fecha.substring(0, fecha.indexOf("."));
         }
-        holder.tvFecha.setText(fecha);
+        holder.tvFecha.setText(Fechas.formatear(log.getFechaHora(), "d MMM yyyy, HH:mm", fecha));
     }
 
     @Override
@@ -76,12 +82,14 @@ public class ValvulaLogsAdapter extends RecyclerView.Adapter<ValvulaLogsAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvAccion, tvTipo, tvFecha;
+        android.widget.ImageView ivIcono;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvAccion = itemView.findViewById(R.id.tvLogAccion);
             tvTipo = itemView.findViewById(R.id.tvLogTipo);
             tvFecha = itemView.findViewById(R.id.tvLogFecha);
+            ivIcono = itemView.findViewById(R.id.ivLogIcono);
         }
     }
 }

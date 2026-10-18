@@ -1,29 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Menú lateral del residente: mismos grupos que la barra lateral de la web. -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
+    <group
+        android:id="@+id/grupo_drawer_inicio"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/drawer_inicio"
+            android:checked="true"
+            android:icon="@drawable/ic_home"
             android:title="Inicio" />
+    </group>
 
-        <item
-            android:id="@+id/drawer_consumo"
-            android:title="Consumo" />
+    <item android:title="Mi agua">
+        <menu>
+            <group
+                android:id="@+id/grupo_drawer_agua"
+                android:checkableBehavior="none">
+                <item
+                    android:id="@+id/drawer_presion"
+                    android:icon="@drawable/ic_gauge"
+                    android:title="Presión" />
+                <item
+                    android:id="@+id/drawer_calidad"
+                    android:icon="@drawable/ic_flask"
+                    android:title="Calidad" />
+                <item
+                    android:id="@+id/drawer_tanque"
+                    android:icon="@drawable/ic_tank"
+                    android:title="Tanque" />
+                <item
+                    android:id="@+id/drawer_consumo"
+                    android:icon="@drawable/ic_chart"
+                    android:title="Consumo" />
+            </group>
+        </menu>
+    </item>
 
-        <item
-            android:id="@+id/drawer_reportar"
-            android:title="Reportar problema" />
+    <item android:title="Ahorro">
+        <menu>
+            <group
+                android:id="@+id/grupo_drawer_ahorro"
+                android:checkableBehavior="none">
+                <item
+                    android:id="@+id/drawer_retro"
+                    android:icon="@drawable/ic_feedback"
+                    android:title="Retroalimentación" />
+                <item
+                    android:id="@+id/drawer_consejos"
+                    android:icon="@drawable/ic_bulb"
+                    android:title="Consejos de ahorro" />
+            </group>
+        </menu>
+    </item>
 
-        <item
-            android:id="@+id/drawer_historial"
-            android:title="Historial de reportes" />
+    <item android:title="Comunidad">
+        <menu>
+            <group
+                android:id="@+id/grupo_drawer_comunidad"
+                android:checkableBehavior="none">
+                <item
+                    android:id="@+id/drawer_reportar"
+                    android:icon="@drawable/ic_reporte_vector"
+                    android:title="Reportar un problema" />
+                <item
+                    android:id="@+id/drawer_historial"
+                    android:icon="@drawable/ic_users"
+                    android:title="Reportes de la comunidad" />
+                <item
+                    android:id="@+id/drawer_alertas"
+                    android:icon="@drawable/ic_bell"
+                    android:title="Alertas" />
+            </group>
+        </menu>
+    </item>
 
-        <item
-            android:id="@+id/drawer_perfil"
-            android:title="Mi Perfil" />
-
-        <item
-            android:id="@+id/drawer_cerrar_sesion"
-            android:title="Cerrar sesión" />
+    <item android:title="Cuenta">
+        <menu>
+            <group
+                android:id="@+id/grupo_drawer_cuenta"
+                android:checkableBehavior="none">
+                <item
+                    android:id="@+id/drawer_perfil"
+                    android:icon="@drawable/ic_person"
+                    android:title="Mi perfil" />
+                <item
+                    android:id="@+id/drawer_cerrar_sesion"
+                    android:icon="@drawable/ic_logout"
+                    android:title="Cerrar sesión" />
+            </group>
+        </menu>
+    </item>
 
 </menu>

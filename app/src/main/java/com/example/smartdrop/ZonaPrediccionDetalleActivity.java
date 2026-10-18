@@ -108,8 +108,8 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
                     maximo.add(new Entry(i, (float) p.getMaximo()));
                     etiquetas.add(hora(p.getFecha()));
                 }
-                int morado = ContextCompat.getColor(ZonaPrediccionDetalleActivity.this, R.color.brand_accent);
-                int suave = ContextCompat.getColor(ZonaPrediccionDetalleActivity.this, R.color.brand_soft);
+                int morado = ContextCompat.getColor(ZonaPrediccionDetalleActivity.this, R.color.agua);
+                int suave = ContextCompat.getColor(ZonaPrediccionDetalleActivity.this, R.color.ink_3);
                 LineDataSet setEsperado = GraficaUtil.linea(esperado, "Nivel esperado", morado, true);
                 LineDataSet setMaximo = GraficaUtil.lineaPunteada(maximo, "Máximo", suave);
                 LineDataSet setMinimo = GraficaUtil.lineaPunteada(minimo, "Mínimo", suave);
@@ -148,7 +148,7 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
                     etiquetas.add(hora(horas.get(i).getFecha()));
                     total += horas.get(i).getLitros();
                 }
-                int azul = ContextCompat.getColor(ZonaPrediccionDetalleActivity.this, R.color.brand_blue);
+                int azul = ContextCompat.getColor(ZonaPrediccionDetalleActivity.this, R.color.anil);
                 GraficaUtil.etiquetas(chartConsumo, etiquetas);
                 chartConsumo.getAxisLeft().setAxisMinimum(0f);
                 chartConsumo.setData(new LineData(GraficaUtil.linea(entradas, "Consumo (L)", azul, true)));
@@ -158,7 +158,7 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
                 HistorialConsumoResponse.Pronostico p = datos.getPronostico();
                 if (p != null) {
                     texto += String.format(Locale.getDefault(),
-                            " · próxima hora ≈ %.2f L (entre %.2f y %.2f)", p.getEsperado(), p.getMinimo(), p.getMaximo());
+                            ". Próxima hora: ≈ %.2f L (entre %.2f y %.2f)", p.getEsperado(), p.getMinimo(), p.getMaximo());
                 }
                 tvSubConsumo.setText(texto);
             }
@@ -212,10 +212,10 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
         if (e.getAnomaliasActivas24h() > 0) {
             tvAnomalias.setText(String.format(Locale.getDefault(),
                     "%d anomalías detectadas en las últimas 24 h", e.getAnomaliasActivas24h()));
-            tvAnomalias.setTextColor(ContextCompat.getColor(this, R.color.text_alert));
+            tvAnomalias.setTextColor(ContextCompat.getColor(this, R.color.bad));
         } else {
             tvAnomalias.setText("Sin anomalías en las últimas 24 h");
-            tvAnomalias.setTextColor(ContextCompat.getColor(this, R.color.status_green));
+            tvAnomalias.setTextColor(ContextCompat.getColor(this, R.color.ok));
         }
 
         ShortagePrediction p = e.getUltimaPrediccionDesabasto();
@@ -268,25 +268,17 @@ public class ZonaPrediccionDetalleActivity extends BaseActivity {
 
     private void pintarRiesgo(ShortagePrediction p) {
         String riesgo = p.getNivelRiesgo() == null ? "sin_datos" : p.getNivelRiesgo();
+        String etiqueta;
+        String severidad;
         switch (riesgo) {
-            case "critico":
-                tvRiesgo.setText("Nivel de riesgo: CRÍTICO");
-                tvRiesgo.setTextColor(ContextCompat.getColor(this, R.color.text_alert));
-                break;
-            case "alto":
-                tvRiesgo.setText("Nivel de riesgo: ALTO");
-                tvRiesgo.setTextColor(ContextCompat.getColor(this, R.color.status_orange));
-                break;
+            case "critico":  etiqueta = "Riesgo crítico"; severidad = "rojo";     break;
+            case "alto":     etiqueta = "Riesgo alto";    severidad = "rojo";     break;
             case "medio":
-            case "moderado":
-                tvRiesgo.setText("Nivel de riesgo: MODERADO");
-                tvRiesgo.setTextColor(ContextCompat.getColor(this, R.color.status_yellow));
-                break;
-            default:
-                tvRiesgo.setText("Nivel de riesgo: BAJO");
-                tvRiesgo.setTextColor(ContextCompat.getColor(this, R.color.status_green));
-                break;
+            case "moderado": etiqueta = "Riesgo medio";   severidad = "amarillo"; break;
+            default:         etiqueta = "Riesgo bajo";    severidad = "verde";    break;
         }
+        tvRiesgo.setText(etiqueta);
+        ColorSeveridad.aplicarPill(tvRiesgo, severidad);
 
     }
 }

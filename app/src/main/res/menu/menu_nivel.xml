@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Barra inferior de las lecturas de la casa. -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/nav_tanque"
-        android:title="Tanque"
-        android:icon="@drawable/ic_tanque"/>
-
+        android:icon="@drawable/ic_tank"
+        android:title="Tanque" />
     <item
         android:id="@+id/nav_calidad"
-        android:title="Calidad"
-        android:icon="@drawable/ic_calidad"/>
-
+        android:icon="@drawable/ic_flask"
+        android:title="Calidad" />
     <item
         android:id="@+id/nav_presion"
-        android:title="Presión"
-        android:icon="@drawable/ic_presion"/>
-
+        android:icon="@drawable/ic_gauge"
+        android:title="Presión" />
     <item
         android:id="@+id/nav_consumo"
-        android:title="Consumo"
-        android:icon="@drawable/ic_consumo"/>
+        android:icon="@drawable/ic_chart"
+        android:title="Consumo" />
 </menu>

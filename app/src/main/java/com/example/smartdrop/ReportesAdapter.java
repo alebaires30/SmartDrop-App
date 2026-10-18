@@ -57,13 +57,7 @@ public class ReportesAdapter extends RecyclerView.Adapter<ReportesAdapter.ViewHo
             holder.tvAutor.setVisibility(View.GONE);
         }
 
-        int colorEstado;
-        switch (reporte.getEstado() != null ? reporte.getEstado() : "") {
-            case "resuelto": colorEstado = ContextCompat.getColor(holder.itemView.getContext(), R.color.success_dark); break;
-            case "en_proceso": colorEstado = ContextCompat.getColor(holder.itemView.getContext(), R.color.status_blue); break;
-            default: colorEstado = ContextCompat.getColor(holder.itemView.getContext(), R.color.status_amber); break;
-        }
-        holder.tvEstado.setTextColor(colorEstado);
+        ColorSeveridad.aplicarPill(holder.tvEstado, ColorSeveridad.deEstadoReporte(reporte.getEstado()));
 
         holder.itemView.setOnClickListener(v -> listener.onReporteClick(reporte));
     }

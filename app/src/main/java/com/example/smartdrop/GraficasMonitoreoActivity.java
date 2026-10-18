@@ -101,9 +101,10 @@ public class GraficasMonitoreoActivity extends BaseActivity {
             cargarDatos(false);
             handler.postDelayed(tareaPolling, intervaloSegunPeriodo());
         };
-        registerReceiver(realtimeReceiver,
+        // ContextCompat: el flag RECEIVER_NOT_EXPORTED solo existe desde API 26 (minSdk es 24).
+        androidx.core.content.ContextCompat.registerReceiver(this, realtimeReceiver,
             new IntentFilter(RealtimeClient.ACTION_SENSOR_READING),
-            Context.RECEIVER_NOT_EXPORTED);
+            androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED);
         RealtimeClient.connect(this);
         handler.post(tareaPolling);
     }
@@ -272,13 +273,13 @@ public class GraficasMonitoreoActivity extends BaseActivity {
             }
         }
 
-        int colorNormal = ContextCompat.getColor(this, R.color.brand_accent);
+        int colorNormal = ContextCompat.getColor(this, R.color.agua);
         LineDataSet setNormal = GraficaUtil.linea(entradasNormales, tituloParametro(parametroActual), colorNormal, true);
 
         LineData lineData;
         if (!entradasAlerta.isEmpty()) {
             LineDataSet setAlerta = new LineDataSet(entradasAlerta, "Fuera de rango");
-            int colorAlerta = ContextCompat.getColor(this, R.color.text_alert);
+            int colorAlerta = ContextCompat.getColor(this, R.color.bad_dot);
             setAlerta.setColor(colorAlerta);
             setAlerta.setCircleColor(colorAlerta);
             setAlerta.setDrawCircleHole(false);
@@ -305,7 +306,7 @@ public class GraficasMonitoreoActivity extends BaseActivity {
                 numero(actual), numero(suma / datos.size()), numero(minimo), numero(maximo)));
         tvResumenGrafica.setVisibility(android.view.View.VISIBLE);
         String ultima = "Última lectura: " + formatearHora(datos.get(datos.size() - 1).getFecha());
-        tvUltimaActualizacion.setText(AvisosFuga.esAdminConSesion(this) ? "Promedio de todas las viviendas · " + ultima : ultima);
+        tvUltimaActualizacion.setText(AvisosFuga.esAdminConSesion(this) ? "Promedio de todas las viviendas. " + ultima : ultima);
 
         if (hayAlerta) {
             cardAlertaRango.setVisibility(android.view.View.VISIBLE);
@@ -320,9 +321,9 @@ public class GraficasMonitoreoActivity extends BaseActivity {
         List<LineDataSet> conjuntos = new ArrayList<>();
         boolean hayAlerta = false;
 
-        hayAlerta |= agregarSerieComparativa(body.getFlujo(), "Flujo", R.color.brand_blue, conjuntos);
-        hayAlerta |= agregarSerieComparativa(body.getPresion(), "Presión", R.color.status_orange, conjuntos);
-        hayAlerta |= agregarSerieComparativa(body.getNivel(), "Nivel", R.color.success, conjuntos);
+        hayAlerta |= agregarSerieComparativa(body.getFlujo(), "Flujo", R.color.agua, conjuntos);
+        hayAlerta |= agregarSerieComparativa(body.getPresion(), "Presión", R.color.anil, conjuntos);
+        hayAlerta |= agregarSerieComparativa(body.getNivel(), "Nivel", R.color.ok_dot, conjuntos);
 
         if (conjuntos.isEmpty()) {
             lineChart.clear();

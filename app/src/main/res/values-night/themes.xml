@@ -1,11 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Tema nocturno: debe llamarse igual que en values/themes.xml para que
-         AppCompat lo aplique automáticamente en modo noche. -->
-    <style name="Theme.SmartDrop" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/brand_blue</item>
-        <item name="colorPrimaryVariant">#2A5298</item>
-        <item name="colorOnPrimary">@color/on_brand</item>
-        <item name="colorSecondary">@color/brand_accent</item>
-        <item name="android:windowBackground">@color/bg_app</item>
+    <!-- Tema nocturno: se llama igual que en values/themes.xml para que AppCompat lo aplique
+         solo en modo noche. Todo el mapeo vive en Base.Theme.SmartDrop (values/themes.xml) y los
+         colores cambian por values-night/colors.xml; aquí solo cambian las barras del sistema. -->
+    <style name="Theme.SmartDrop" parent="Base.Theme.SmartDrop">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
     </style>
 </resources>

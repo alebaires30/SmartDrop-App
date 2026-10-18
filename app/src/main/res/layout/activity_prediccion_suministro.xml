@@ -1,62 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Predicción de suministro (administración): ejecutar predicciones, resultado y tanques por
+     vivienda con su riesgo. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/page"
     android:orientation="vertical"
-    android:background="@color/bg_app">
+    tools:context=".PrediccionSuministroActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/brand_primary">
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/surface"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_1"
+        android:paddingEnd="@dimen/space_4">
 
         <ImageButton
             android:id="@+id/btnVolver"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_back"
-            android:contentDescription="Volver" />
+            android:contentDescription="Volver"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/ink" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_2"
+            android:layout_weight="1"
+            android:accessibilityHeading="true"
             android:text="Predicción de suministro"
-            android:textColor="@color/on_brand"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_centerInParent="true" />
-    </RelativeLayout>
+            android:textAppearance="@style/TextAppearance.SmartDrop.Toolbar"
+            android:textColor="@color/ink" />
+    </LinearLayout>
 
-    <Button
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hairline"
+        android:background="@color/line" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRealizarPredicciones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/btn_gradient"
-        android:padding="12dp"
-        android:text="REALIZAR PREDICCIONES"
-        android:textColor="@color/on_brand"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:layout_marginStart="@dimen/gutter"
+        android:layout_marginTop="@dimen/space_4"
+        android:layout_marginEnd="@dimen/gutter"
+        android:text="Realizar predicciones"
+        app:icon="@drawable/ic_refresh" />
 
     <TextView
         android:id="@+id/tvResultadoPrediccion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/bg_card_alt"
-        android:padding="10dp"
-        android:textColor="@color/text_primary"
-        android:textSize="13sp"
+        android:layout_marginStart="@dimen/gutter"
+        android:layout_marginTop="@dimen/space_3"
+        android:layout_marginEnd="@dimen/gutter"
+        android:accessibilityLiveRegion="polite"
+        android:background="@drawable/bg_status_info"
+        android:padding="@dimen/space_4"
+        android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall"
+        android:textColor="@color/ink"
         android:visibility="gone" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/gutter"
+        android:layout_marginTop="@dimen/space_4"
+        android:layout_marginEnd="@dimen/gutter"
+        android:text="Los tanques con más riesgo de quedarse sin agua aparecen en rojo o ámbar."
+        android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
@@ -68,9 +87,11 @@
             android:id="@+id/recyclerZonas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
-            android:clipToPadding="false" />
-
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/gutter"
+            android:paddingTop="@dimen/space_3"
+            android:paddingEnd="@dimen/gutter"
+            android:paddingBottom="@dimen/space_7" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
@@ -78,10 +99,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="24dp"
-        android:text="No hay datos de predicción disponibles todavía."
-        android:textColor="@color/text_secondary"
-        android:textSize="14sp"
+        android:padding="@dimen/space_7"
+        android:text="Todavía no hay predicciones. Pulsa Realizar predicciones para calcularlas."
+        android:textAppearance="@style/TextAppearance.SmartDrop.Body"
+        android:textColor="@color/ink_2"
         android:visibility="gone" />
-
 </LinearLayout>

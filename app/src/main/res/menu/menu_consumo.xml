@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Barra inferior de consumo y ahorro. -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/nav_retroalimentacion" android:title="Retroalimentación" android:icon="@drawable/ic_retro" />
-    <item android:id="@+id/nav_consumo" android:title="Consumo" android:icon="@drawable/ic_consumo" />
-    <item android:id="@+id/nav_recomendaciones" android:title="Recomendaciones" android:icon="@drawable/ic_recomendaciones" />
+    <item
+        android:id="@+id/nav_retroalimentacion"
+        android:icon="@drawable/ic_feedback"
+        android:title="Tu consumo" />
+    <item
+        android:id="@+id/nav_consumo"
+        android:icon="@drawable/ic_chart"
+        android:title="Consumo" />
+    <item
+        android:id="@+id/nav_recomendaciones"
+        android:icon="@drawable/ic_bulb"
+        android:title="Consejos" />
 </menu>

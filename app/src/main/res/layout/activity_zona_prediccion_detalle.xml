@@ -1,36 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Detalle de un tanque (Predicción de suministro): nivel actual, tiempo estimado de suministro
+     con su riesgo, nivel proyectado y consumo por hora. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/page"
     android:orientation="vertical"
-    android:background="@color/bg_app">
+    tools:context=".ZonaPrediccionDetalleActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/brand_primary">
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/surface"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_1"
+        android:paddingEnd="@dimen/space_4">
 
         <ImageButton
             android:id="@+id/btnVolver"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_back"
-            android:contentDescription="Volver" />
+            android:contentDescription="Volver"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/ink" />
 
         <TextView
             android:id="@+id/tvTituloZona"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_2"
+            android:layout_weight="1"
+            android:accessibilityHeading="true"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="Zona"
-            android:textColor="@color/on_brand"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_centerInParent="true" />
-    </RelativeLayout>
+            android:textAppearance="@style/TextAppearance.SmartDrop.Toolbar"
+            android:textColor="@color/ink" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hairline"
+        android:background="@color/line" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -41,251 +56,229 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingStart="@dimen/gutter"
+            android:paddingTop="@dimen/space_5"
+            android:paddingEnd="@dimen/gutter"
+            android:paddingBottom="@dimen/space_8">
 
-            <!-- Estado actual -->
-            <androidx.cardview.widget.CardView
+            <!-- Nivel actual -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/bg_card">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nivel actual del tanque"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        android:textColor="@color/text_primary" />
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Label"
+                        android:textColor="@color/ink_2" />
 
                     <TextView
                         android:id="@+id/tvDetalleNivel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textSize="15sp"
-                        android:textColor="@color/text_primary" />
+                        android:layout_marginTop="@dimen/space_1"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Number" />
 
                     <ProgressBar
                         android:id="@+id/progresoNivel"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="12dp"
+                        android:layout_marginTop="@dimen/space_3"
+                        android:importantForAccessibility="no"
                         android:max="100"
-                        android:progressTint="@color/brand_blue" />
+                        android:progressDrawable="@drawable/meter_progress" />
 
                     <TextView
                         android:id="@+id/tvDetalleConsumo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_secondary" />
+                        android:layout_marginTop="@dimen/space_3"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Body" />
 
                     <TextView
                         android:id="@+id/tvDetalleAnomalias"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textSize="13sp"
-                        android:textColor="@color/text_secondary" />
+                        android:layout_marginTop="@dimen/space_2"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Label" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Predicción de desabasto -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardPrediccion"
+                style="@style/Widget.SmartDrop.Card.Warm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/bg_card">
+                android:layout_marginTop="@dimen/space_4">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvNivelRiesgo"
+                        style="@style/Widget.SmartDrop.StatusPill.None"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tiempo estimado de suministro restante"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        android:textColor="@color/text_primary" />
+                        android:layout_marginTop="@dimen/space_3"
+                        android:text="Tiempo estimado de suministro"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Label"
+                        android:textColor="@color/ink_2" />
 
                     <TextView
                         android:id="@+id/tvHorasRestantes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/brand_accent" />
+                        android:layout_marginTop="@dimen/space_1"
+                        android:accessibilityLiveRegion="polite"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Headline"
+                        android:textColor="@color/ink" />
 
                     <TextView
                         android:id="@+id/tvRangoHoras"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textSize="13sp"
-                        android:textColor="@color/text_secondary" />
+                        android:layout_marginTop="@dimen/space_2"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Body"
+                        android:textColor="@color/ink" />
 
                     <TextView
                         android:id="@+id/tvProbabilidad"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_primary" />
-
-                    <TextView
-                        android:id="@+id/tvNivelRiesgo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="@dimen/space_1"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
 
                     <TextView
                         android:id="@+id/tvGenerada"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:textSize="12sp"
-                        android:textColor="@color/text_secondary" />
+                        android:layout_marginTop="@dimen/space_3"
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Caption" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/tvSinPrediccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="20dp"
-                android:text="Aún no hay una predicción de desabasto vigente para esta zona."
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
+                android:layout_marginTop="@dimen/space_4"
+                android:background="@drawable/bg_status_none"
+                android:padding="@dimen/space_4"
+                android:text="Aún no hay una predicción de desabasto para este tanque. Usa Realizar predicciones."
+                android:textAppearance="@style/TextAppearance.SmartDrop.Body"
+                android:textColor="@color/ink_2"
                 android:visibility="gone" />
 
-            <!-- Gráfica: nivel proyectado del tanque -->
-            <androidx.cardview.widget.CardView
+            <!-- Nivel proyectado -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/bg_card">
+                android:layout_marginTop="@dimen/space_4">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:accessibilityHeading="true"
                         android:text="Nivel proyectado del tanque"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        android:textColor="@color/text_primary" />
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                        android:textColor="@color/ink" />
 
                     <TextView
                         android:id="@+id/tvSubTrayectoria"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="@dimen/space_1"
                         android:text="Litros esperados en las próximas horas"
-                        android:textSize="12sp"
-                        android:textColor="@color/text_secondary" />
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        android:layout_marginTop="8dp">
+                        android:layout_height="220dp"
+                        android:layout_marginTop="@dimen/space_3">
 
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/chartTrayectoria"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:contentDescription="Nivel proyectado del tanque en litros" />
 
                         <ProgressBar
                             android:id="@+id/progresoTrayectoria"
-                            style="?android:attr/progressBarStyle"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:layout_gravity="center"
-                            android:indeterminateTint="@color/brand_accent" />
+                            android:indeterminateTint="@color/anil" />
                     </FrameLayout>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Gráfica: consumo por hora -->
-            <androidx.cardview.widget.CardView
+            <!-- Consumo por hora -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/bg_card">
+                android:layout_marginTop="@dimen/space_4">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:accessibilityHeading="true"
                         android:text="Consumo por hora"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        android:textColor="@color/text_primary" />
+                        android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                        android:textColor="@color/ink" />
 
                     <TextView
                         android:id="@+id/tvSubConsumo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="@dimen/space_1"
                         android:text="Litros consumidos en las últimas 48 h"
-                        android:textSize="12sp"
-                        android:textColor="@color/text_secondary" />
+                        android:textAppearance="@style/TextAppearance.SmartDrop.BodySmall" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:layout_marginTop="8dp">
+                        android:layout_height="220dp"
+                        android:layout_marginTop="@dimen/space_3">
 
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/chartConsumo"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:contentDescription="Consumo por hora en litros" />
 
                         <ProgressBar
                             android:id="@+id/progresoConsumo"
-                            style="?android:attr/progressBarStyle"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:layout_gravity="center"
-                            android:indeterminateTint="@color/brand_accent" />
+                            android:indeterminateTint="@color/anil" />
                     </FrameLayout>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

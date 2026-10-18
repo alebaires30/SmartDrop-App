@@ -1,55 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Pantalla de carga de "Realizar predicciones": solo aparece si el análisis tarda. -->
+<!-- Progreso de "Realizar predicciones" (PrediccionRunner): paso actual y barra determinada. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:padding="24dp">
+    android:orientation="vertical"
+    android:padding="@dimen/space_6">
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/ivGota"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:src="@drawable/ic_water_drop"
-        android:contentDescription="Analizando" />
+        style="@style/Widget.SmartDrop.IconChip.Agua"
+        android:layout_width="@dimen/icon_chip_lg"
+        android:layout_height="@dimen/icon_chip_lg"
+        android:src="@drawable/ic_drop" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Realizando predicciones…"
-        android:textColor="@color/brand_on_card"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="@dimen/space_4"
+        android:accessibilityHeading="true"
+        android:text="Calculando predicciones…"
+        android:textAppearance="@style/TextAppearance.SmartDrop.Title"
+        android:textColor="@color/ink" />
 
     <TextView
         android:id="@+id/tvPasoPrediccion"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="@dimen/space_2"
+        android:accessibilityLiveRegion="polite"
         android:gravity="center"
-        android:minHeight="40dp"
         android:text="Iniciando"
-        android:textColor="@color/text_primary"
-        android:textSize="14sp" />
+        android:textAppearance="@style/TextAppearance.SmartDrop.Body"
+        android:textColor="@color/ink_2" />
 
     <ProgressBar
         android:id="@+id/progresoPrediccion"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="@dimen/space_5"
+        android:contentDescription="Progreso de las predicciones"
         android:max="100"
-        android:progressTint="@color/brand_accent" />
+        android:progressDrawable="@drawable/meter_progress" />
 
     <TextView
         android:id="@+id/tvPorcentajePrediccion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/space_2"
         android:text="0 %"
-        android:textColor="@color/text_secondary"
-        android:textSize="13sp" />
-
+        android:textAppearance="@style/TextAppearance.SmartDrop.Label"
+        android:textColor="@color/ink_2" />
 </LinearLayout>

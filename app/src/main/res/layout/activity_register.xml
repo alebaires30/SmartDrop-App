@@ -1,108 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Crear cuenta: mismo patrón que iniciar sesión; campos con etiqueta y ayuda. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/surface"
     android:fillViewport="true"
-    android:background="@drawable/fondo">
+    tools:context=".RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center_horizontal">
+        android:paddingStart="@dimen/space_6"
+        android:paddingTop="@dimen/space_7"
+        android:paddingEnd="@dimen/space_6"
+        android:paddingBottom="@dimen/space_8">
 
         <ImageView
-            android:layout_width="170dp"
-            android:layout_height="170dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="20dp"
-            android:contentDescription="Crear cuenta"
-            android:scaleType="fitCenter"
-            android:src="@drawable/logo_registrate" />
+            android:layout_width="160dp"
+            android:layout_height="64dp"
+            android:contentDescription="SmartDrop"
+            android:scaleType="fitStart"
+            android:src="@drawable/logo_smartdrop" />
 
-        <EditText
-            android:id="@+id/nombre"
+        <TextView
+            style="@style/Widget.SmartDrop.PageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
+            android:text="Crea tu cuenta" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_label"
-            android:hint="Nombre"
-            android:padding="5dp"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary" />
+            android:layout_marginTop="@dimen/space_2"
+            android:text="Con tu cuenta podrás ver el agua de tu casa y recibir avisos cuando algo cambie."
+            android:textAppearance="@style/TextAppearance.SmartDrop.BodyLarge"
+            android:textColor="@color/ink_2" />
 
-        <!-- Apellido -->
-        <EditText
-            android:id="@+id/apellido"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_label"
-            android:hint="Apellido"
-            android:padding="5dp"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary" />
+            android:layout_marginTop="@dimen/space_7"
+            android:hint="Nombre">
 
-        <!-- Correo -->
-        <EditText
-            android:id="@+id/correo"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="personGivenName"
+                android:inputType="textPersonName|textCapWords" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_label"
-            android:hint="Correo electrónico"
-            android:inputType="textEmailAddress"
-            android:padding="5dp"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary" />
+            android:layout_marginTop="@dimen/space_4"
+            android:hint="Apellido">
 
-        <!-- Contraseña -->
-        <EditText
-            android:id="@+id/password"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/apellido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="personFamilyName"
+                android:inputType="textPersonName|textCapWords" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_label"
+            android:layout_marginTop="@dimen/space_4"
+            android:hint="Correo electrónico">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/correo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="emailAddress"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
             android:hint="Contraseña"
-            android:inputType="textPassword"
-            android:padding="5dp"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary" />
+            app:endIconContentDescription="Mostrar contraseña"
+            app:endIconMode="password_toggle">
 
-        <!-- Confirmar -->
-        <EditText
-            android:id="@+id/confirmPassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="newPassword"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/bg_label"
-            android:hint="Confirmar contraseña"
-            android:inputType="textPassword"
-            android:padding="5dp"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary" />
-        <!-- Botón -->
-        <Button
+            android:layout_marginTop="@dimen/space_4"
+            android:hint="Confirma la contraseña"
+            app:endIconContentDescription="Mostrar contraseña"
+            app:endIconMode="password_toggle"
+            app:helperText="Escríbela otra vez para evitar errores.">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="newPassword"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCrear"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/btn_sesion"
-            android:text="CREAR CUENTA"
-            android:textColor="@color/on_brand"
-            android:backgroundTint="@null"
-            app:backgroundTint="@null"
-            />
-
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_6"
+            android:text="Crear cuenta" />
 
     </LinearLayout>
 </ScrollView>

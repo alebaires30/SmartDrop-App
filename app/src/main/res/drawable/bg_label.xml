@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo de campos (login, registro) y de etiquetas pequeñas: surface_2 + borde line_strong, radius_sm; con foco surface + borde añil 2dp. -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-
     <item android:state_focused="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/bg_chip" />
-            <stroke
-                android:width="1.5dp"
-                android:color="#8027E0" />
-            <corners android:radius="12dp" />
+            <solid android:color="@color/surface" />
+            <stroke android:width="2dp" android:color="@color/anil" />
+            <corners android:radius="@dimen/radius_sm" />
         </shape>
     </item>
-
-
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/bg_chip" />
-            <corners android:radius="12dp" />
+            <solid android:color="@color/surface_2" />
+            <stroke android:width="@dimen/hairline" android:color="@color/line_strong" />
+            <corners android:radius="@dimen/radius_sm" />
         </shape>
     </item>
-
 </selector>

@@ -1,7 +1,9 @@
 package com.example.smartdrop;
 
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +11,12 @@ import android.widget.ScrollView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +44,24 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        aplicarAparienciaBarras();
+    }
+
+    /**
+     * Iconos oscuros en la barra de estado y de navegación en modo claro (fondo page claro) y
+     * claros en modo oscuro. Antes de Android 8.0 la barra de navegación no admite iconos oscuros,
+     * así que en modo claro se le da fondo ink para que sus botones sigan viéndose.
+     */
+    private void aplicarAparienciaBarras() {
+        boolean noche = (getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        WindowInsetsControllerCompat barras =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        barras.setAppearanceLightStatusBars(!noche);
+        barras.setAppearanceLightNavigationBars(!noche);
+        if (!noche && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.ink));
+        }
     }
 
     @Override

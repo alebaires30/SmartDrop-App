@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nivel del tinaco: recorta el agua desde abajo. level 0 = vacío, 10000 = lleno
+     (porcentaje × 100). Se usa dentro de casa_hero_level.xml. -->
+<clip xmlns:android="http://schemas.android.com/apk/res/android"
+    android:clipOrientation="vertical"
+    android:drawable="@drawable/casa_hero_tank_water"
+    android:gravity="bottom" />

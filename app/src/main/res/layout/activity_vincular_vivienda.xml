@@ -1,73 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Vincular vivienda: explica para qué se piden los datos y dónde encontrarlos. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="28dp"
-    android:background="@color/bg_app">
+    android:background="@color/surface"
+    android:fillViewport="true"
+    tools:context=".VincularViviendaActivity">
 
-    <ImageView
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:src="@drawable/ic_tanque"
-        app:tint="@color/brand_on_card"
-        android:layout_marginBottom="18dp"
-        android:contentDescription="Vivienda" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Vincula tu vivienda"
-        android:textColor="@color/text_primary"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:gravity="center" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
-        android:gravity="center"
-        android:text="Para monitorear tu consumo necesitas vincular tu vivienda con tu número de cuenta y el nombre del titular."
-        android:textColor="@color/text_secondary"
-        android:textSize="14sp" />
-
-    <EditText
-        android:id="@+id/etNumeroCuenta"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Número de cuenta (NIC)"
-        android:textColorHint="@color/text_hint"
-        android:textColor="@color/text_primary"
-        android:background="@drawable/input_style"
-        android:padding="14dp"
-        android:inputType="text"
-        android:layout_marginBottom="14dp" />
+        android:orientation="vertical"
+        android:paddingStart="@dimen/space_6"
+        android:paddingTop="@dimen/space_5"
+        android:paddingEnd="@dimen/space_6"
+        android:paddingBottom="@dimen/space_8">
 
-    <EditText
-        android:id="@+id/etNombreTitular"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nombre completo del titular"
-        android:textColorHint="@color/text_hint"
-        android:textColor="@color/text_primary"
-        android:background="@drawable/input_style"
-        android:padding="14dp"
-        android:inputType="textPersonName|textCapWords"
-        android:layout_marginBottom="24dp" />
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SmartDrop.Card.Warm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentPadding="@dimen/space_4">
 
-    <Button
-        android:id="@+id/btnVincular"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="VINCULAR VIVIENDA"
-        android:textColor="@color/on_brand"
-        android:background="@drawable/btn_gradient"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:padding="12dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-</LinearLayout>
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="88dp"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/casa_hero" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_4"
+                    android:layout_weight="1"
+                    android:text="Un paso más y verás el tanque de tu casa."
+                    android:textAppearance="@style/TextAppearance.SmartDrop.Subtitle"
+                    android:textColor="@color/ink" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            style="@style/Widget.SmartDrop.PageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_7"
+            android:text="Vincula tu vivienda" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_2"
+            android:text="Para mostrarte el agua de tu casa necesitamos saber cuál es. Usa el número de cuenta (NIC) y el nombre del titular tal como aparecen en tu recibo."
+            android:textAppearance="@style/TextAppearance.SmartDrop.BodyLarge"
+            android:textColor="@color/ink_2" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_7"
+            android:hint="Número de cuenta (NIC)"
+            app:startIconDrawable="@drawable/ic_home">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNumeroCuenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
+            android:hint="Nombre completo del titular"
+            app:helperText="Escríbelo completo, con nombres y apellidos."
+            app:startIconDrawable="@drawable/ic_person">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNombreTitular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName|textCapWords" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVincular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_6"
+            android:text="Vincular vivienda" />
+
+    </LinearLayout>
+</ScrollView>
