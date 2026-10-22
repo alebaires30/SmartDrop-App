@@ -34,9 +34,13 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "API_HOST", "\"$apiHost\"")
+            // HTTP sin cifrar solo en debug (servidor local en la LAN, puerto 8000).
+            manifestPlaceholders["usesCleartextTraffic"] = "true"
         }
         release {
             buildConfigField("String", "API_HOST", "\"$releaseApiHost\"")
+            // El APK publicado solo habla HTTPS/WSS con el servidor: se bloquea cualquier HTTP plano.
+            manifestPlaceholders["usesCleartextTraffic"] = "false"
             signingConfigs.findByName("release")?.let { signingConfig = it }
             isMinifyEnabled = false
             proguardFiles(

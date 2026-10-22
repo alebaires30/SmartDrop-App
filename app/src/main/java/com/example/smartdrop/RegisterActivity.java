@@ -66,11 +66,12 @@ public class RegisterActivity extends BaseActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(RegisterActivity.this, "Registro exitoso " + response.body().getMensaje(), Toast.LENGTH_LONG).show();
                     finish();
-                } else if (response.code() == 400) {
+                } else if (response.code() == 409) {
+                    // El servidor responde 409 cuando el correo ya existe (400 = datos incompletos).
                     Toast.makeText(RegisterActivity.this, "El correo ya está registrado.", Toast.LENGTH_LONG).show();
-
-                }else {
-                    Toast.makeText(RegisterActivity.this, "Error inesperado. Intenta de nuevo.", Toast.LENGTH_LONG).show();
+                } else {
+                    // 400 (datos), 429 (demasiados intentos: "Espera N segundos…") o error del servidor.
+                    Toast.makeText(RegisterActivity.this, ErrorApi.de(response), Toast.LENGTH_LONG).show();
                 }
             }
 

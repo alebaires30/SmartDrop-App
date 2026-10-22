@@ -43,6 +43,8 @@ public class ValvulaActivity extends BaseActivity {
     private int idRol = 1;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private Runnable autoRefreshRunnable;
+    /** Evita mandar dos comandos físicos a la vez (doble toque): el servidor además limita los comandos por minuto. */
+    private boolean comandoEnCurso = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,8 +111,8 @@ public class ValvulaActivity extends BaseActivity {
             if (tvMensajeSoloAdmin != null) tvMensajeSoloAdmin.setVisibility(View.VISIBLE);
         }
 
-        // Listener común para cancelar temporizador
-        btnCancelar.setOnClickListener(v -> enviarComandoControl("CERRAR", 0));
+        // Cancelar temporizador = cerrar la válvula: solo lo puede hacer un administrador.
+        btnCancelar.setOnClickListener(v -> enviarComandoControl(ValvulaComando.CERRAR, 0));
 
         // Carga inicial
         cargarEstado();
@@ -170,7 +172,10 @@ public class ValvulaActivity extends BaseActivity {
                     String estado = estadoData.getEstadoActual();
                     boolean abierta = "abierta".equalsIgnoreCase(estado);
 
-                    tvEstadoDetalle.setText(abierta ? "Abierta: hay suministro" : "Cerrada: sin suministro");
+                    String desde = abierta ? Fechas.formatear(estadoData.getAbiertaDesde(), "HH:mm:ss", "") : "";
+                    tvEstadoDetalle.setText(abierta
+                            ? (desde.isEmpty() ? "Abierta: hay suministro" : "Abierta desde las " + desde + ": hay suministro")
+                            : "Cerrada: sin suministro");
                     tvEstadoDetalle.setTextColor(ContextCompat.getColor(ValvulaActivity.this, abierta ? R.color.ok : R.color.warn));
 
                     TemporizadorActivo temp = estadoData.getTemporizadorActivo();
@@ -194,7 +199,7 @@ public class ValvulaActivity extends BaseActivity {
             layoutTemporizadorActivo.setVisibility(View.VISIBLE);
         }
         if (btnCancelar != null) {
-            btnCancelar.setVisibility(View.VISIBLE);
+            btnCancelar.setVisibility(idRol == 2 ? View.VISIBLE : View.GONE);
         }
 
         if (countDownTimer != null) {
@@ -204,16 +209,16 @@ public class ValvulaActivity extends BaseActivity {
         countDownTimer = new CountDownTimer(segundosRestantes * 1000L, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                long segs = millisUntilFinished / 1000;
+                long segs = (millisUntilFinished + 999) / 1000;
                 if (tvTiempoRestante != null) {
-                    tvTiempoRestante.setText(segs + "s");
+                    tvTiempoRestante.setText(ValvulaComando.cuentaRegresiva(segs));
                 }
             }
 
             @Override
             public void onFinish() {
                 if (tvTiempoRestante != null) {
-                    tvTiempoRestante.setText("0s");
+                    tvTiempoRestante.setText(ValvulaComando.cuentaRegresiva(0));
                 }
                 ocultarTemporizadorUI();
                 cargarEstado();
@@ -226,7 +231,7 @@ public class ValvulaActivity extends BaseActivity {
             countDownTimer.cancel();
         }
         if (tvTiempoRestante != null) {
-            tvTiempoRestante.setText("0s");
+            tvTiempoRestante.setText(ValvulaComando.cuentaRegresiva(0));
         }
         if (btnCancelar != null) {
             btnCancelar.setVisibility(View.GONE);
@@ -237,7 +242,11 @@ public class ValvulaActivity extends BaseActivity {
     }
 
     private void enviarComandoControl(String accion, int duracion) {
-        if (duracion > 120) {
+        if (comandoEnCurso) {
+            Toast.makeText(this, "Espera a que termine el comando anterior.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (duracion > ValvulaComando.MAX_SEGUNDOS) {
             new AlertDialog.Builder(this)
                     .setTitle("Límite de seguridad")
                     .setMessage("El tiempo máximo es de 120 segundos (2 minutos). La válvula se abrirá durante 120 segundos.")
@@ -246,8 +255,18 @@ public class ValvulaActivity extends BaseActivity {
                     .show();
             return;
         }
+        if (!ValvulaComando.duracionValida(duracion)) {
+            Toast.makeText(this, "El tiempo debe estar entre 5 y 120 segundos.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         // Todo comando físico se confirma antes de enviarse: el diálogo dice qué va a pasar.
         confirmarComando(accion, duracion, () -> ejecutarPeticion(accion, duracion));
+    }
+
+    private void habilitarControles(boolean habilitar) {
+        for (Button boton : new Button[]{btnAbrir, btnCerrar, btn10s, btn30s, btn60s, btn120s, btnPersonalizado, btnCancelar}) {
+            if (boton != null) boton.setEnabled(habilitar);
+        }
     }
 
     private void confirmarComando(String accion, int duracion, Runnable alConfirmar) {
@@ -277,16 +296,17 @@ public class ValvulaActivity extends BaseActivity {
     }
 
     private void ejecutarPeticion(String accion, int duracion) {
-        SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
-        String nombreUsuario = prefs.getString("nombre", "Admin");
-        String origenStr = duracion > 0 ? "App (Temporizado)" : "App (Manual)";
-
-        ValvulaControlRequest request = new ValvulaControlRequest(accion, duracion, nombreUsuario, origenStr);
+        // El servidor toma el usuario del token y registra el origen "app": no se mandan nombre ni origen.
+        ValvulaControlRequest request = new ValvulaControlRequest(accion, duracion, null, null);
+        comandoEnCurso = true;
+        habilitarControles(false);
 
         ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
         api.controlarValvula(idValvula, request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                comandoEnCurso = false;
+                habilitarControles(true);
                 if (response.isSuccessful()) {
                     Toast.makeText(ValvulaActivity.this, "Comando " + accion + " ejecutado con éxito", Toast.LENGTH_SHORT).show();
                     if ("ABRIR".equalsIgnoreCase(accion) && duracion > 0) {
@@ -299,17 +319,14 @@ public class ValvulaActivity extends BaseActivity {
                         cargarHistorialValvula();
                     }
                 } else {
-                    try {
-                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "Error desconocido";
-                        Toast.makeText(ValvulaActivity.this, "Error Servidor: " + errorBody, Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        Toast.makeText(ValvulaActivity.this, "Error de servidor: " + response.code(), Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(ValvulaActivity.this, ErrorApi.de(response), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                comandoEnCurso = false;
+                habilitarControles(true);
                 Toast.makeText(ValvulaActivity.this, "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -344,11 +361,9 @@ public class ValvulaActivity extends BaseActivity {
                         if (rvLogs != null) rvLogs.setVisibility(View.VISIBLE);
                         if (adapter != null) adapter.setLogs(logs);
                     }
-                } else {
-                    try {
-                        String err = response.errorBody() != null ? response.errorBody().string() : "Error " + response.code();
-                        Toast.makeText(ValvulaActivity.this, "Error al obtener historial: " + err, Toast.LENGTH_SHORT).show();
-                    } catch (Exception ignored) {}
+                } else if (response.code() != ErrorApi.DEMASIADAS_SOLICITUDES) {
+                    // Con 429 no se insiste con un aviso: el siguiente refresco (10 s) lo vuelve a intentar.
+                    Toast.makeText(ValvulaActivity.this, "Error al obtener historial: " + ErrorApi.de(response), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -369,18 +384,13 @@ public class ValvulaActivity extends BaseActivity {
                 .setMessage("Ingresa la duración en segundos (5-120 seg):")
                 .setView(input)
                 .setPositiveButton("Ejecutar", (dialog, which) -> {
-                    String val = input.getText().toString().trim();
-                    if (!val.isEmpty()) {
-                        try {
-                            int seg = Integer.parseInt(val);
-                            if (seg >= 5) {
-                                enviarComandoControl("ABRIR", seg);
-                            } else {
-                                Toast.makeText(this, "El tiempo mínimo es 5s", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (NumberFormatException e) {
-                            Toast.makeText(this, "Valor no válido", Toast.LENGTH_SHORT).show();
-                        }
+                    int seg = ValvulaComando.leerSegundos(input.getText().toString());
+                    if (seg < 0) {
+                        Toast.makeText(this, "Valor no válido", Toast.LENGTH_SHORT).show();
+                    } else if (seg < ValvulaComando.MIN_SEGUNDOS) {
+                        Toast.makeText(this, "El tiempo mínimo es 5s", Toast.LENGTH_SHORT).show();
+                    } else {
+                        enviarComandoControl(ValvulaComando.ABRIR, seg);
                     }
                 })
                 .setNegativeButton("Cancelar", null)

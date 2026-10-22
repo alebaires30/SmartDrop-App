@@ -50,14 +50,16 @@ public class MainActivity extends BaseActivity {
         // Construir el objeto que se envía al backend
         LoginRequest request = new LoginRequest(correoVal, passVal);
 
-        // Llamar a la API
+        // Llamar a la API (el botón se desactiva para no mandar el mismo intento varias veces)
         ApiService api = ApiClient.getClient().create(ApiService.class);
         Call<LoginResponse> call = api.loginUsuario(request);
+        btnLogin.setEnabled(false);
 
         call.enqueue(new Callback<LoginResponse>() {
 
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                btnLogin.setEnabled(true);
 
                 if (response.isSuccessful() && response.body() != null) {
 
@@ -93,14 +95,14 @@ public class MainActivity extends BaseActivity {
                             "Correo o contraseña incorrectos.",
                             Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(MainActivity.this,
-                            "Error inesperado. Intenta de nuevo.",
-                            Toast.LENGTH_SHORT).show();
+                    // 429: demasiados intentos (el servidor dice cuántos segundos esperar).
+                    Toast.makeText(MainActivity.this, ErrorApi.de(response), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
+                btnLogin.setEnabled(true);
                 Toast.makeText(MainActivity.this,
                         "No se pudo conectar al servidor: " + t.getMessage(),
                         Toast.LENGTH_LONG).show();
