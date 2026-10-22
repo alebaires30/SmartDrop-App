@@ -50,8 +50,7 @@ public final class AvisosUsuario {
     private AvisosUsuario() { }
 
     static boolean tieneSesion(Context context) {
-        SharedPreferences sesion = context.getApplicationContext().getSharedPreferences("sesion", Context.MODE_PRIVATE);
-        return !sesion.getString("access_token", "").isEmpty();
+        return Sesion.activa(context);
     }
 
     /** Pide el permiso de notificaciones (Android 13+) y programa la revisión en segundo plano. */
@@ -178,12 +177,20 @@ public final class AvisosUsuario {
         // Si Gotita redactó el aviso, se usa su frase (más clara); si no, el mensaje de siempre.
         String mensaje = aviso.gotita != null && !aviso.gotita.isEmpty() ? aviso.gotita
                 : (aviso.mensaje == null ? "" : aviso.mensaje);
+        // En la pantalla de bloqueo solo se ve un aviso genérico: el mensaje (o la frase de Gotita)
+        // puede incluir la dirección.
+        NotificationCompat.Builder publica = new NotificationCompat.Builder(app, CANAL)
+                .setSmallIcon(R.drawable.ic_warning)
+                .setContentTitle("SmartDrop")
+                .setContentText("Tienes un aviso nuevo");
         NotificationCompat.Builder builder = new NotificationCompat.Builder(app, CANAL)
                 .setSmallIcon(R.drawable.ic_warning)
                 .setContentTitle(aviso.titulo == null ? "SmartDrop" : aviso.titulo)
                 .setContentText(mensaje)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(mensaje))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                .setPublicVersion(publica.build())
                 .setAutoCancel(true)
                 .setContentIntent(abrir);
         NotificationManagerCompat.from(app).notify(id, builder.build());

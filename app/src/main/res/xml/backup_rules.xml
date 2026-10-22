@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-   Android 11 o menor: la sesión (tokens JWT en sesion.xml) no se incluye en copias de seguridad.
-   Además allowBackup="false" en el manifiesto.
+<?xml version="1.0" encoding="utf-8"?><!--
+   Reglas de copia de seguridad para Android 11 o anterior.
+   La app tiene allowBackup="false"; aun así la sesión (tokens de acceso en sesion.xml)
+   se excluye por si algún día se vuelve a activar la copia.
+   See https://developer.android.com/guide/topics/data/autobackup
 -->
 <full-backup-content>
     <exclude domain="sharedpref" path="sesion.xml" />

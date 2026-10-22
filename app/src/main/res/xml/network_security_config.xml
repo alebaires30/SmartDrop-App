@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- App publicada: solo conexiones seguras (HTTPS/WSS) y solo certificados de verdad del sistema.
-     Así nadie puede espiar ni cambiar los datos en el camino, aunque instale un certificado falso. -->
+<?xml version="1.0" encoding="utf-8"?><!--
+   App publicada (release): solo HTTPS/WSS y solo certificados de autoridades del sistema
+   (no se confía en certificados instalados por el usuario). Así nadie puede espiar ni
+   cambiar los datos en el camino.
+   La versión de depuración (src/debug/res/xml) permite HTTP para el servidor en la LAN.
+-->
 <network-security-config>
     <base-config cleartextTrafficPermitted="false">
         <trust-anchors>

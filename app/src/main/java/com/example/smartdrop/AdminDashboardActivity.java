@@ -287,11 +287,11 @@ public class AdminDashboardActivity extends BaseActivity {
                     } else {
                         adapterLogs.setLogs(null);
                     }
-                } else {
-                    try {
-                        String err = response.errorBody() != null ? response.errorBody().string() : "Error " + response.code();
-                        Toast.makeText(AdminDashboardActivity.this, "Error al obtener historial: " + err, Toast.LENGTH_SHORT).show();
-                    } catch (Exception ignored) {}
+                } else if (response.code() != ErrorApi.DEMASIADAS_SOLICITUDES) {
+                    // Con 429 no se insiste con un aviso: el siguiente refresco lo vuelve a intentar.
+                    Toast.makeText(AdminDashboardActivity.this,
+                            ErrorApi.de(response, "No se pudo obtener el historial de la válvula."),
+                            Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -326,7 +326,7 @@ public class AdminDashboardActivity extends BaseActivity {
     private void cerrarSesion() {
         AvisosUsuario.cancelar(this);
         AvisosFuga.cancelar(this);
-        Sesion.limpiar(this);
+        Sesion.cerrar(this);
         Intent intent = new Intent(AdminDashboardActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

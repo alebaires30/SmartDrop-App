@@ -228,8 +228,24 @@ final class Gotita implements GotitaVoz.Escucha, GotitaOido.Escucha {
         oido.detener(true);
     }
 
-    /** Al cerrar sesión: olvida la conversación y se calla. */
+    /**
+     * Al cerrar o vencer la sesión. Puede llegar desde cualquier hilo (al vencer, desde OkHttp); si Gotita
+     * nunca se abrió no hay nada que olvidar, y no se crea solo para eso.
+     */
+    static void olvidarSesion() {
+        Gotita gotita;
+        synchronized (Gotita.class) {
+            gotita = instancia;
+        }
+        if (gotita != null) gotita.olvidar();
+    }
+
+    /** Olvida la conversación y se calla. Toca la pantalla, la voz y el micrófono: va en el hilo principal. */
     void olvidar() {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            principal.post(this::olvidar);
+            return;
+        }
         parar();
         oido.detener(false);
         chat.clear();

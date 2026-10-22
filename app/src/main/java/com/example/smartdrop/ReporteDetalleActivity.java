@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -224,40 +225,78 @@ public class ReporteDetalleActivity extends BaseActivity {
 
     private void subirEvidencia(List<Uri> uris) {
         List<MultipartBody.Part> partes = new ArrayList<>();
+        // Copias temporales en caché: se borran al terminar la subida, con o sin éxito.
+        List<File> copias = new ArrayList<>();
+        boolean rechazados = false;
         for (Uri uri : uris) {
+            // El servidor reconoce el formato por la extensión del nombre: se toma del tipo real del archivo.
+            String mime = getContentResolver().getType(uri);
+            String extension = Adjunto.extensionPara(mime);
+            if (extension == null) {
+                rechazados = true;
+                continue;
+            }
             try {
-                String nombre = "evidencia_" + System.currentTimeMillis();
+                String nombre = "evidencia_" + System.currentTimeMillis() + "_" + copias.size() + "." + extension;
                 File destino = new File(getCacheDir(), nombre);
+                copias.add(destino);
                 try (InputStream in = getContentResolver().openInputStream(uri);
                      FileOutputStream out = new FileOutputStream(destino)) {
                     byte[] buffer = new byte[8192];
                     int leido;
                     while ((leido = in.read(buffer)) != -1) out.write(buffer, 0, leido);
                 }
-                String mime = getContentResolver().getType(uri);
-                if (mime == null) mime = "application/octet-stream";
                 partes.add(MultipartBody.Part.createFormData(
                         "adjuntos", nombre, RequestBody.create(destino, MediaType.parse(mime))));
             } catch (Exception ignored) { }
         }
-        if (partes.isEmpty()) return;
+        if (rechazados) Toast.makeText(this, Adjunto.FORMATO_NO_PERMITIDO, Toast.LENGTH_LONG).show();
+        if (partes.isEmpty()) {
+            borrarCopias(copias);
+            return;
+        }
 
         ApiService api = ApiClient.getClientAutenticado(this).create(ApiService.class);
         api.adjuntarEvidencia(idReporte, partes).enqueue(new Callback<ReporteCrearResponse>() {
             @Override
             public void onResponse(Call<ReporteCrearResponse> call, Response<ReporteCrearResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().isOk()) {
-                    Toast.makeText(ReporteDetalleActivity.this,
-                            "Evidencia agregada", Toast.LENGTH_SHORT).show();
+                borrarCopias(copias);
+                ReporteCrearResponse cuerpo = response.body();
+                // Solo se confirma si el servidor guardó al menos un archivo.
+                if (response.isSuccessful() && cuerpo != null && cuerpo.isOk() && cuerpo.getAdjuntosGuardados() > 0) {
+                    String mensaje = "Evidencia agregada";
+                    if (cuerpo.getAdjuntosErrores() != null && !cuerpo.getAdjuntosErrores().isEmpty()) {
+                        mensaje += ". No se guardó: " + TextUtils.join(" ", cuerpo.getAdjuntosErrores());
+                    }
+                    Toast.makeText(ReporteDetalleActivity.this, mensaje, Toast.LENGTH_LONG).show();
                     cargarDetalle();
+                } else {
+                    Toast.makeText(ReporteDetalleActivity.this, errorSubida(response), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ReporteCrearResponse> call, Throwable t) {
+                borrarCopias(copias);
                 Toast.makeText(ReporteDetalleActivity.this,
                         "Sin conexión al subir evidencia", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /** Por qué no se guardó ninguna evidencia, con el texto del servidor cuando lo trae. */
+    private static String errorSubida(Response<ReporteCrearResponse> response) {
+        String porDefecto = "No se pudo agregar la evidencia.";
+        ReporteCrearResponse cuerpo = response.body();
+        if (cuerpo == null) return ErrorApi.de(response, porDefecto);
+        if (cuerpo.getError() != null && !cuerpo.getError().isEmpty()) return cuerpo.getError();
+        if (cuerpo.getAdjuntosErrores() != null && !cuerpo.getAdjuntosErrores().isEmpty()) {
+            return TextUtils.join(" ", cuerpo.getAdjuntosErrores());
+        }
+        return porDefecto;
+    }
+
+    private static void borrarCopias(List<File> copias) {
+        for (File copia : copias) copia.delete();
     }
 }

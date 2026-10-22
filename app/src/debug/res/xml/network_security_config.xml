@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Solo para pruebas (debug): permite hablar con el servidor de la PC en la red local sin HTTPS. -->
+<?xml version="1.0" encoding="utf-8"?><!--
+   Solo para builds de depuración: el servidor de desarrollo corre en la LAN
+   (http://<IP>:8000 y ws://), así que aquí se permite tráfico sin cifrar.
+   El APK release usa src/main/res/xml/network_security_config.xml (solo HTTPS).
+-->
 <network-security-config>
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>

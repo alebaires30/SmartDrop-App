@@ -25,6 +25,10 @@ public interface ApiService {
     @POST("auth/login/")
     Call<LoginResponse> loginUsuario(@Body LoginRequest request);
 
+    // Invalida en el servidor el token de renovación ({"refresh": ...}); siempre responde 200.
+    @POST("auth/logout/")
+    Call<ResponseBody> cerrarSesion(@Body Map<String, String> cuerpo);
+
     @GET("api/graficas/")
     Call<GraficasResponse> obtenerGraficas(
             @Query("parametros") String parametros,

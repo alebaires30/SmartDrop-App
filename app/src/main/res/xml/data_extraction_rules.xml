@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-   Android 12+: la sesión (tokens JWT en sesion.xml) nunca sale del teléfono, ni en la copia en la nube
-   ni al pasar los datos a otro teléfono. Además allowBackup="false" en el manifiesto.
+<?xml version="1.0" encoding="utf-8"?><!--
+   Reglas de copia de seguridad para Android 12 o superior.
+   La transferencia entre teléfonos se hace aunque allowBackup sea "false",
+   por eso la sesión (tokens de acceso en sesion.xml) se excluye de ambas: nunca sale
+   del teléfono, ni en la copia en la nube ni al pasar los datos a otro teléfono.
+   See https://developer.android.com/about/versions/12/backup-restore#xml-changes
 -->
 <data-extraction-rules>
     <cloud-backup>

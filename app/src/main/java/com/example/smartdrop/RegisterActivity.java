@@ -68,9 +68,11 @@ public class RegisterActivity extends BaseActivity {
                     finish();
                 } else if (response.code() == 409) {
                     // El servidor responde 409 cuando el correo ya existe (400 = datos incompletos).
-                    Toast.makeText(RegisterActivity.this, "El correo ya está registrado.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this,
+                            ErrorApi.de(response, "El correo ya está registrado."), Toast.LENGTH_LONG).show();
                 } else {
-                    // 400 (datos), 429 (demasiados intentos: "Espera N segundos…") o error del servidor.
+                    // 400 (contraseña o correo no válidos), 429 (demasiados intentos: "Espera N segundos…")
+                    // o error del servidor. El servidor explica el motivo.
                     Toast.makeText(RegisterActivity.this, ErrorApi.de(response), Toast.LENGTH_LONG).show();
                 }
             }

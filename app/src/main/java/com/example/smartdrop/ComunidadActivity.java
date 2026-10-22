@@ -43,8 +43,9 @@ public class ComunidadActivity extends BaseActivity {
         }
 
         if (btnReportar != null) {
-            btnReportar.setOnClickListener(v ->
-                    startActivity(new Intent(this, ReportarProblemaActivity.class)));
+            // Solo los reportes hechos desde el muro se publican en la comunidad; los demás son privados.
+            btnReportar.setOnClickListener(v -> startActivity(
+                    new Intent(this, ReportarProblemaActivity.class).putExtra("comunitario", true)));
         }
 
         adapter = new ReportesAdapter(reporte -> {

@@ -65,11 +65,10 @@ public class MainActivity extends BaseActivity {
 
                     LoginResponse body = response.body();
 
-                    // Guardar token y datos de sesión
+                    // Guardar tokens (cifrados) y datos de sesión
+                    Sesion.guardarTokens(MainActivity.this, body.getAccess(), body.getRefresh());
                     SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString("access_token", body.getAccess());
-                    editor.putString("refresh_token", body.getRefresh() != null ? body.getRefresh() : "");
                     editor.putString("nombre", body.getNombre());
                     editor.putString("email", correoVal);
                     editor.putString("nombre_rol", body.getNombreRol() != null ? body.getNombreRol() : (body.getIdRol() == 2 ? "Administrador" : "Usuario Estándar"));
@@ -92,10 +91,10 @@ public class MainActivity extends BaseActivity {
                 } else if (response.code() == 400) {
                     // Escenario 2 y 3: credenciales incorrectas o usuario no encontrado
                     Toast.makeText(MainActivity.this,
-                            "Correo o contraseña incorrectos.",
+                            ErrorApi.de(response, "Correo o contraseña incorrectos."),
                             Toast.LENGTH_LONG).show();
                 } else {
-                    // 429: demasiados intentos (el servidor dice cuántos segundos esperar).
+                    // 429: demasiados intentos (el servidor dice cuántos segundos esperar); 503: no puede validar ahora.
                     Toast.makeText(MainActivity.this, ErrorApi.de(response), Toast.LENGTH_LONG).show();
                 }
             }

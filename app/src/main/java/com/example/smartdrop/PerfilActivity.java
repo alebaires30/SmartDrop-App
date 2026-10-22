@@ -316,7 +316,7 @@ public class PerfilActivity extends BaseActivity {
     protected void cerrarSesion() {
         AvisosUsuario.cancelar(this);
         AvisosFuga.cancelar(this);
-        Sesion.limpiar(this);
+        Sesion.cerrar(this);
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

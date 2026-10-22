@@ -1,10 +1,12 @@
 package com.example.smartdrop;
 
 import android.content.Intent;
+import android.content.UriPermission;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.provider.OpenableColumns;
 import android.view.View;
@@ -48,19 +50,25 @@ public class ReportarProblemaActivity extends BaseActivity {
     private final List<MaterialCardView> tarjetasTipos = new ArrayList<>();
     private int maxAdjuntos = 5;
     private final List<Uri> adjuntos = new ArrayList<>();
+    // Abierto desde el muro de la comunidad: el reporte se publica ahí (si no, es privado).
+    private boolean comunitario = false;
 
+    // El permiso temporal del selector basta: los archivos se copian al enviar, con esta pantalla abierta.
     private final ActivityResultLauncher<String[]> selectorArchivos =
             registerForActivityResult(new ActivityResultContracts.OpenMultipleDocuments(), uris -> {
                 adjuntos.clear();
+                boolean rechazados = false;
                 if (uris != null) {
                     for (Uri uri : uris) {
-                        if (adjuntos.size() < maxAdjuntos) {
-                            getContentResolver().takePersistableUriPermission(
-                                    uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        // Formatos que el servidor no acepta se descartan aquí y se avisa.
+                        if (Adjunto.extensionPara(getContentResolver().getType(uri)) == null) {
+                            rechazados = true;
+                        } else if (adjuntos.size() < maxAdjuntos) {
                             adjuntos.add(uri);
                         }
                     }
                 }
+                if (rechazados) Toast.makeText(this, Adjunto.FORMATO_NO_PERMITIDO, Toast.LENGTH_LONG).show();
                 actualizarListaAdjuntos();
             });
 
@@ -68,6 +76,8 @@ public class ReportarProblemaActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reportar_problema);
+        comunitario = getIntent().getBooleanExtra("comunitario", false);
+        liberarPermisosAntiguos();
 
         ImageButton btnVolver = findViewById(R.id.btnVolver);
         etDescripcion = findViewById(R.id.etDescripcion);
@@ -94,6 +104,16 @@ public class ReportarProblemaActivity extends BaseActivity {
                 selectorArchivos.launch(new String[]{"image/*", "video/*"}));
 
         cargarCatalogo();
+    }
+
+    /** Las versiones anteriores guardaban acceso permanente a cada archivo adjuntado; aquí se devuelve. */
+    private void liberarPermisosAntiguos() {
+        for (UriPermission permiso : getContentResolver().getPersistedUriPermissions()) {
+            try {
+                getContentResolver().releasePersistableUriPermission(
+                        permiso.getUri(), Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            } catch (SecurityException ignored) { }
+        }
     }
 
     private void cargarCatalogo() {
@@ -234,10 +254,14 @@ public class ReportarProblemaActivity extends BaseActivity {
         return uri.getLastPathSegment() != null ? uri.getLastPathSegment() : "adjunto";
     }
 
-    private File copiarACache(Uri uri) {
+    private File copiarACache(Uri uri, String extension) {
+        File destino = null;
         try {
-            String nombre = nombreArchivo(uri);
-            File destino = new File(getCacheDir(), System.currentTimeMillis() + "_" + nombre);
+            // El servidor reconoce el formato por la extensión: se usa la del tipo real del archivo.
+            String nombre = nombreArchivo(uri).replace('/', '_').replace('\\', '_');
+            int punto = nombre.lastIndexOf('.');
+            if (punto > 0) nombre = nombre.substring(0, punto);
+            destino = new File(getCacheDir(), System.currentTimeMillis() + "_" + nombre + "." + extension);
             try (InputStream in = getContentResolver().openInputStream(uri);
                  FileOutputStream out = new FileOutputStream(destino)) {
                 byte[] buffer = new byte[8192];
@@ -246,8 +270,14 @@ public class ReportarProblemaActivity extends BaseActivity {
             }
             return destino;
         } catch (Exception e) {
+            if (destino != null) destino.delete();
             return null;
         }
+    }
+
+    /** Borra las copias temporales de los adjuntos una vez terminada la subida (con o sin éxito). */
+    private static void borrarCopias(List<File> copias) {
+        for (File copia : copias) copia.delete();
     }
 
     private void enviarReporte() {
@@ -267,13 +297,17 @@ public class ReportarProblemaActivity extends BaseActivity {
         String zona = etZona.getText().toString().trim();
         if (!ubicacion.isEmpty()) campos.put("ubicacion", RequestBody.create(ubicacion, MediaType.parse("text/plain")));
         if (!zona.isEmpty()) campos.put("zona", RequestBody.create(zona, MediaType.parse("text/plain")));
+        if (comunitario) campos.put("comunitario", RequestBody.create("true", MediaType.parse("text/plain")));
 
         List<MultipartBody.Part> partes = new ArrayList<>();
+        List<File> copias = new ArrayList<>();
         for (Uri uri : adjuntos) {
-            File archivo = copiarACache(uri);
-            if (archivo == null) continue;
             String mime = getContentResolver().getType(uri);
-            if (mime == null) mime = "application/octet-stream";
+            String extension = Adjunto.extensionPara(mime);
+            if (extension == null) continue;
+            File archivo = copiarACache(uri, extension);
+            if (archivo == null) continue;
+            copias.add(archivo);
             RequestBody cuerpo = RequestBody.create(archivo, MediaType.parse(mime));
             partes.add(MultipartBody.Part.createFormData("adjuntos", archivo.getName(), cuerpo));
         }
@@ -282,14 +316,20 @@ public class ReportarProblemaActivity extends BaseActivity {
         api.crearReporte(campos, partes).enqueue(new Callback<ReporteCrearResponse>() {
             @Override
             public void onResponse(Call<ReporteCrearResponse> call, Response<ReporteCrearResponse> response) {
+                borrarCopias(copias);
                 btnEnviar.setEnabled(true);
                 btnEnviar.setText(R.string.enviar_reporte);
                 if (response.isSuccessful() && response.body() != null && response.body().isOk()) {
-                    Toast.makeText(ReportarProblemaActivity.this,
-                            "Reporte enviado. El equipo lo revisará pronto.", Toast.LENGTH_LONG).show();
+                    String mensaje = "Reporte enviado. El equipo lo revisará pronto.";
+                    List<String> errores = response.body().getAdjuntosErrores();
+                    if (errores != null && !errores.isEmpty()) {
+                        mensaje += "\nNo se guardó: " + TextUtils.join(" ", errores);
+                    }
+                    Toast.makeText(ReportarProblemaActivity.this, mensaje, Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    String error = response.body() != null ? response.body().getError() : null;
+                    String error = response.body() != null
+                            ? response.body().getError() : ErrorApi.de(response);
                     Toast.makeText(ReportarProblemaActivity.this,
                             "No se pudo enviar: " + (error != null ? error : "error " + response.code()),
                             Toast.LENGTH_LONG).show();
@@ -298,6 +338,7 @@ public class ReportarProblemaActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<ReporteCrearResponse> call, Throwable t) {
+                borrarCopias(copias);
                 btnEnviar.setEnabled(true);
                 btnEnviar.setText(R.string.enviar_reporte);
                 Toast.makeText(ReportarProblemaActivity.this,

@@ -4,9 +4,7 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
@@ -98,8 +96,7 @@ final class GotitaVista implements Gotita.Vista {
         if ("SplashActivity".equals(nombre) || "MainActivity".equals(nombre) || "RegisterActivity".equals(nombre)) {
             return null;
         }
-        SharedPreferences sesion = actividad.getSharedPreferences("sesion", Context.MODE_PRIVATE);
-        if (sesion.getString("access_token", "").isEmpty()) return null;
+        if (!Sesion.activa(actividad)) return null; // los tokens van cifrados: se pregunta a Sesion
         View contenido = actividad.findViewById(android.R.id.content);
         if (!(contenido instanceof FrameLayout)) return null;
         return new GotitaVista(actividad, (FrameLayout) contenido);

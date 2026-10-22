@@ -2,7 +2,6 @@ package com.example.smartdrop;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 import org.json.JSONObject;
 
@@ -27,9 +26,7 @@ public final class RealtimeClient {
     public static synchronized void connect(Context context) {
         if (socket != null) return;
 
-        SharedPreferences preferences = context.getApplicationContext()
-                .getSharedPreferences("sesion", Context.MODE_PRIVATE);
-        String token = preferences.getString("access_token", "");
+        String token = Sesion.accessToken(context);
         if (token.isEmpty()) return;
 
         Request request = new Request.Builder()

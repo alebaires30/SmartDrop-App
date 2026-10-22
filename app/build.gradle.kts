@@ -20,7 +20,12 @@ android {
 
     val apiHost = providers.gradleProperty("smartdropApiHost").orElse("10.0.2.2").get()
     // Dominio público del servidor (solo el nombre: sin https://, puerto ni "/").
-    val releaseApiHost = providers.gradleProperty("smartdropReleaseApiHost").orElse("api.smartdrop.com").get()
+    // Sin valor por defecto: si falta, el build falla en vez de apuntar a un dominio ajeno.
+    val releaseApiHost = providers.gradleProperty("smartdropReleaseApiHost").orNull?.trim()
+        ?.takeIf { it.isNotEmpty() }
+        ?: throw GradleException(
+            "Falta smartdropReleaseApiHost en gradle.properties: el dominio del servidor (p. ej. smartdrop-ugb.duckdns.org)."
+        )
     signingConfigs {
         if (keystoreProps.containsKey("storeFile")) {
             create("release") {
@@ -76,6 +81,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    // converter-gson trae Gson 2.8.5 (CVE-2022-25647); se fuerza una versión corregida.
+    implementation("com.google.code.gson:gson:2.11.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")

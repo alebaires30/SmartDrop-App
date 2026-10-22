@@ -55,7 +55,7 @@ public final class AvisosFuga {
     /** True si hay una sesión de administrador guardada en este dispositivo. */
     public static boolean esAdminConSesion(Context context) {
         SharedPreferences sesion = context.getApplicationContext().getSharedPreferences("sesion", Context.MODE_PRIVATE);
-        return sesion.getInt("id_rol", 0) == 2 && !sesion.getString("access_token", "").isEmpty();
+        return sesion.getInt("id_rol", 0) == 2 && Sesion.activa(context);
     }
 
     /** Pide el permiso de notificaciones (Android 13+) la primera vez que el admin abre su panel. */
@@ -183,12 +183,20 @@ public final class AvisosFuga {
         PendingIntent abrir = PendingIntent.getActivity(
                 app, id, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
+        // En la pantalla de bloqueo solo se ve un aviso genérico: el texto completo (y la frase de Gotita)
+        // lleva la dirección de la vivienda.
+        NotificationCompat.Builder publica = new NotificationCompat.Builder(app, CANAL)
+                .setSmallIcon(R.drawable.ic_warning)
+                .setContentTitle("SmartDrop")
+                .setContentText("Tienes un aviso nuevo");
         NotificationCompat.Builder builder = new NotificationCompat.Builder(app, CANAL)
                 .setSmallIcon(R.drawable.ic_warning)
                 .setContentTitle(titulo(alerta))
                 .setContentText(resumen(alerta))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(detalle(alerta)))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                .setPublicVersion(publica.build())
                 .setAutoCancel(true)
                 .setContentIntent(abrir);
         NotificationManagerCompat.from(app).notify(id, builder.build());

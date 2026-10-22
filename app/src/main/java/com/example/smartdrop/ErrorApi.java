@@ -9,10 +9,14 @@ import com.google.gson.JsonParser;
  *
  * El backend responde {"error": "..."} (o {"detail": "..."} en errores de DRF). Con 429 el servidor
  * limitó las peticiones (rate limiting): se muestra su mensaje ("Espera N segundos...").
+ * Nunca se muestra el cuerpo crudo: solo el texto de esos campos, y si es demasiado largo (una traza o
+ * una página de error) se usa el mensaje genérico.
  */
 final class ErrorApi {
 
     static final int DEMASIADAS_SOLICITUDES = 429;
+    /** Un mensaje pensado para el usuario cabe de sobra; más largo ya no es un mensaje. */
+    static final int LARGO_MAXIMO = 300;
 
     private ErrorApi() { }
 
@@ -38,15 +42,13 @@ final class ErrorApi {
     static String mensajeDelCuerpo(String cuerpo) {
         if (cuerpo == null || cuerpo.trim().isEmpty()) return null;
         try {
-            // converter-gson 2.9.0 trae Gson 2.8.5, que aún no tiene JsonParser.parseString().
-            @SuppressWarnings("deprecation")
-            JsonElement raiz = new JsonParser().parse(cuerpo);
+            JsonElement raiz = JsonParser.parseString(cuerpo);
             if (!raiz.isJsonObject()) return null;
             JsonObject json = raiz.getAsJsonObject();
             for (String clave : new String[]{"error", "detail", "mensaje"}) {
                 if (json.has(clave) && json.get(clave).isJsonPrimitive()) {
                     String texto = json.get(clave).getAsString().trim();
-                    if (!texto.isEmpty()) return texto;
+                    if (!texto.isEmpty() && texto.length() <= LARGO_MAXIMO) return texto;
                 }
             }
         } catch (RuntimeException e) {
@@ -67,5 +69,15 @@ final class ErrorApi {
     /** Atajo para usar directamente con una respuesta de Retrofit que no fue exitosa. */
     static String de(retrofit2.Response<?> respuesta) {
         return mensaje(respuesta.code(), cuerpo(respuesta));
+    }
+
+    /** Mensaje del servidor si lo trae; si no, el texto dado (cuando el código ya dice qué pasó). */
+    static String de(retrofit2.Response<?> respuesta, String porDefecto) {
+        return mensajeOPorDefecto(cuerpo(respuesta), porDefecto);
+    }
+
+    static String mensajeOPorDefecto(String cuerpo, String porDefecto) {
+        String delServidor = mensajeDelCuerpo(cuerpo);
+        return delServidor != null ? delServidor : porDefecto;
     }
 }
