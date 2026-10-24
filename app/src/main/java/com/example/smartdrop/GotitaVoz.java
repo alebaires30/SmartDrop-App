@@ -55,6 +55,7 @@ final class GotitaVoz extends UtteranceProgressListener implements TextToSpeech.
     private final List<String> pendientes = new ArrayList<>();
     private final Deque<Frase> colaNatural = new ArrayDeque<>();
     private MediaPlayer reproductor;
+    private Frase sonandoAhora; // la frase cuyo audio se está reproduciendo
     private boolean natural;
     private boolean sonando;
     private int generacion;
@@ -173,6 +174,11 @@ final class GotitaVoz extends UtteranceProgressListener implements TextToSpeech.
         for (Frase frase : colaNatural) frase.borrar();
         colaNatural.clear();
         soltarReproductor();
+        // El audio que estaba sonando tampoco se queda en la caché.
+        if (sonandoAhora != null) {
+            sonandoAhora.borrar();
+            sonandoAhora = null;
+        }
         if (lista) tts.stop();
         if (enCola > 0) {
             enCola = 0;
@@ -263,6 +269,7 @@ final class GotitaVoz extends UtteranceProgressListener implements TextToSpeech.
             return;
         }
         colaNatural.poll();
+        sonandoAhora = frase;
         try {
             reproductor = new MediaPlayer();
             reproductor.setAudioAttributes(new AudioAttributes.Builder()
@@ -287,6 +294,7 @@ final class GotitaVoz extends UtteranceProgressListener implements TextToSpeech.
     private void terminarFrase(Frase frase) {
         soltarReproductor();
         frase.borrar();
+        if (sonandoAhora == frase) sonandoAhora = null;
         unaMenos();
         reproducirSiguiente();
     }

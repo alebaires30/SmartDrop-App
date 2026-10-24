@@ -74,8 +74,7 @@ public class VincularViviendaActivity extends BaseActivity {
             @Override
             public void onFailure(Call<VincularViviendaResponse> call, Throwable t) {
                 btnVincular.setEnabled(true);
-                Toast.makeText(VincularViviendaActivity.this,
-                        "Sin conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(VincularViviendaActivity.this, ErrorApi.SIN_CONEXION, Toast.LENGTH_LONG).show();
             }
         });
     }

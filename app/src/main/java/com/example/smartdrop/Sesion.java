@@ -121,9 +121,9 @@ public final class Sesion {
         SharedPreferences sesion = prefs(context);
         boolean oscuro = sesion.getBoolean("modo_oscuro", false);
         sesion.edit().clear().putBoolean("modo_oscuro", oscuro).apply();
-        // Gotita se calla y olvida la conversación de esta cuenta (en el hilo principal: expirar() llega
-        // desde un hilo de OkHttp).
-        Gotita.olvidarSesion();
+        // Gotita se calla y olvida la conversación y los ajustes de esta cuenta (en el hilo principal:
+        // expirar() llega desde un hilo de OkHttp).
+        Gotita.olvidarSesion(context);
     }
 
     private static SharedPreferences prefs(Context context) {

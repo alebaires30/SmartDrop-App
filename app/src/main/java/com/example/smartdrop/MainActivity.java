@@ -102,9 +102,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 btnLogin.setEnabled(true);
-                Toast.makeText(MainActivity.this,
-                        "No se pudo conectar al servidor: " + t.getMessage(),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, ErrorApi.SIN_CONEXION, Toast.LENGTH_LONG).show();
             }
         });
     }

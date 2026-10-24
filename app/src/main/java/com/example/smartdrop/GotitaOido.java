@@ -16,9 +16,11 @@ import java.util.regex.Pattern;
 
 /**
  * Oído de Gotita (reconocimiento de voz del teléfono). Dos modos:
- * - VIGILANDO: escucha seguido mientras la app está abierta y solo reacciona a "Oye Gotita".
+ * - VIGILANDO: escucha seguido mientras la app está abierta y solo reacciona a "Oye Gotita" al inicio de la frase.
  * - COMANDO: escucha una pregunta (botón del micrófono o justo después de "Oye Gotita").
  * Se apaga al salir de la app y vuelve a encenderse al regresar, si el interruptor está encendido.
+ * Se prefiere el reconocimiento dentro del teléfono (la voz no sale a la nube); si el teléfono no lo tiene
+ * para el idioma, se usa el reconocimiento normal del sistema.
  */
 final class GotitaOido implements RecognitionListener {
 
@@ -33,14 +35,21 @@ final class GotitaOido implements RecognitionListener {
 
     enum Modo { APAGADO, VIGILANDO, COMANDO }
 
-    // Formas en que el teléfono puede entender "Gotita" en español o inglés ("go tita", "godita"…).
-    static final String NOMBRE = "(?:gotita|gotitas|go\\s?tita|got\\s?ita|got it a|godita|gotica|cotita)";
+    // Formas en que el teléfono puede entender "Gotita" ("go tita", "godita"…). Solo cuentan justo después de
+    // "Oye", "Hey" o "Ey": una frase que solo menciona la palabra no despierta a Gotita.
+    static final String NOMBRE = "(?:gotita|gotitas|go\\s?tita|got\\s?ita|godita|gotica)";
+    private static final String LLAMADO = "(?:oye|hey|ey)[\\s,]+";
+    // "Oye Gotita" tiene que ir al inicio de la frase; lo que sigue es la pregunta.
     static final Pattern DESPERTAR = Pattern.compile(
-            "(?:^|[\\s,.¡!¿?])(?:(?:hey|oye|oiga|ok|okay|okey|hola|ey|ei|hi|mira|mirá|vaya|ve)[\\s,]+)?" + NOMBRE
-                    + "\\b[\\s,.:;!?¡¿]*(.*)$", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
-    static final Pattern PARAR = Pattern.compile(
-            "^(?:" + NOMBRE + "[\\s,]*)?(?:para(?:le)?|p[aá]rale|detente|alto|silencio|c[aá]llate|c[aá]llese|basta|ya basta|ya estuvo|ya no|ya|stop|be quiet|shut up)[\\s.!]*$",
+            "^[\\s¡¿\"“]*" + LLAMADO + NOMBRE + "\\b[\\s,.:;!?¡¿]*(.*)$", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+    private static final String ALTO =
+            "(?:para(?:le)?|p[aá]rale|detente|alto|silencio|c[aá]llate|c[aá]llese|basta|ya basta|ya estuvo|ya no|ya|stop|be quiet|shut up)[\\s.!]*$";
+    // Para lo escrito o lo dicho después de "Oye Gotita" (el nombre es opcional).
+    static final Pattern PARAR = Pattern.compile("^(?:" + NOMBRE + "[\\s,]*)?" + ALTO,
             Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+    // Con el micrófono abierto solo calla a Gotita la frase entera "(Oye) Gotita, para".
+    private static final Pattern PARAR_CON_NOMBRE = Pattern.compile(
+            "^[\\s¡¿\"“]*(?:" + LLAMADO + ")?" + NOMBRE + "[\\s,]*" + ALTO, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 
     private final Context app;
     private final Handler principal = new Handler(Looper.getMainLooper());
@@ -52,10 +61,25 @@ final class GotitaOido implements RecognitionListener {
     private int reintentos;
     private String idioma = "es";
     private String ultimoParcial = "";
+    // Mientras sea true se pide reconocer sin internet; se apaga si el teléfono no puede hacerlo.
+    private boolean enElTelefono = true;
     private final Runnable tiempoComando = () -> terminarComando(ultimoParcial);
 
     GotitaOido(Context context) {
         app = context.getApplicationContext();
+    }
+
+    /** Lo que sigue a "Oye/Hey/Ey Gotita" ("" si no dijo más), o null si la frase no empieza así. */
+    static String trasDespertar(String texto) {
+        if (texto == null) return null;
+        Matcher coincide = DESPERTAR.matcher(texto);
+        if (!coincide.matches()) return null;
+        return coincide.group(1) == null ? "" : coincide.group(1).trim();
+    }
+
+    /** ¿La frase completa es "(Oye) Gotita, para" (o callate, basta…)? */
+    static boolean pideParar(String texto) {
+        return texto != null && PARAR_CON_NOMBRE.matcher(texto).matches();
     }
 
     static boolean disponible(Context context) {
@@ -95,18 +119,23 @@ final class GotitaOido implements RecognitionListener {
         principal.postDelayed(tiempoComando, 10000);
     }
 
-    /** Deja de escuchar del todo (interruptor apagado o la app pasa a segundo plano). */
+    /**
+     * Deja de escuchar del todo (interruptor apagado, la app pasa a segundo plano o se cierra la sesión) y suelta
+     * el reconocedor del sistema; al volver a escuchar se crea otro. Se llama en el hilo principal.
+     */
     void detener(boolean recordarVigilancia) {
         vigilarDespues = recordarVigilancia && vigilarDespues;
         principal.removeCallbacksAndMessages(null);
         if (modo == Modo.COMANDO && escucha != null) escucha.alCambiarEscucha(false);
         modo = Modo.APAGADO;
         detenerReconocedor();
+        destruirReconocedor();
     }
 
     void apagarVigilancia() {
         vigilarDespues = false;
         if (modo == Modo.VIGILANDO) detener(false);
+        else if (modo == Modo.APAGADO) destruirReconocedor();
     }
 
     void reanudar() {
@@ -116,7 +145,7 @@ final class GotitaOido implements RecognitionListener {
     private void arrancar() {
         if (corriendo) return;
         if (reconocedor == null) {
-            reconocedor = SpeechRecognizer.createSpeechRecognizer(app);
+            reconocedor = crearReconocedor();
             reconocedor.setRecognitionListener(this);
         }
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -137,6 +166,8 @@ final class GotitaOido implements RecognitionListener {
         intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, app.getPackageName());
+        // Que la voz se reconozca en el teléfono, sin mandarla a la nube (si el teléfono tiene el idioma).
+        if (enElTelefono) intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true);
         try {
             reconocedor.startListening(intent);
             corriendo = true;
@@ -144,6 +175,37 @@ final class GotitaOido implements RecognitionListener {
             corriendo = false;
             reiniciar(1000);
         }
+    }
+
+    /** Android 12+: el reconocedor que trabaja dentro del teléfono, si lo hay; si no, el normal del sistema. */
+    private SpeechRecognizer crearReconocedor() {
+        if (enElTelefono && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                && SpeechRecognizer.isOnDeviceRecognitionAvailable(app)) {
+            try {
+                return SpeechRecognizer.createOnDeviceSpeechRecognizer(app);
+            } catch (RuntimeException ignored) {
+                // No se pudo crear: se usa el normal.
+            }
+        }
+        return SpeechRecognizer.createSpeechRecognizer(app);
+    }
+
+    private void destruirReconocedor() {
+        if (reconocedor == null) return;
+        try {
+            reconocedor.destroy();
+        } catch (RuntimeException ignored) {
+            // Ya estaba liberado.
+        }
+        reconocedor = null;
+        corriendo = false;
+    }
+
+    /** Errores con los que el teléfono dice que no puede reconocer sin internet (o ese idioma). */
+    static boolean faltaReconocimientoLocal(int error) {
+        return error == SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED || error == SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE
+                || error == SpeechRecognizer.ERROR_NETWORK || error == SpeechRecognizer.ERROR_NETWORK_TIMEOUT
+                || error == SpeechRecognizer.ERROR_SERVER || error == SpeechRecognizer.ERROR_SERVER_DISCONNECTED;
     }
 
     private void detenerReconocedor() {
@@ -173,23 +235,23 @@ final class GotitaOido implements RecognitionListener {
             escucha.alOirPregunta(texto == null ? "" : texto.trim());
         }
         if (modo == Modo.VIGILANDO) reiniciar(600);
+        else destruirReconocedor(); // Sin "Oye Gotita" no se queda el micrófono preparado.
     }
 
     private void manejarVigilancia(String texto, boolean hablando) {
-        Matcher coincide = DESPERTAR.matcher(texto);
-        if (!coincide.find()) return;
-        String resto = coincide.group(1) == null ? "" : coincide.group(1).trim();
-        if (hablando) {
-            // Mientras Gotita habla, su propia voz llega al micrófono: solo se atiende "Gotita, para".
-            if (!resto.isEmpty() && PARAR.matcher(resto).matches() && escucha != null) escucha.alPedirParar();
+        // "Gotita, para" se atiende aquí mismo: no se manda nada al servidor.
+        if (pideParar(texto)) {
+            if (escucha != null) escucha.alPedirParar();
             return;
         }
+        // Mientras Gotita habla, su propia voz llega al micrófono: solo se atiende "Gotita, para".
+        if (hablando) return;
+        // Solo despierta "Oye Gotita" al inicio; una frase que nada más menciona "gotita" se ignora y no sale
+        // del teléfono.
+        String resto = trasDespertar(texto);
+        if (resto == null) return;
         if (resto.length() > 1) {
-            if (PARAR.matcher(resto).matches()) {
-                if (escucha != null) escucha.alPedirParar();
-            } else if (escucha != null) {
-                escucha.alOirPregunta(resto);
-            }
+            if (escucha != null) escucha.alOirPregunta(resto);
             return;
         }
         if (escucha != null) escucha.alDespertar();
@@ -235,6 +297,13 @@ final class GotitaOido implements RecognitionListener {
         if (error == SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS) {
             detener(false);
             if (escucha != null) escucha.alSinPermiso();
+            return;
+        }
+        if (enElTelefono && faltaReconocimientoLocal(error)) {
+            // El teléfono no reconoce sin internet (o no tiene el idioma): se usa el reconocimiento del sistema.
+            enElTelefono = false;
+            destruirReconocedor();
+            if (modo != Modo.APAGADO) reiniciar(200);
             return;
         }
         if (modo == Modo.COMANDO) {

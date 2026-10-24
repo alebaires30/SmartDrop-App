@@ -137,7 +137,7 @@ public class ReporteDetalleActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<ReporteDetalleResponse> call, Throwable t) {
-                avisarErrorUnaVez("Error al cargar el reporte: " + t.getMessage());
+                avisarErrorUnaVez(ErrorApi.SIN_CONEXION);
             }
         });
     }

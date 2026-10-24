@@ -77,9 +77,6 @@ public interface ApiService {
     @GET("api/valvula/{id}/estado/")
     Call<ValvulaEstadoResponse> obtenerEstadoValvula(@Path("id") int idValvula);
 
-    @GET("api/valvula/estado/")
-    Call<ValvulaEstadoPublicoResponse> obtenerEstadoValvulaPublico();
-
     @POST("api/valvula/{id}/control/")
     Call<ResponseBody> controlarValvula(@Path("id") int idValvula, @Body ValvulaControlRequest request);
 

@@ -228,7 +228,7 @@ public class GraficasMonitoreoActivity extends BaseActivity {
             @Override
             public void onFailure(@NonNull Call<GraficasResponse> call, @NonNull Throwable t) {
                 terminarCarga();
-                Toast.makeText(GraficasMonitoreoActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(GraficasMonitoreoActivity.this, ErrorApi.SIN_CONEXION, Toast.LENGTH_LONG).show();
             }
         });
     }

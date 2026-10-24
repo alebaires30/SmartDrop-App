@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.util.Base64;
@@ -29,9 +30,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Lo que Gotita "ve": el nombre de la pantalla, todo su texto (también lo que está más abajo), sus partes
- * (cada título) y, cuando se pide, una captura. También abre las pantallas a las que Gotita puede llevar a la
- * persona y baja la vista hasta una parte de la pantalla.
+ * Lo que Gotita "ve": el nombre de la pantalla y, cuando la pregunta es sobre ella (ver Gotita.mandarPantalla),
+ * todo su texto (también lo que está más abajo), sus partes (cada título) y una captura. Lo escrito en los
+ * campos nunca se incluye: ni en el texto ni en la captura. También abre las pantallas a las que Gotita puede
+ * llevar a la persona y baja la vista hasta una parte de la pantalla.
  */
 final class GotitaPantalla {
 
@@ -196,9 +198,12 @@ final class GotitaPantalla {
         parte.postDelayed(() -> parte.getOverlay().remove(marco), 3500);
     }
 
-    /** Foto pequeña de la pantalla actual, sin Gotita; null si no se pudo. */
+    /** Foto pequeña de la pantalla actual, sin Gotita y con los campos de texto tapados; null si no se pudo. */
     static String captura(Activity activity) {
-        View raiz = activity.getWindow().getDecorView().getRootView();
+        View vistaRaiz = activity.getWindow().getDecorView().getRootView();
+        // Sin poder ubicar los campos para taparlos, no se manda foto.
+        if (!(vistaRaiz instanceof ViewGroup)) return null;
+        ViewGroup raiz = (ViewGroup) vistaRaiz;
         View capa = raiz.findViewWithTag(ETIQUETA_GOTITA);
         int visibilidad = capa != null ? capa.getVisibility() : View.GONE;
         try {
@@ -211,6 +216,9 @@ final class GotitaPantalla {
             lienzo.drawColor(Color.WHITE);
             lienzo.scale(escala, escala);
             raiz.draw(lienzo);
+            Paint tapa = new Paint();
+            tapa.setColor(Color.LTGRAY);
+            taparCampos(raiz, raiz, lienzo, tapa);
             ByteArrayOutputStream salida = new ByteArrayOutputStream();
             imagen.compress(Bitmap.CompressFormat.JPEG, 70, salida);
             imagen.recycle();
@@ -219,6 +227,21 @@ final class GotitaPantalla {
             return null;
         } finally {
             if (capa != null) capa.setVisibility(visibilidad);
+        }
+    }
+
+    /** Tapa en la foto cada campo de texto visible: lo que la persona escribe no sale del teléfono. */
+    private static void taparCampos(ViewGroup raiz, View vista, Canvas lienzo, Paint tapa) {
+        if (vista == null || !vista.isShown()) return;
+        if (vista instanceof EditText) {
+            Rect zona = new Rect(0, 0, vista.getWidth(), vista.getHeight());
+            raiz.offsetDescendantRectToMyCoords(vista, zona);
+            lienzo.drawRect(zona, tapa);
+            return;
+        }
+        if (vista instanceof ViewGroup) {
+            ViewGroup grupo = (ViewGroup) vista;
+            for (int i = 0; i < grupo.getChildCount(); i++) taparCampos(raiz, grupo.getChildAt(i), lienzo, tapa);
         }
     }
 

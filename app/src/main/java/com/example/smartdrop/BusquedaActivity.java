@@ -109,7 +109,7 @@ public class BusquedaActivity extends BaseActivity {
             @Override
             public void onFailure(Call<BusquedaGlobalResponse> call, Throwable t) {
                 pbSearchLoading.setVisibility(View.GONE);
-                tvSearchEmpty.setText("Error de conexión: " + t.getMessage());
+                tvSearchEmpty.setText(ErrorApi.SIN_CONEXION);
                 tvSearchEmpty.setVisibility(View.VISIBLE);
             }
         });

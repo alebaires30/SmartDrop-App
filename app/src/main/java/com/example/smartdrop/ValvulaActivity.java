@@ -327,7 +327,7 @@ public class ValvulaActivity extends BaseActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 comandoEnCurso = false;
                 habilitarControles(true);
-                Toast.makeText(ValvulaActivity.this, "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(ValvulaActivity.this, ErrorApi.SIN_CONEXION, Toast.LENGTH_LONG).show();
             }
         });
     }

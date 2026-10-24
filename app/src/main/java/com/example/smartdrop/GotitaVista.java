@@ -584,7 +584,7 @@ final class GotitaVista implements Gotita.Vista {
             if (vistaPanel == null) return;
             LinearLayout lista = vistaPanel.findViewById(R.id.gotitaHistorialLista);
             lista.removeAllViews();
-            if (json == null || !json.has("conversaciones")) {
+            if (json == null || !json.has("conversaciones") || !json.get("conversaciones").isJsonArray()) {
                 lista.addView(textoSimple(gotita.t("historial_error")));
                 return;
             }
@@ -593,7 +593,11 @@ final class GotitaVista implements Gotita.Vista {
                 lista.addView(textoSimple(gotita.t("sin_historial")));
                 return;
             }
-            for (JsonElement elemento : conversaciones) lista.addView(filaHistorial(elemento.getAsJsonObject()));
+            for (JsonElement elemento : conversaciones) {
+                // Una conversación sin número (dato dañado del servidor) no se muestra.
+                if (!elemento.isJsonObject() || GotitaCliente.numero(elemento.getAsJsonObject(), "id") == null) continue;
+                lista.addView(filaHistorial(elemento.getAsJsonObject()));
+            }
         });
     }
 
@@ -606,8 +610,9 @@ final class GotitaVista implements Gotita.Vista {
     }
 
     private View filaHistorial(JsonObject conversacion) {
-        int id = conversacion.get("id").getAsInt();
-        String titulo = conversacion.has("titulo") ? conversacion.get("titulo").getAsString() : "";
+        int id = GotitaCliente.numero(conversacion, "id");
+        String guardado = GotitaCliente.texto(conversacion, "titulo");
+        String titulo = guardado != null ? guardado : "";
         Integer actual = gotita.conversacionId();
 
         LinearLayout fila = new LinearLayout(actividad);
@@ -624,7 +629,7 @@ final class GotitaVista implements Gotita.Vista {
         nombre.setMaxLines(1);
         nombre.setEllipsize(TextUtils.TruncateAt.END);
         TextView cuando = new TextView(actividad);
-        cuando.setText(fechaCorta(conversacion.has("actualizada") ? conversacion.get("actualizada").getAsString() : null));
+        cuando.setText(fechaCorta(GotitaCliente.texto(conversacion, "actualizada")));
         cuando.setTextAppearance(R.style.TextAppearance_SmartDrop_Caption);
         textos.addView(nombre);
         textos.addView(cuando);

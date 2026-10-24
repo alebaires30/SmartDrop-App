@@ -15,6 +15,8 @@ import com.google.gson.JsonParser;
 final class ErrorApi {
 
     static final int DEMASIADAS_SOLICITUDES = 429;
+    /** Cuando no hubo respuesta del servidor. El detalle técnico del error no se muestra. */
+    static final String SIN_CONEXION = "Sin conexión con el servidor. Revisa tu internet.";
     /** Un mensaje pensado para el usuario cabe de sobra; más largo ya no es un mensaje. */
     static final int LARGO_MAXIMO = 300;
 

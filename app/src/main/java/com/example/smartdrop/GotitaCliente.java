@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -48,6 +49,25 @@ final class GotitaCliente {
     private static final Handler PRINCIPAL = new Handler(Looper.getMainLooper());
 
     private GotitaCliente() { }
+
+    /** Texto de un campo del JSON del servidor, o null si falta o no es un valor simple. */
+    static String texto(JsonObject json, String campo) {
+        if (json == null || !json.has(campo)) return null;
+        JsonElement valor = json.get(campo);
+        return valor != null && valor.isJsonPrimitive() ? valor.getAsString() : null;
+    }
+
+    /** Número entero de un campo del JSON del servidor, o null si falta o no es un número. */
+    static Integer numero(JsonObject json, String campo) {
+        if (json == null || !json.has(campo)) return null;
+        JsonElement valor = json.get(campo);
+        if (valor == null || !valor.isJsonPrimitive() || !valor.getAsJsonPrimitive().isNumber()) return null;
+        try {
+            return valor.getAsInt();
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 
     private static OkHttpClient http(Context context, int segundos) {
         return ApiClient.getHttpAutenticado(context).newBuilder()
@@ -160,23 +180,19 @@ final class GotitaCliente {
         }
         switch (tipo) {
             case "texto":
-                if (json.has("t")) {
-                    String frase = json.get("t").getAsString();
-                    PRINCIPAL.post(() -> eventos.alTexto(frase));
-                }
+                String frase = texto(json, "t");
+                if (frase != null) PRINCIPAL.post(() -> eventos.alTexto(frase));
                 break;
             case "accion":
                 PRINCIPAL.post(() -> eventos.alAccion(json));
                 break;
             case "error":
-                String mensaje = json.has("mensaje") ? json.get("mensaje").getAsString() : null;
+                String mensaje = texto(json, "mensaje");
                 PRINCIPAL.post(() -> eventos.alError(mensaje));
                 break;
             case "conversacion":
-                if (json.has("id") && json.get("id").isJsonPrimitive()) {
-                    int id = json.get("id").getAsInt();
-                    PRINCIPAL.post(() -> eventos.alConversacion(id));
-                }
+                Integer id = numero(json, "id");
+                if (id != null) PRINCIPAL.post(() -> eventos.alConversacion(id));
                 break;
             default:
                 break;

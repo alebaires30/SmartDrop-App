@@ -80,7 +80,7 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onFailure(Call<RegisterResponse> call, Throwable t) {
 
-                Toast.makeText(RegisterActivity.this, "No se pudo conectar al servidor: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, ErrorApi.SIN_CONEXION, Toast.LENGTH_LONG).show();
 
             }
         });

@@ -12,10 +12,13 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
@@ -30,6 +33,9 @@ import okhttp3.Call;
  *
  * La conversación se guarda en el servidor (20 días) con un número. Mientras la app siga abierta se sigue la
  * misma; si se cierra la app, la próxima vez empieza una nueva (las anteriores quedan en el historial).
+ *
+ * Lo que se ve en la pantalla (su texto, sus partes y una captura) solo se manda cuando la pregunta es sobre
+ * esa pantalla, nunca lo escrito en los campos y nunca desde las pantallas privadas (ver mandarPantalla).
  */
 final class Gotita implements GotitaVoz.Escucha, GotitaOido.Escucha {
 
@@ -69,10 +75,20 @@ final class Gotita implements GotitaVoz.Escucha, GotitaOido.Escucha {
     private static final int MAX_CHAT = 60;
     private static final int MAX_HISTORIAL = 6;
     private static final int MAX_PREGUNTA = 600;
+    private static final String PREFS = "gotita";
     private static final Pattern PIDE_PANTALLA = Pattern.compile(
             "(esta pantalla|lo que (veo|estoy viendo|sale|aparece)|qu[eé] (estoy viendo|veo|es esto|significa esto)"
-                    + "|esta gr[aá]fica|este gr[aá]fico|expl[ií]ca(me)? (esto|la pantalla)|this screen"
-                    + "|what am i (seeing|looking at)|this chart)", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+                    + "|estas? gr[aá]ficas?|estos? gr[aá]ficos?|expl[ií]ca(me)? (esto|la pantalla)|this screen"
+                    + "|what am i (seeing|looking at)|th(is|ese) charts?)", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+    // Pantallas cuyo contenido nunca se manda: los datos de la cuenta, el inicio de sesión, el registro y las
+    // del administrador con datos de otras personas (nombres, direcciones, reportes y viviendas).
+    private static final Set<String> PANTALLAS_PRIVADAS = new HashSet<>(Arrays.asList(
+            "perfil", "configuracion", "main", "register", "splash",
+            "panel", "reportes_admin", "prediccion_fugas", "prediccion_suministro", "zonapredicciondetalle"));
+    // Al administrador estas le muestran datos de otras personas: los reportes de todos y su chat, quién abrió
+    // la válvula y la búsqueda general.
+    private static final Set<String> PRIVADAS_PARA_ADMIN = new HashSet<>(Arrays.asList(
+            "comunidad", "reportedetalle", "valvulas", "buscar"));
 
     private static Gotita instancia;
 
@@ -99,7 +115,7 @@ final class Gotita implements GotitaVoz.Escucha, GotitaOido.Escucha {
 
     private Gotita(Context app) {
         this.app = app;
-        ajustes = app.getSharedPreferences("gotita", Context.MODE_PRIVATE);
+        ajustes = app.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         voz = GotitaVoz.de(app);
         voz.setEscucha(this);
         oido = new GotitaOido(app);
@@ -230,17 +246,22 @@ final class Gotita implements GotitaVoz.Escucha, GotitaOido.Escucha {
 
     /**
      * Al cerrar o vencer la sesión. Puede llegar desde cualquier hilo (al vencer, desde OkHttp); si Gotita
-     * nunca se abrió no hay nada que olvidar, y no se crea solo para eso.
+     * nunca se abrió no se crea solo para esto, pero igual se borran sus ajustes.
      */
-    static void olvidarSesion() {
+    static void olvidarSesion(Context context) {
         Gotita gotita;
         synchronized (Gotita.class) {
             gotita = instancia;
         }
         if (gotita != null) gotita.olvidar();
+        else context.getApplicationContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().clear().apply();
     }
 
-    /** Olvida la conversación y se calla. Toca la pantalla, la voz y el micrófono: va en el hilo principal. */
+    /**
+     * Olvida la conversación y los ajustes de esta cuenta (la siguiente empieza sin "Oye Gotita" ni el modo o
+     * idioma de esta), se calla y suelta el micrófono. Toca la pantalla, la voz y el micrófono: va en el hilo
+     * principal.
+     */
     void olvidar() {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             principal.post(this::olvidar);
@@ -248,8 +269,13 @@ final class Gotita implements GotitaVoz.Escucha, GotitaOido.Escucha {
         }
         parar();
         oido.detener(false);
+        ajustes.edit().clear().apply();
+        aplicarVoz();
         chat.clear();
         conversacionId = null;
+        enCurso = null;
+        navegarA = null;
+        escuchaPendiente = false;
         estadoConsultado = false;
         activa = true;
     }
@@ -293,16 +319,19 @@ final class Gotita implements GotitaVoz.Escucha, GotitaOido.Escucha {
 
     /** Sigue una conversación del historial (el JSON que manda el servidor). */
     void abrirConversacion(JsonObject datos) {
-        if (datos == null || !datos.has("id") || !datos.has("mensajes")) return;
+        Integer id = GotitaCliente.numero(datos, "id");
+        if (id == null || !datos.has("mensajes") || !datos.get("mensajes").isJsonArray()) return;
         parar();
         chat.clear();
         for (JsonElement elemento : datos.getAsJsonArray("mensajes")) {
+            if (!elemento.isJsonObject()) continue;
             JsonObject m = elemento.getAsJsonObject();
-            String rol = m.has("rol") && "gotita".equals(m.get("rol").getAsString()) ? "gotita" : "usuario";
-            chat.add(new Mensaje(rol, m.has("texto") ? m.get("texto").getAsString() : "", null));
+            String rol = "gotita".equals(GotitaCliente.texto(m, "rol")) ? "gotita" : "usuario";
+            String texto = GotitaCliente.texto(m, "texto");
+            chat.add(new Mensaje(rol, texto != null ? texto : "", null));
         }
         while (chat.size() > MAX_CHAT) chat.remove(0);
-        conversacionId = datos.get("id").getAsInt();
+        conversacionId = id;
         if (vista != null) {
             vista.alCambiarMensajes();
             vista.alCambiarConversacion();
@@ -334,12 +363,13 @@ final class Gotita implements GotitaVoz.Escucha, GotitaOido.Escucha {
         ponerEstado(estadoBase());
     }
 
-    void preguntar(String texto, boolean conCaptura) {
-        preguntar(texto, conCaptura, false);
+    /** pidePantalla: se tocó "Explícame esta pantalla". */
+    void preguntar(String texto, boolean pidePantalla) {
+        preguntar(texto, pidePantalla, false);
     }
 
     /** porVoz: la pregunta llegó por el micrófono o con "Oye Gotita". */
-    void preguntar(String texto, boolean conCaptura, boolean porVoz) {
+    void preguntar(String texto, boolean pidePantalla, boolean porVoz) {
         String pregunta = texto == null ? "" : texto.trim();
         if (pregunta.isEmpty()) return;
         if (pregunta.length() > MAX_PREGUNTA) pregunta = pregunta.substring(0, MAX_PREGUNTA);
@@ -385,15 +415,21 @@ final class Gotita implements GotitaVoz.Escucha, GotitaOido.Escucha {
         Activity actividad = vista != null ? vista.actividad() : null;
         if (actividad != null) {
             JsonObject pantalla = new JsonObject();
-            pantalla.addProperty("id", GotitaPantalla.id(actividad));
+            String id = GotitaPantalla.id(actividad);
+            pantalla.addProperty("id", id);
             pantalla.addProperty("titulo", GotitaPantalla.titulo(actividad));
-            pantalla.addProperty("texto", GotitaPantalla.texto(actividad));
-            pantalla.add("secciones", vista.secciones());
-            cuerpo.add("pantalla", pantalla);
-            if (conCaptura || PIDE_PANTALLA.matcher(pregunta).find()) {
+            boolean vistaDeAdmin = esAdmin() || actividad.getIntent().getBooleanExtra("es_admin", false);
+            if (mandarPantalla(id, vistaDeAdmin, pregunta, pidePantalla)) {
+                pantalla.addProperty("texto", GotitaPantalla.texto(actividad));
+                pantalla.add("secciones", vista.secciones());
                 String captura = GotitaPantalla.captura(actividad);
                 if (captura != null) cuerpo.addProperty("captura", captura);
+            } else {
+                // Solo se dice en qué pantalla está la persona, no lo que muestra.
+                pantalla.addProperty("texto", "");
+                pantalla.add("secciones", new JsonArray());
             }
+            cuerpo.add("pantalla", pantalla);
         }
 
         enCurso = null;
@@ -451,23 +487,41 @@ final class Gotita implements GotitaVoz.Escucha, GotitaOido.Escucha {
         llamada = esta[0];
     }
 
+    /**
+     * ¿Se manda lo que se ve en la pantalla (texto, partes y captura)? Solo si la pregunta es sobre esta pantalla
+     * y la pantalla no es privada.
+     */
+    static boolean mandarPantalla(String idPantalla, boolean vistaDeAdmin, String pregunta, boolean pidePantalla) {
+        if (idPantalla == null || PANTALLAS_PRIVADAS.contains(idPantalla)) return false;
+        if (vistaDeAdmin && PRIVADAS_PARA_ADMIN.contains(idPantalla)) return false;
+        return pidePantalla || (pregunta != null && PIDE_PANTALLA.matcher(pregunta).find());
+    }
+
+    /** Las acciones llegan del servidor: un campo que falta o no es texto se ignora. */
     private void ejecutarAccion(JsonObject accion) {
-        String tipo = accion.has("tipo") ? accion.get("tipo").getAsString() : "";
+        String tipo = GotitaCliente.texto(accion, "tipo");
+        if (tipo == null) return;
+        String valor;
         switch (tipo) {
             case "modo":
-                cambiarModo(accion.get("modo").getAsString(), false);
+                valor = GotitaCliente.texto(accion, "modo");
+                if (valor != null) cambiarModo(valor, false);
                 break;
             case "velocidad":
-                cambiarVelocidad("lenta".equals(accion.get("velocidad").getAsString()), false);
+                valor = GotitaCliente.texto(accion, "velocidad");
+                if (valor != null) cambiarVelocidad("lenta".equals(valor), false);
                 break;
             case "idioma":
-                cambiarIdioma(accion.get("idioma").getAsString(), false);
+                valor = GotitaCliente.texto(accion, "idioma");
+                if (valor != null) cambiarIdioma(valor, false);
                 break;
             case "navegar":
-                if (accion.has("destino")) navegarA = accion.get("destino").getAsString();
+                valor = GotitaCliente.texto(accion, "destino");
+                if (valor != null) navegarA = valor;
                 break;
             case "seccion":
-                if (accion.has("seccion") && vista != null) vista.alMostrarSeccion(accion.get("seccion").getAsString());
+                valor = GotitaCliente.texto(accion, "seccion");
+                if (valor != null && vista != null) vista.alMostrarSeccion(valor);
                 break;
             default:
                 break;
