@@ -93,7 +93,7 @@ public final class AvisosFuga {
     public static void revisarAhora(Context context, Listener listener) {
         Context app = context.getApplicationContext();
         if (!esAdminConSesion(app)) return;
-        ApiClient.getClientAutenticado(app).create(ApiService.class).obtenerAlertasFuga(1)
+        ApiClient.getClientAutenticado(app).create(ApiService.class).obtenerAlertasFugaConGotita()
                 .enqueue(new Callback<AlertasFugaResponse>() {
                     @Override
                     public void onResponse(Call<AlertasFugaResponse> call, Response<AlertasFugaResponse> response) {
@@ -116,7 +116,7 @@ public final class AvisosFuga {
         Context app = context.getApplicationContext();
         try {
             Response<AlertasFugaResponse> response = ApiClient.getClientAutenticado(app)
-                    .create(ApiService.class).obtenerAlertasFuga(1).execute();
+                    .create(ApiService.class).obtenerAlertasFugaConGotita().execute();
             if (response.isSuccessful() && response.body() != null) procesar(app, response.body());
             return true;
         } catch (IOException | RuntimeException e) {
@@ -141,9 +141,12 @@ public final class AvisosFuga {
         Collections.sort(nuevos, (a, b) -> Long.compare(a.getIdAlerta(), b.getIdAlerta()));
         prefs.edit().putLong(clave, nuevos.get(nuevos.size() - 1).getIdAlerta()).apply();
 
-        if (puedeNotificar(app)) {
-            int desde = Math.max(0, nuevos.size() - MAX_NOTIFICACIONES);
-            for (AlertaFuga alerta : nuevos.subList(desde, nuevos.size())) notificar(app, alerta);
+        int desde = Math.max(0, nuevos.size() - MAX_NOTIFICACIONES);
+        boolean notificar = puedeNotificar(app);
+        for (AlertaFuga alerta : nuevos.subList(desde, nuevos.size())) {
+            if (notificar) notificar(app, alerta);
+            // Con la app abierta, Gotita lo cuenta en su burbuja (y en voz alta si así lo pidió el admin).
+            Gotita.anunciarAviso(app, textoGotita(alerta), "prediccion_fugas");
         }
         return nuevos;
     }
@@ -197,6 +200,12 @@ public final class AvisosFuga {
         return String.format(Locale.getDefault(), "Posible fuga en %s (%.0f %%)", nic, alerta.getProbabilidad() * 100);
     }
 
+    /** Texto de Gotita para el aviso; si no llegó, el título y el resumen de siempre. */
+    static String textoGotita(AlertaFuga alerta) {
+        if (alerta.getGotita() != null && !alerta.getGotita().isEmpty()) return alerta.getGotita();
+        return titulo(alerta) + ". " + resumen(alerta);
+    }
+
     static String resumen(AlertaFuga alerta) {
         String clave = FugaTexto.datosClave(alerta.getMetricas(), alerta.getInicio());
         StringBuilder texto = new StringBuilder();
@@ -211,6 +220,7 @@ public final class AvisosFuga {
     /** Texto ampliado de la notificación: qué pasa, datos clave y qué hacer (sin el bloque técnico). */
     static String detalle(AlertaFuga alerta) {
         StringBuilder texto = new StringBuilder();
+        if (alerta.getGotita() != null && !alerta.getGotita().isEmpty()) texto.append(alerta.getGotita()).append("\n\n");
         if (alerta.getDireccion() != null && !alerta.getDireccion().isEmpty()) texto.append(alerta.getDireccion()).append('\n');
         if (alerta.getResumen() != null && !alerta.getResumen().isEmpty()) texto.append(alerta.getResumen()).append('\n');
         String clave = FugaTexto.datosClave(alerta.getMetricas(), alerta.getInicio());

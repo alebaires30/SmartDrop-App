@@ -48,7 +48,8 @@ public interface ApiService {
     @PATCH("auth/preferencias/")
     Call<Perfil.PreferenciasResponse> actualizarPreferencias(@Body Map<String, Object> cambios);
 
-    @GET("api/notificaciones/")
+    // Los avisos fuera de lo normal traen también la frase corta de Gotita.
+    @GET("api/notificaciones/?gotita=1")
     Call<Perfil.AvisosResponse> obtenerAvisos();
 
     @GET("auth/mis-viviendas/")
@@ -109,6 +110,10 @@ public interface ApiService {
 
     @GET("v1/ml/leaks/alerts/")
     Call<AlertasFugaResponse> obtenerAlertasFuga(@Query("solo_no_leidas") Integer soloNoLeidas);
+
+    /** Avisos de fuga sin leer con el texto corto de Gotita (para las notificaciones). */
+    @GET("v1/ml/leaks/alerts/?solo_no_leidas=1&gotita=1")
+    Call<AlertasFugaResponse> obtenerAlertasFugaConGotita();
 
     @POST("v1/ml/leaks/alerts/read/")
     Call<ResponseBody> marcarAlertasFugaLeidas(@Body Map<String, Object> cuerpo);

@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Panel de Gotita (hoja inferior): conversación, voz, modo sencillo/técnico, idioma y ajustes. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/surface"
+    android:orientation="vertical">
+
+    <!-- Cabecera -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_agua"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_4"
+        android:paddingTop="@dimen/space_3"
+        android:paddingEnd="@dimen/space_2"
+        android:paddingBottom="@dimen/space_3">
+
+        <ImageView
+            android:id="@+id/gotitaLogo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_gotita" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_3"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gotita"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Title"
+                android:textColor="@color/ink" />
+
+            <TextView
+                android:id="@+id/gotitaEstado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:accessibilityLiveRegion="polite"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Caption"
+                android:textColor="@color/ink_2" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/gotitaHistorialBoton"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Conversaciones anteriores"
+            android:src="@drawable/ic_history"
+            app:tint="@color/ink_2" />
+
+        <ImageButton
+            android:id="@+id/gotitaAjustesBoton"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Ajustes de Gotita"
+            android:src="@drawable/ic_settings"
+            app:tint="@color/ink_2" />
+
+        <ImageButton
+            android:id="@+id/gotitaCerrar"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Cerrar Gotita"
+            android:src="@drawable/ic_close"
+            app:tint="@color/ink_2" />
+    </LinearLayout>
+
+    <!-- Barra: modo, idioma y "Oye Gotita" -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_4"
+        android:paddingTop="@dimen/space_2"
+        android:paddingEnd="@dimen/space_4"
+        android:paddingBottom="@dimen/space_2">
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/gotitaModo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <Button
+                android:id="@+id/gotitaModoSencillo"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:paddingStart="@dimen/space_3"
+                android:paddingEnd="@dimen/space_3"
+                android:text="Sencillo" />
+
+            <Button
+                android:id="@+id/gotitaModoTecnico"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:paddingStart="@dimen/space_3"
+                android:paddingEnd="@dimen/space_3"
+                android:text="Técnico" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/gotitaIdioma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_2"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <Button
+                android:id="@+id/gotitaIdiomaEs"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Gotita habla en español"
+                android:minWidth="0dp"
+                android:paddingStart="@dimen/space_2"
+                android:paddingEnd="@dimen/space_2"
+                android:text="ES" />
+
+            <Button
+                android:id="@+id/gotitaIdiomaEn"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Gotita speaks English"
+                android:minWidth="0dp"
+                android:paddingStart="@dimen/space_2"
+                android:paddingEnd="@dimen/space_2"
+                android:text="EN" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+    </LinearLayout>
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/gotitaEscucha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/space_4"
+        android:paddingEnd="@dimen/space_4"
+        android:text="Escucha activa: “Oye Gotita”"
+        android:textAppearance="@style/TextAppearance.SmartDrop.Body" />
+
+    <!-- Ajustes (se muestran con el engranaje) -->
+    <LinearLayout
+        android:id="@+id/gotitaAjustes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface_2"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/space_4"
+        android:paddingTop="@dimen/space_2"
+        android:paddingEnd="@dimen/space_4"
+        android:paddingBottom="@dimen/space_3"
+        android:visibility="gone">
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/gotitaVoz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Responder con voz"
+            android:textAppearance="@style/TextAppearance.SmartDrop.Body" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/gotitaLeerAvisos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Leer los avisos en voz alta"
+            android:textAppearance="@style/TextAppearance.SmartDrop.Body" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Velocidad de la voz"
+                android:textAppearance="@style/TextAppearance.SmartDrop.Body" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/gotitaVelocidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <Button
+                    android:id="@+id/gotitaVelocidadNormal"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:text="Normal" />
+
+                <Button
+                    android:id="@+id/gotitaVelocidadLenta"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:text="Lenta" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/gotitaBorrar"
+            style="@style/Widget.SmartDrop.Button.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Borrar conversación" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gotita solo responde, explica y te lleva a otras pantallas. No cambia datos, no inicia ni cierra sesión y no maneja las electroválvulas."
+            android:textAppearance="@style/TextAppearance.SmartDrop.Caption" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hairline"
+        android:background="@color/line" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+
+        <!-- Conversación -->
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/gotitaScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/page"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/gotitaChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/space_3"
+                android:paddingTop="@dimen/space_3"
+                android:paddingEnd="@dimen/space_3"
+                android:paddingBottom="@dimen/space_3" />
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- Historial: conversaciones de los últimos 20 días (tapa el chat hasta que eliges una) -->
+        <LinearLayout
+            android:id="@+id/gotitaHistorial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/surface_2"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/space_3"
+            android:paddingTop="@dimen/space_2"
+            android:paddingEnd="@dimen/space_3"
+            android:paddingBottom="@dimen/space_2"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/gotitaHistorialTitulo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Conversaciones"
+                    android:textAppearance="@style/TextAppearance.SmartDrop.Title"
+                    android:textColor="@color/ink" />
+
+                <Button
+                    android:id="@+id/gotitaNueva"
+                    style="@style/Widget.SmartDrop.Button.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nueva conversación"
+                    app:icon="@drawable/ic_plus" />
+            </LinearLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/gotitaHistorialLista"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </androidx.core.widget.NestedScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/gotitaHistorialNota"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Se borran solas a los 20 días."
+                    android:textAppearance="@style/TextAppearance.SmartDrop.Caption" />
+
+                <Button
+                    android:id="@+id/gotitaHistorialTodo"
+                    style="@style/Widget.SmartDrop.Button.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Borrar todo" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Sugerencias según la pantalla -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/gotitaSugerencias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/space_3"
+            android:paddingEnd="@dimen/space_3"
+            app:singleLine="true" />
+    </HorizontalScrollView>
+
+    <!-- Entrada -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_3"
+        android:paddingTop="@dimen/space_2"
+        android:paddingEnd="@dimen/space_2"
+        android:paddingBottom="@dimen/space_3">
+
+        <EditText
+            android:id="@+id/gotitaTexto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_input"
+            android:hint="Escribe tu pregunta…"
+            android:imeOptions="actionSend"
+            android:inputType="textCapSentences"
+            android:maxLength="600"
+            android:maxLines="4"
+            android:minHeight="@dimen/touch_min"
+            android:paddingStart="@dimen/space_3"
+            android:paddingEnd="@dimen/space_3"
+            android:textAppearance="@style/TextAppearance.SmartDrop.Body" />
+
+        <ImageButton
+            android:id="@+id/gotitaParar"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:layout_marginStart="@dimen/space_1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Parar a Gotita"
+            android:src="@drawable/ic_stop"
+            android:visibility="gone"
+            app:tint="@color/bad" />
+
+        <ImageButton
+            android:id="@+id/gotitaMic"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:layout_marginStart="@dimen/space_1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Hablar con Gotita"
+            android:src="@drawable/ic_mic"
+            app:tint="@color/anil" />
+
+        <ImageButton
+            android:id="@+id/gotitaEnviar"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:layout_marginStart="@dimen/space_1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Enviar"
+            android:src="@drawable/ic_send"
+            app:tint="@color/anil" />
+    </LinearLayout>
+</LinearLayout>

@@ -14,5 +14,6 @@ public final class Sesion {
                 .getSharedPreferences("sesion", Context.MODE_PRIVATE);
         boolean oscuro = sesion.getBoolean("modo_oscuro", false);
         sesion.edit().clear().putBoolean("modo_oscuro", oscuro).apply();
+        Gotita.de(context).olvidar(); // Gotita se calla y olvida la conversación de esta cuenta.
     }
 }

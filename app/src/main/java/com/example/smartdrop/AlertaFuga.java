@@ -59,6 +59,9 @@ public class AlertaFuga {
     @SerializedName("accion")
     private String accion;
 
+    @SerializedName("gotita")
+    private String gotita;
+
     public long getIdAlerta() { return idAlerta; }
     public String getFecha() { return fecha; }
     public String getPrioridad() { return prioridad; }
@@ -78,6 +81,8 @@ public class AlertaFuga {
     /** Inicio estimado ya formateado ("05/10 12:00"), o null. */
     public String getInicio() { return inicio; }
     public String getAccion() { return accion; }
+    /** El aviso contado por Gotita en una o dos frases, o null. */
+    public String getGotita() { return gotita; }
 
     /** Pérdida estimada en L/h, o null si el servidor no la envió. */
     public Double getPerdidaEstimadaLph() {

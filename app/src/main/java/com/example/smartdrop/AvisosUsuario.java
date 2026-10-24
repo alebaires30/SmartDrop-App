@@ -124,14 +124,34 @@ public final class AvisosUsuario {
                 String anterior = prefs.getString("estado_" + aviso.clave, "Normal");
                 String actual = aviso.estado == null ? "Normal" : aviso.estado;
                 editor.putString("estado_" + aviso.clave, actual);
-                if (!primera && !"Normal".equals(actual) && !actual.equals(anterior)) notificar(app, aviso, true);
+                if (!primera && !"Normal".equals(actual) && !actual.equals(anterior)) {
+                    notificar(app, aviso, true);
+                    Gotita.anunciarAviso(app, textoGotita(aviso), destinoSensor(aviso.clave));
+                }
             } else if (!notificadas.contains(aviso.clave)) {
                 notificadas.add(aviso.clave);
-                if (!primera) notificar(app, aviso, false);
+                if (!primera) {
+                    notificar(app, aviso, false);
+                    Gotita.anunciarAviso(app, textoGotita(aviso), "alertas");
+                }
             }
         }
         if (notificadas.size() > MAX_RECORDADAS) notificadas.clear();
         editor.putStringSet(CLAVE_NOTIFICADAS, notificadas).putBoolean(CLAVE_INICIADO, true).apply();
+    }
+
+    private static String textoGotita(Perfil.Aviso aviso) {
+        if (aviso.gotita != null && !aviso.gotita.isEmpty()) return aviso.gotita;
+        String titulo = aviso.titulo == null ? "" : aviso.titulo;
+        return aviso.mensaje == null || aviso.mensaje.isEmpty() ? titulo : titulo + ". " + aviso.mensaje;
+    }
+
+    private static String destinoSensor(String clave) {
+        if ("sensor:nivel".equals(clave)) return "tanque";
+        if ("sensor:presion".equals(clave)) return "presion";
+        if ("sensor:calidad".equals(clave)) return "calidad";
+        if ("sensor:flujo".equals(clave)) return "consumo";
+        return "alertas";
     }
 
     private static void crearCanal(Context context) {
@@ -155,7 +175,9 @@ public final class AvisosUsuario {
         int id = ID_BASE + (aviso.clave.hashCode() & 0x0FFFFFFF) % 100000;
         PendingIntent abrir = PendingIntent.getActivity(
                 app, id, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        String mensaje = aviso.mensaje == null ? "" : aviso.mensaje;
+        // Si Gotita redactó el aviso, se usa su frase (más clara); si no, el mensaje de siempre.
+        String mensaje = aviso.gotita != null && !aviso.gotita.isEmpty() ? aviso.gotita
+                : (aviso.mensaje == null ? "" : aviso.mensaje);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(app, CANAL)
                 .setSmallIcon(R.drawable.ic_warning)
                 .setContentTitle(aviso.titulo == null ? "SmartDrop" : aviso.titulo)

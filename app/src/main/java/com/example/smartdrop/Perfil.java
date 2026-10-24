@@ -61,6 +61,8 @@ public final class Perfil {
         @SerializedName("estado") public String estado;
         @SerializedName("titulo") public String titulo;
         @SerializedName("mensaje") public String mensaje;
+        /** El aviso contado por Gotita en una o dos frases (null si no aplica o no se pudo). */
+        @SerializedName("gotita") public String gotita;
     }
 
     public static class AvisosResponse {

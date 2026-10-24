@@ -32,6 +32,39 @@ import android.content.Intent;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
+    /** Gotita, la asistente: botón en la esquina y su panel (null en login, registro y portada). */
+    private GotitaVista gotita;
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        gotita = GotitaVista.adjuntar(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (gotita != null) gotita.reanudar();
+    }
+
+    @Override
+    protected void onPause() {
+        if (gotita != null) gotita.pausar();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (gotita != null) gotita.destruir();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (gotita != null) gotita.alResultadoPermiso(requestCode, grantResults);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);

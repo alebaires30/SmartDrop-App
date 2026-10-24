@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- App publicada: solo conexiones seguras (HTTPS/WSS) y solo certificados de verdad del sistema.
+     Así nadie puede espiar ni cambiar los datos en el camino, aunque instale un certificado falso. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

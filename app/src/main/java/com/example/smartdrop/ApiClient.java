@@ -34,6 +34,17 @@ public class ApiClient {
 
     private static Retrofit retrofit = null;
     private static Retrofit retrofitAutenticado = null;
+    private static OkHttpClient httpAutenticado = null;
+
+    public static String getBaseUrl() {
+        return BASE_URL;
+    }
+
+    /** Conexión con la sesión iniciada (Gotita la usa para recibir sus respuestas frase por frase). */
+    public static OkHttpClient getHttpAutenticado(Context context) {
+        getClientAutenticado(context);
+        return httpAutenticado;
+    }
 
 
     public static Retrofit getClient() {
@@ -67,6 +78,7 @@ public class ApiClient {
                     .addInterceptor(authInterceptor)
                     .authenticator(new TokenAuthenticator(prefs))
                     .build();
+            httpAutenticado = client;
 
             retrofitAutenticado = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
