@@ -41,6 +41,19 @@
         </menu>
     </item>
 
+    <item android:title="Ayuda">
+        <menu>
+            <group
+                android:id="@+id/grupo_admin_ayuda"
+                android:checkableBehavior="none">
+                <item
+                    android:id="@+id/drawer_admin_manual"
+                    android:icon="@drawable/ic_book"
+                    android:title="Manual del administrador" />
+            </group>
+        </menu>
+    </item>
+
     <item android:title="Cuenta">
         <menu>
             <group

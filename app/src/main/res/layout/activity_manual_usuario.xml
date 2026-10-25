@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Manual de usuario: muestra la misma página del manual que la web (/manual/?app=1). -->
+<!-- Manual de usuario o del administrador: muestra la misma página del manual que la web. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,6 +28,7 @@
             app:tint="@color/ink" />
 
         <TextView
+            android:id="@+id/tituloManual"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_2"

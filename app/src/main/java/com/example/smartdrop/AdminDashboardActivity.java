@@ -148,6 +148,10 @@ public class AdminDashboardActivity extends BaseActivity {
                 startActivity(new Intent(AdminDashboardActivity.this, PrediccionSuministroActivity.class));
             } else if (id == R.id.drawer_admin_fugas) {
                 startActivity(new Intent(AdminDashboardActivity.this, PrediccionFugasActivity.class));
+            } else if (id == R.id.drawer_admin_manual) {
+                Intent manual = new Intent(AdminDashboardActivity.this, ManualUsuarioActivity.class);
+                manual.putExtra(ManualUsuarioActivity.EXTRA_ADMIN, true);
+                startActivity(manual);
             } else if (id == R.id.drawer_admin_configuracion) {
                 startActivity(new Intent(AdminDashboardActivity.this, ConfiguracionActivity.class));
             } else if (id == R.id.drawer_admin_cerrar_sesion) {

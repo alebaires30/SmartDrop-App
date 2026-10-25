@@ -89,6 +89,7 @@ final class GotitaPantalla {
         PANTALLAS.put("reportes_admin", ComunidadActivity.class);
         PANTALLAS.put("buscar", BusquedaActivity.class);
         PANTALLAS.put("manual", ManualUsuarioActivity.class);
+        PANTALLAS.put("manual_admin", ManualUsuarioActivity.class);
     }
 
     private GotitaPantalla() { }
@@ -97,6 +98,9 @@ final class GotitaPantalla {
         String nombre = activity.getClass().getSimpleName();
         if ("ComunidadActivity".equals(nombre) && activity.getIntent().getBooleanExtra("es_admin", false)) {
             return "reportes_admin";
+        }
+        if ("ManualUsuarioActivity".equals(nombre) && activity.getIntent().getBooleanExtra(ManualUsuarioActivity.EXTRA_ADMIN, false)) {
+            return "manual_admin";
         }
         String id = IDS.get(nombre);
         return id != null ? id : nombre.replace("Activity", "").toLowerCase(java.util.Locale.ROOT);
@@ -256,6 +260,7 @@ final class GotitaPantalla {
             intent.putExtra("es_admin", true);
         }
         if ("valvulas".equals(destino)) intent.putExtra("id_valvula", 1);
+        if ("manual_admin".equals(destino)) intent.putExtra(ManualUsuarioActivity.EXTRA_ADMIN, true);
         return intent;
     }
 }
