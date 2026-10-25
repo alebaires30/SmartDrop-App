@@ -85,6 +85,10 @@
                     android:icon="@drawable/ic_person"
                     android:title="Mi perfil" />
                 <item
+                    android:id="@+id/drawer_manual"
+                    android:icon="@drawable/ic_book"
+                    android:title="Manual de usuario" />
+                <item
                     android:id="@+id/drawer_cerrar_sesion"
                     android:icon="@drawable/ic_logout"
                     android:title="Cerrar sesión" />

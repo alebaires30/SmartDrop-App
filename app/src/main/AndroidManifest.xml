@@ -36,6 +36,9 @@
             android:name=".RecomendacionesActivity"
             android:exported="false" />
         <activity
+            android:name=".ManualUsuarioActivity"
+            android:exported="false" />
+        <activity
             android:name=".AlertasActivity"
             android:exported="false" />
         <activity

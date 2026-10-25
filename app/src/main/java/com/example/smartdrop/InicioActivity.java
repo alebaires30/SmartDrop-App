@@ -166,6 +166,8 @@ public class InicioActivity extends BaseActivity {
                 startActivity(new Intent(this, RecomendacionesActivity.class));
             } else if (id == R.id.drawer_alertas) {
                 startActivity(new Intent(this, AlertasActivity.class));
+            } else if (id == R.id.drawer_manual) {
+                startActivity(new Intent(this, ManualUsuarioActivity.class));
             }
             // "Inicio" solo cierra el menú: ya estás aquí.
             drawerLayout.closeDrawer(GravityCompat.START);

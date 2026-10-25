@@ -66,6 +66,7 @@ final class GotitaPantalla {
         IDS.put("PrediccionSuministroActivity", "prediccion_suministro");
         IDS.put("PrediccionFugasActivity", "prediccion_fugas");
         IDS.put("BusquedaActivity", "buscar");
+        IDS.put("ManualUsuarioActivity", "manual");
 
         PANTALLAS.put("inicio", InicioActivity.class);
         PANTALLAS.put("tanque", NivelTanqueActivity.class);
@@ -87,6 +88,7 @@ final class GotitaPantalla {
         PANTALLAS.put("prediccion_fugas", PrediccionFugasActivity.class);
         PANTALLAS.put("reportes_admin", ComunidadActivity.class);
         PANTALLAS.put("buscar", BusquedaActivity.class);
+        PANTALLAS.put("manual", ManualUsuarioActivity.class);
     }
 
     private GotitaPantalla() { }
