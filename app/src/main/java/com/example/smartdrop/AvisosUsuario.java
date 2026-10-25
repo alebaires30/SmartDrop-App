@@ -139,6 +139,22 @@ public final class AvisosUsuario {
         editor.putStringSet(CLAVE_NOTIFICADAS, notificadas).putBoolean(CLAVE_INICIADO, true).apply();
     }
 
+    /** Aviso que llegó en vivo por WebSocket (fuga en el sector): se notifica ya y se marca como avisado. */
+    public static synchronized void avisoEnVivo(Context context, long idAlerta, String titulo, String mensaje) {
+        Context app = context.getApplicationContext();
+        Perfil.Aviso aviso = new Perfil.Aviso();
+        aviso.clave = idAlerta > 0 ? "alerta:" + idAlerta : "fuga:" + System.currentTimeMillis();
+        aviso.tipo = "alerta";
+        aviso.titulo = titulo;
+        aviso.mensaje = mensaje;
+        SharedPreferences prefs = app.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        Set<String> notificadas = new HashSet<>(prefs.getStringSet(CLAVE_NOTIFICADAS, new HashSet<>()));
+        if (!notificadas.add(aviso.clave)) return;
+        prefs.edit().putStringSet(CLAVE_NOTIFICADAS, notificadas).apply();
+        notificar(app, aviso, false);
+        Gotita.anunciarAviso(app, textoGotita(aviso), "alertas");
+    }
+
     private static String textoGotita(Perfil.Aviso aviso) {
         if (aviso.gotita != null && !aviso.gotita.isEmpty()) return aviso.gotita;
         String titulo = aviso.titulo == null ? "" : aviso.titulo;

@@ -39,6 +39,10 @@ public final class RealtimeClient {
             public void onMessage(WebSocket webSocket, String text) {
                 try {
                     JSONObject payload = new JSONObject(text);
+                    if ("leak_alert".equals(payload.optString("event"))) {
+                        avisoDeFuga(context, payload);
+                        return;
+                    }
                     if (!"sensor_reading".equals(payload.optString("event"))) return;
 
                     Intent intent = new Intent(ACTION_SENSOR_READING)
@@ -66,6 +70,19 @@ public final class RealtimeClient {
                 }
             }
         });
+    }
+
+    /**
+     * Fuga detectada (PB027): se muestra como notificación en ese mismo momento, sin esperar la revisión
+     * de cada 15 minutos. Al vecino le llega "Fuga detectada en su sector"; al admin, el aviso completo.
+     */
+    private static void avisoDeFuga(Context context, JSONObject payload) {
+        if ("admin".equals(payload.optString("para"))) {
+            AvisosFuga.revisarAhora(context, null);
+        } else {
+            AvisosUsuario.avisoEnVivo(context, payload.optLong("id_alerta"),
+                    payload.optString("titulo", "Fuga detectada en su sector"), payload.optString("mensaje"));
+        }
     }
 
     public static synchronized void disconnect() {
