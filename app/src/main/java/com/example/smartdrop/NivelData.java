@@ -8,7 +8,6 @@ public class NivelData {
     @SerializedName("barriles_disponibles") private double barrilesDisponibles;
     @SerializedName("capacidad_maxima_barriles") private double capacidadMaximaBarriles;
     @SerializedName("fecha") private String fecha;
-    @SerializedName("bomba_estado") private String bombaEstado;
     @SerializedName("autonomia_estimada_texto") private String autonomiaEstimadaTexto;
     @SerializedName("estado") private String estado;
     @SerializedName("mensaje") private String mensaje;
@@ -20,7 +19,6 @@ public class NivelData {
     public double getBarrilesDisponibles() { return barrilesDisponibles; }
     public double getCapacidadMaximaBarriles() { return capacidadMaximaBarriles; }
     public String getFecha() { return fecha; }
-    public String getBombaEstado() { return bombaEstado; }
     public String getAutonomiaEstimadaTexto() { return autonomiaEstimadaTexto; }
 
     public String getEstado() { return estado; }

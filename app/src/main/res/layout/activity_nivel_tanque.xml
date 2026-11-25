@@ -155,17 +155,6 @@
                         app:drawableStartCompat="@drawable/ic_clock"
                         app:drawableTint="@color/anil" />
 
-                    <TextView
-                        android:id="@+id/tvBomba"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/space_3"
-                        android:drawablePadding="@dimen/space_3"
-                        android:gravity="center_vertical"
-                        android:text="Bomba: sin datos"
-                        android:textAppearance="@style/TextAppearance.SmartDrop.Body"
-                        app:drawableStartCompat="@drawable/ic_power"
-                        app:drawableTint="@color/agua" />
 
                     <TextView
                         android:id="@+id/tvUltima"

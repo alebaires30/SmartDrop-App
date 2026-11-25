@@ -13,7 +13,7 @@ import retrofit2.Response;
 public class NivelTanqueActivity extends BaseActivity {
 
     private ImageButton btnVolver;
-    private TextView tvConversion, tvCapacidad, tvDisponible, tvBomba, tvUltima, tvAutonomia;
+    private TextView tvConversion, tvCapacidad, tvDisponible, tvUltima, tvAutonomia;
 
     private boolean mostrandoLitros = true;
     private NivelData ultimoNivel;
@@ -33,7 +33,6 @@ public class NivelTanqueActivity extends BaseActivity {
         tvConversion = findViewById(R.id.tvConversion);
         tvCapacidad  = findViewById(R.id.tvCapacidad);
         tvDisponible = findViewById(R.id.tvDisponible);
-        tvBomba      = findViewById(R.id.tvBomba);
         tvUltima     = findViewById(R.id.tvUltima);
         tvAutonomia  = findViewById(R.id.tvAutonomia);
 
