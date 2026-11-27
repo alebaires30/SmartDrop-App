@@ -23,6 +23,16 @@ git pull
 
 En Android Studio: `File > Sync Project with Gradle Files` y luego **Run**.
 
+## Actualización del Sprint 4 (app): qué hacer
+
+1. `git pull` en `master` y `File > Sync Project with Gradle Files`.
+2. Compilar e instalar de nuevo la app (**Run**, o el APK release si eres quien publica).
+3. **Primero tiene que estar actualizada la web** (ver *Actualización del Sprint 4* en el README de la web: `git pull`
+   y los `migrate` en tu laptop, o el despliegue en el servidor). La app muestra pantallas de la web: el buscador del
+   manual, el PDF para leer sin internet y el registro manual solo funcionan si la web ya tiene esos cambios.
+4. Probar: al entrar por primera vez a Inicio sale el tutorial de 5 pasos (se vuelve a ver en el menú, *Ver
+   tutorial*), y en el *Manual de usuario* se puede buscar y descargar el PDF a la carpeta Descargas.
+
 ## Primera vez
 
 1. Clona el repositorio y ábrelo en Android Studio (la carpeta `SmartDrop-App`, no solo `app`).
