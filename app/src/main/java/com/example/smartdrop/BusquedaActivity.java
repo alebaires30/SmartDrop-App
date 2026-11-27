@@ -122,6 +122,15 @@ public class BusquedaActivity extends BaseActivity {
 
         Intent intent = null;
 
+        // PB045: el manual (de usuario o del administrador) se abre ya buscando lo que se escribió.
+        if (url.startsWith("/manual")) {
+            Intent manual = new Intent(this, ManualUsuarioActivity.class);
+            manual.putExtra(ManualUsuarioActivity.EXTRA_ADMIN, url.startsWith("/manual-admin"));
+            manual.putExtra(ManualUsuarioActivity.EXTRA_BUSQUEDA, etSearchQuery.getText().toString().trim());
+            startActivity(manual);
+            return;
+        }
+
         // Mapeo de URLs del backend Django a pantallas nativas Android
         if (url.equals("/") || url.isEmpty()) {
             SharedPreferences prefs = getSharedPreferences("sesion", MODE_PRIVATE);

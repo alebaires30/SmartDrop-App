@@ -168,6 +168,8 @@ public class InicioActivity extends BaseActivity {
                 startActivity(new Intent(this, AlertasActivity.class));
             } else if (id == R.id.drawer_manual) {
                 startActivity(new Intent(this, ManualUsuarioActivity.class));
+            } else if (id == R.id.drawer_tutorial) {
+                TutorialInicio.mostrar(this);
             }
             // "Inicio" solo cierra el menú: ya estás aquí.
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -203,6 +205,9 @@ public class InicioActivity extends BaseActivity {
                 new IntentFilter(RealtimeClient.ACTION_SENSOR_READING),
                 ContextCompat.RECEIVER_NOT_EXPORTED);
         RealtimeClient.connect(this);
+
+        // PB045: la primera vez que el usuario llega a Inicio se le ofrece el tutorial.
+        TutorialInicio.mostrarSiEsNuevo(this);
     }
 
     @Override

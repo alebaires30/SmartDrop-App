@@ -1,9 +1,11 @@
 package com.example.smartdrop;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -34,6 +37,8 @@ import okhttp3.ResponseBody;
 public class ManualUsuarioActivity extends BaseActivity {
 
     static final String EXTRA_ADMIN = "manual_admin";
+    /** Texto para abrir el manual ya buscando (viene del buscador de la app). */
+    static final String EXTRA_BUSQUEDA = "manual_busqueda";
 
     private WebView web;
     private View cargando;
@@ -60,6 +65,10 @@ public class ManualUsuarioActivity extends BaseActivity {
                 == Configuration.UI_MODE_NIGHT_YES;
         direccion = ApiClient.getBaseUrl() + "manual/?app=1" + (esAdmin ? "&tipo=admin" : "")
                 + (oscuro ? "&tema=oscuro" : "");
+        String busqueda = getIntent().getStringExtra(EXTRA_BUSQUEDA);
+        if (busqueda != null && !busqueda.trim().isEmpty()) {
+            direccion += "&q=" + Uri.encode(busqueda.trim());
+        }
 
         // El manual es solo texto: sin JavaScript ni acceso a archivos del teléfono.
         WebSettings ajustes = web.getSettings();
@@ -71,9 +80,21 @@ public class ManualUsuarioActivity extends BaseActivity {
             public boolean shouldOverrideUrlLoading(WebView vista, WebResourceRequest peticion) {
                 Uri destino = peticion.getUrl();
                 Uri propio = Uri.parse(direccion);
-                if (destino.getFragment() != null && destino.getHost() != null
-                        && destino.getHost().equals(propio.getHost())) {
+                boolean mismoServidor = destino.getHost() != null && destino.getHost().equals(propio.getHost());
+                String ruta = destino.getPath() != null ? destino.getPath() : "";
+                if (mismoServidor && ruta.endsWith(".pdf")) {
+                    descargarPdf(destino); // "Descargar manual para uso sin internet"
+                    return true;
+                }
+                if (mismoServidor && destino.getFragment() != null) {
                     return false; // Los saltos del índice se quedan dentro del manual.
+                }
+                if (mismoServidor && ruta.startsWith("/manual")) {
+                    // El buscador del manual: se queda en esta pantalla.
+                    if (!esAdmin) return false;
+                    direccion = destino.toString(); // el del administrador se vuelve a pedir con el token
+                    cargar();
+                    return true;
                 }
                 startActivity(new Intent(Intent.ACTION_VIEW, destino)); // Otros enlaces: en el navegador.
                 return true;
@@ -89,7 +110,27 @@ public class ManualUsuarioActivity extends BaseActivity {
                 if (peticion.isForMainFrame()) mostrarError();
             }
         });
+        web.setDownloadListener((url, agente, disposicion, tipo, largo) -> descargarPdf(Uri.parse(url)));
         cargar();
+    }
+
+    /** Guarda el PDF del manual en Descargas para leerlo sin internet. */
+    private void descargarPdf(Uri archivo) {
+        try {
+            DownloadManager.Request pedido = new DownloadManager.Request(archivo)
+                    .setTitle("Manual de SmartDrop")
+                    .setDescription("Manual de usuario para leer sin internet")
+                    .setMimeType("application/pdf")
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                            "SmartDrop-manual-de-usuario.pdf");
+            DownloadManager gestor = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            gestor.enqueue(pedido);
+            Toast.makeText(this, "Descargando el manual en la carpeta Descargas…", Toast.LENGTH_LONG).show();
+        } catch (RuntimeException e) {
+            // Teléfonos viejos sin permiso para escribir en Descargas: lo baja el navegador.
+            startActivity(new Intent(Intent.ACTION_VIEW, archivo));
+        }
     }
 
     private void cargar() {

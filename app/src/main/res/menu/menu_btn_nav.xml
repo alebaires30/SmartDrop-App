@@ -89,6 +89,10 @@
                     android:icon="@drawable/ic_book"
                     android:title="Manual de usuario" />
                 <item
+                    android:id="@+id/drawer_tutorial"
+                    android:icon="@drawable/ic_info"
+                    android:title="Ver tutorial" />
+                <item
                     android:id="@+id/drawer_cerrar_sesion"
                     android:icon="@drawable/ic_logout"
                     android:title="Cerrar sesión" />
